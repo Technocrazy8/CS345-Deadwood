@@ -4,13 +4,13 @@ public class Player {
     int money;
     String name;
     int id;
-    int chips;
+    int rehearseChips;
     public Player(String name, int id){
         this.rank=0;
         this.credits=0;
         this.money=0;
         this.id = id;
         this.name=name;
-        this.chips = 0;
+        this.rehearseChips = 0;
     }
 }
