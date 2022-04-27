@@ -3,6 +3,6 @@ public class Roles{
     String description;
     int minRank;
     int rehearseBonus; // may be trivial
-    int actor;
-    
+    int actor; // player id
+
 }
