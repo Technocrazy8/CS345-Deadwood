@@ -32,6 +32,10 @@ public class Deadwood {
 
     }
 
+    public void takeRole(Player player, Role role) {
+        
+    }
+
     public void act(Player player, Set set, Scene scene){
 
     }
