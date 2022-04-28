@@ -2,7 +2,7 @@
  * Responsibilities:
  * - Hold role's info (model)
  */
-public class Roles{
+public class Role{
     String title;
     String description;
     int minRank;
