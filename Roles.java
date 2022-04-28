@@ -1,3 +1,7 @@
+/**
+ * Responsibilities:
+ * - Hold role's info (model)
+ */
 public class Roles{
     String title;
     String description;

@@ -1,5 +1,6 @@
 /**
- * 
+ * Responsibilities:
+ * Store Set status (model)
  */
 
 import java.util.LinkedList;
