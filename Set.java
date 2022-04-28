@@ -1,3 +1,4 @@
+
 /**
  * Essentially the tiles of the game
  * 
@@ -8,17 +9,17 @@
 import java.util.LinkedList;
 
 public class Set {
-    //the tiles on the board
-    //have the extras
+    // the tiles on the board
+    // have the extras
     String name;
     int actorcapacity; // the extras
     LinkedList<Player> extras;
-    LinkedList<Roles> roles;
+    LinkedList<Role> roles;
     int shotstocompletion;
     int completedshots;
 
-    public int calculatePayout(Player player){
-        int payout=0;
+    public int calculatePayout(Player player) {
+        int payout = 0;
         return payout;
     }
 

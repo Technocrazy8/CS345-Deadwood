@@ -13,12 +13,12 @@ public class Scene {
     String title;
     String description;
     int budget;
-    LinkedList<Roles> parts;
+    LinkedList<Role> parts;
     LinkedList<Player> actors;
     int shotcounter;
     int actorcapacity;
 
-    public Scene(String title, String description, int budgets, LinkedList<Roles> parts, int shotcounter, int actcap) {
+    public Scene(String title, String description, int budgets, LinkedList<Role> parts, int shotcounter, int actcap) {
         this.title = title;
         this.description = description;
         this.budget = budgets;
