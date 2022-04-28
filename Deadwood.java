@@ -47,6 +47,26 @@ public class Deadwood {
     public void takeRole(Player player, Role role, Set set, Scene scene, Board board) {
 
     }
+    
+    public void resetBoard(Board board) {
+
+    }
+
+    public Scene[] shuffleScenes(Scene[]) {
+
+    }
+
+    public void move(Player player, Set set){
+
+    }
+
+    public void takeRole(Player player, Role role) {
+
+    }
+
+    public void upgrade(Player player) {
+
+    }
 
     public void act(Player player, Set set, Scene scene, Board board) {
 
@@ -55,4 +75,17 @@ public class Deadwood {
     public void rehearse(Player player, Set set, Scene scene) {
 
     }
+
+    public void calculateScores(Board board) {
+
+    }
 }
+/**
+ * Questions:
+ * - How should we keep track of each player's position?
+ *      Possible Solutions:
+ *      - Board keeps track of where each player is
+ *      - Role keeps track of player and then each step in the hierarchy goes fetch that
+ *      - Sets and scenes keep track of it
+ *      - Any kind of combinations of this.
+ */
