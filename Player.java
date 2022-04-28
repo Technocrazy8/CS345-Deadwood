@@ -23,6 +23,7 @@ public class Player {
 
     public int calculateScore(Player player) {
         int score = 0;
+        score = player.money + player.credits + (player.rank * 5);
         return score;
     }
 }
