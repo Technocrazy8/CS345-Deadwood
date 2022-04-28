@@ -16,4 +16,10 @@ public class Set {
     LinkedList<Roles> roles;
     int shotstocompletion;
     int completedshots;
+
+    public int calculatePayout(Player player){
+        int payout=0;
+        return payout;
+    }
+
 }
