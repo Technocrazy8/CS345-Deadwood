@@ -1,3 +1,7 @@
+/**
+ * Responsibilities:
+ * - Store scene status (model)
+ */
 import java.util.LinkedList;
 
 public class Scene {

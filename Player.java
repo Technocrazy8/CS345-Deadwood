@@ -1,3 +1,8 @@
+/**
+ * Responsibilities:
+ * - Hold player status (model)
+ */
+
 public class Player {
     int rank;
     int credits;
