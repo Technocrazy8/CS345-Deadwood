@@ -10,6 +10,7 @@ public class Player {
     String name;
     int id;
     int rehearseChips;
+    int status;
     public Player(String name, int id){
         this.rank=0;
         this.credits=0;
