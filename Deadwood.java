@@ -1,5 +1,7 @@
 
 /**
+ * Our game controller
+ * 
  * Responsiblities:
  * - Loop through game routine
  * - Manage player's interaction with the game

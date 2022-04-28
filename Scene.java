@@ -1,5 +1,7 @@
 
 /**
+ * The cards on the tiles of the game
+ * 
  * Responsibilities:
  * - Store scene status (model)
  */
@@ -12,8 +14,8 @@ public class Scene {
     String description;
     int budget;
     LinkedList<Roles> parts;
-    int shotcounter;
     LinkedList<Player> actors;
+    int shotcounter;
     int actorcapacity;
 
     public Scene(String title, String description, int budgets, LinkedList<Roles> parts, int shotcounter, int actcap) {
