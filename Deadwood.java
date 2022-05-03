@@ -30,8 +30,9 @@ public class Deadwood {
             Player player = new Player(playername, i);
             // board
         }
-
+        setupGame();
         while (toggle) {
+
 
         }
     }

@@ -17,10 +17,15 @@ public class Set {
     LinkedList<Role> roles;
     int shotstocompletion;
     int completedshots;
+    Scene scene;
 
     public int calculatePayout(Player player) {
         int payout = 0;
         return payout;
+    }
+
+    public void setScene(Scene scene){
+        this.scene=scene;
     }
 
 }
