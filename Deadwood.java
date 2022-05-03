@@ -54,7 +54,7 @@ public class Deadwood {
     }
 
     public Scene[] shuffleScenes(Scene[] scenes) {
-
+        return null;
     }
 
     public void move(Player player, Set set){
