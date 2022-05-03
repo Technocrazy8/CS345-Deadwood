@@ -53,7 +53,7 @@ public class Deadwood {
 
     }
 
-    public Scene[] shuffleScenes(Scene[]) {
+    public Scene[] shuffleScenes(Scene[] scenes) {
 
     }
 
