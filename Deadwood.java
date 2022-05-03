@@ -26,10 +26,12 @@ public class Deadwood {
 
         while (!validsyntax) {
             System.out.print("Please enter the number of players (2 to 8): ");
-            int temp = scanner.nextInt();
-            if (temp > 1 && temp < 9) {
+            String temp = scanner.nextLine();
+            if (!isNumeric(temp)) {
+
+            } else if (Integer.parseInt(temp) > 1 && Integer.parseInt(temp) < 9) {
                 validsyntax = true;
-                numplayers = temp;
+                numplayers = Integer.parseInt(temp);
             }
             System.out.println("Please enter a valid number of players");
         }
@@ -59,8 +61,9 @@ public class Deadwood {
                     System.out.print("Are you sure? (Y) or (N): ");
                     String answer = scanner.next();
                     if (answer.equals("Y")) {
-                        for(int i=0;i<board.players.size();i++){
-                            System.out.println(board.players.get(i).name + "'s score: " + board.players.get(i).calculateScore());
+                        for (int i = 0; i < board.players.size(); i++) {
+                            System.out.println(
+                                    board.players.get(i).name + "'s score: " + board.players.get(i).calculateScore());
                         }
                         System.exit(0);
                     }
@@ -121,6 +124,15 @@ public class Deadwood {
 
     public void calculateScores(Board board) {
 
+    }
+
+    public boolean isNumeric(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (!(Character.isDigit(s.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 /**
