@@ -21,9 +21,9 @@ public class Player {
         this.rehearseChips = 0;
     }
 
-    public int calculateScore(Player player) {
+    public int calculateScore() {
         int score = 0;
-        score = player.money + player.credits + (player.rank * 5);
+        score = this.money + this.credits + (this.rank * 5);
         return score;
     }
 }
