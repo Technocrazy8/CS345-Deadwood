@@ -5,6 +5,7 @@ import java.util.LinkedList;
  * - Store board status (model)
  */
 public class Board {
+    String name;
     LinkedList<Set> sets; // the tiles
     LinkedList<Player> players;
 

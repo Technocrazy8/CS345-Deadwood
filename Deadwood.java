@@ -9,6 +9,17 @@
  * - The controller
  */
 import java.util.*;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.print.Doc;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import java.io.File;
 
 public class Deadwood {
     public static void main(String[] args) {
@@ -40,7 +51,7 @@ public class Deadwood {
 
         // int temp = scanner.nextInt();
 
-        String input;
+        
         int currplayerindex = 0;
 
         for (int i = 0; i < numplayers; i++) {
@@ -51,15 +62,21 @@ public class Deadwood {
         }
         // System.out.println("WELCOME TO DEADWOOD!");
         setupGame();
+
+
+
+        String input;
         while (toggle) {
 
-            System.out.print(board.players.get(currplayerindex).name + " Please enter your move: ");
+            System.out.print(board.players.get(currplayerindex).getName() + " Please enter your move: ");
             input = scanner.next();
+            input.toUpperCase();
 
             switch (input) {
                 case "QUIT":
                     System.out.print("Are you sure? (Y) or (N): ");
                     String answer = scanner.next();
+                    answer.toUpperCase();
                     if (answer.equals("Y")) {
                         for (int i = 0; i < board.players.size(); i++) {
                             System.out.println(
@@ -83,6 +100,27 @@ public class Deadwood {
     }
 
     public void setupGame() {
+        ParseXML parser = new ParseXML();
+        String[] xfiles = {"board.xml", "cards.xml"};
+        for(int i=0; i<2;i++){
+            
+                Document d;
+                try {
+                    d = parser.getDocFromFile(xfiles[i]);
+                    if(i==0){
+                        parser.readBoard(d);
+                    }else{
+                        //parser.
+                    }
+                } catch (ParserConfigurationException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                
+        }
+        //Doc
+
+
 
     }
 
