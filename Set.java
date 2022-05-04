@@ -46,7 +46,8 @@ public class Set {
 
     public void addPlayer(Player p){
         if(this.actorcapacity == this.extras.size()){
-            
+            System.out.println("Actor capacity aready reached");
+            return;
         }
         this.extras.add(p);
     }
@@ -62,5 +63,4 @@ public class Set {
     public Scene getScene(){
         return this.scene;
     }
-
 }
