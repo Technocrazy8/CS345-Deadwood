@@ -33,6 +33,7 @@ public class Deadwood {
         Board board = new Board();
         int numplayers = 0;
         Scanner scanner = new Scanner(System.in);
+        LinkedList<Set> cards = new LinkedList<Set>();
         System.out.println("Welcome to Deadwood!");
 
         while (!validsyntax) {
@@ -46,12 +47,6 @@ public class Deadwood {
             }
             System.out.println("Please enter a valid number of players");
         }
-
-        // System.out.print("Please enter the number of players (2 to 8): ");
-
-        // int temp = scanner.nextInt();
-
-        
         int currplayerindex = 0;
 
         for (int i = 0; i < numplayers; i++) {
@@ -60,29 +55,31 @@ public class Deadwood {
             board.addPlayer(player);
             // board
         }
-        // System.out.println("WELCOME TO DEADWOOD!");
         setupGame();
-
-
-
         String input;
         while (toggle) {
 
             System.out.print(board.players.get(currplayerindex).getName() + " Please enter your move: ");
             input = scanner.next();
-            input.toUpperCase();
+            input = input.toUpperCase();
 
             switch (input) {
                 case "QUIT":
-                    System.out.print("Are you sure? (Y) or (N): ");
-                    String answer = scanner.next();
-                    answer.toUpperCase();
-                    if (answer.equals("Y")) {
-                        for (int i = 0; i < board.players.size(); i++) {
-                            System.out.println(
-                                    board.players.get(i).name + "'s score: " + board.players.get(i).calculateScore());
+                    while(true){
+                        System.out.print("Are you sure? (Y) or (N): ");
+                        String answer = scanner.next();
+                        answer = answer.toUpperCase();
+                        if (answer.equals("Y")) {
+                            for (int i = 0; i < board.players.size(); i++) {
+                                System.out.println(
+                                        board.players.get(i).name + "'s score: " + board.players.get(i).calculateScore());
+                            }
+                            System.exit(0);
+                        }else if(answer.equals("N")){
+                            break;
+                        }else{
+                            System.out.println("Please enter Y or N");
                         }
-                        System.exit(0);
                     }
                     break;
                 case "TURN":

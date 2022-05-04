@@ -112,12 +112,13 @@ public class ParseXML{
          NodeList sets = root.getElementsByTagName("set");
 
             for (int i=0; i<sets.getLength();i++){
+               Set set = new Set();
                   
                System.out.println("Printing information for set "+(i+1));
                
                //reads data from the nodes
-               Node set = sets.item(i);
-               System.out.println("Set name= " + set.getAttributes().getNamedItem("name").getNodeValue());
+               Node node = sets.item(i);
+               System.out.println("Set name= " + node.getAttributes().getNamedItem("name").getNodeValue());
                //String bookCategory = set.getAttributes().getNamedItem("category").getNodeValue();
                //System.out.println("Category = "+bookCategory);
                

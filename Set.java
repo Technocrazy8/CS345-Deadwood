@@ -24,8 +24,43 @@ public class Set {
         return payout;
     }
 
+    public void setName(String name){
+        this.name=name;
+    }
+    
+    public String getName(){
+        return this.name;
+    }
+
+    public void setActCapacity(int n){
+        this.actorcapacity = n;
+    }
+
+    public int getActCapacity(){
+        return this.actorcapacity;
+    }
+
+    public void setShotCapacity(int n){
+        this.shotstocompletion = n;
+    }
+
+    public void addPlayer(Player p){
+        if(this.actorcapacity == this.extras.size()){
+            
+        }
+        this.extras.add(p);
+    }
+
+    public void addRole(Role r){
+        this.roles.add(r);
+    }
+
     public void setScene(Scene scene){
         this.scene=scene;
+    }
+
+    public Scene getScene(){
+        return this.scene;
     }
 
 }
