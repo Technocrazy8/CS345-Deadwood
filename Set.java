@@ -15,7 +15,8 @@ public class Set {
     int actorcapacity; // the extras
     LinkedList<Player> extras;
     LinkedList<Role> roles;
-    int shotstocompletion;
+    LinkedList<Set> neighbors;
+    int shotstocompletion = -1;
     int completedshots;
     Scene scene;
 
@@ -41,7 +42,10 @@ public class Set {
     }
 
     public void setShotCapacity(int n){
-        this.shotstocompletion = n;
+        if(n>this.shotstocompletion){
+            this.shotstocompletion = n;
+        }
+        //this.shotstocompletion = n;
     }
 
     public void addPlayer(Player p){
@@ -62,5 +66,13 @@ public class Set {
 
     public Scene getScene(){
         return this.scene;
+    }
+
+    public void addNeighbor(Set set){
+        this.neighbors.add(set);
+    }
+
+    public LinkedList<Set> getNeighbors(){
+        return this.neighbors;
     }
 }

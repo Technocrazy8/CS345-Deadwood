@@ -12,6 +12,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+
 import java.io.File;
 
 public class ParseXML{
@@ -120,18 +122,27 @@ public class ParseXML{
                Node node = sets.item(i);
                System.out.println("Set name= " + node.getAttributes().getNamedItem("name").getNodeValue());
                set.setName(node.getAttributes().getNamedItem("name").getNodeValue());
-               //String bookCategory = set.getAttributes().getNamedItem("category").getNodeValue();
-               //System.out.println("Category = "+bookCategory);
-               
+
                //reads data
                                           
-               //NodeList children = book.getChildNodes();
+               NodeList children = node.getChildNodes();
                
-         //       for (int j=0; j< children.getLength(); j++){
+                for (int j=0; j< children.getLength(); j++){
                   
-         //       Node sub = children.item(j);
+               Node sub = children.item(j);
                
-         //       if("title".equals(sub.getNodeName())){
+               if("takes".equals(sub.getNodeName())){
+                  System.out.println(sub.getNodeName());
+                  //while(){}
+                  NodeList takers = sub.getChildNodes();
+                  for(int k=0;k<takers.getLength();k++){
+                     if("take".equals(takers.item(k).getNodeName())){
+                        String number = takers.item(k).getAttributes().item(0).getNodeValue();
+                        System.out.println(k + " Author = "+number);
+                     }
+                     
+                  }
+               }
          //          String bookLanguage = sub.getAttributes().getNamedItem("lang").getNodeValue();
          //          System.out.println("Language = "+bookLanguage);
          //          String title = sub.getTextContent();
@@ -161,11 +172,10 @@ public class ParseXML{
          //       System.out.println("\n");
                
          // }
-        }
+        
       }
     
-    
-
-
+            }
+         }
 
 }//class
