@@ -26,7 +26,20 @@ public class Player {
         score = this.money + this.credits + (this.rank * 5);
         return score;
     }
-    public String getName(){
+
+    public String getName() {
         return this.name;
+    }
+
+    public void addMoney(int m) {
+        this.money += m;
+    }
+
+    public void addCredits(int c) {
+        this.credits += c;
+    }
+
+    public void addChip(int c) {
+        this.rehearseChips += c;
     }
 }
