@@ -12,7 +12,6 @@ import java.util.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-//test
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -96,6 +95,8 @@ public class Deadwood {
     }
 
     public void setupGame() {
+
+        
         ParseXML parser = new ParseXML();
         String[] xfiles = {"board.xml", "cards.xml"};
         for(int i=0; i<2;i++){
@@ -106,7 +107,7 @@ public class Deadwood {
                     if(i==0){
                         parser.readBoard(d);
                     }else{
-                        //parser.
+                        parser.readCards(d);
                     }
                 } catch (ParserConfigurationException e) {
                     // TODO Auto-generated catch block
