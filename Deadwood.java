@@ -25,36 +25,80 @@ public class Deadwood {
         game.run();
     }
 
-    public void run() {
-        boolean toggle = true;
-        boolean validsyntax = false;
+    private void run() {
+
+        // Retrieve XML data
+
+        LinkedList<Scene> cards; // card deck of 40 scenes for the 4 days of 10 sets
+        LinkedList<Set> sets;
+
+        ParseXML parser = new ParseXML();
+        String[] xfiles = {"board.xml", "cards.xml"};
+
+        try {
+            Document d;
+            for (int i = 0; i < 2; i++) {
+                
+                d = parser.getDocFromFile(xfiles[i]);
+                switch (i) {
+                    case 0:
+                        sets = parser.readBoard(d); TODO: switch these once readBoard returns the list of sets
+                        break;
+                    case 1:
+                        cards = parser.readCards(d);
+                        break;
+                }
+            }
+        }
+        catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // Use data to populate board
+
         Board board = Board.getBoard();
+        board.addSets(sets);
+        Collections.shuffle(cards);
+        
+        
+        //board.distributeScenes(retrieveDailyCards(cards)); TODO: at the start of every day
+
+
+        // Get number of players from user
+
         int numplayers = 0;
         Scanner scanner = new Scanner(System.in);
-        LinkedList<Set> cards = new LinkedList<Set>();
         System.out.println("Welcome to Deadwood!");
 
-        while (!validsyntax) {
+        while (true) {
             System.out.print("Please enter the number of players (2 to 8): ");
-            String temp = scanner.nextLine();
-            if (!isNumeric(temp)) {
-
-            } else if (Integer.parseInt(temp) > 1 && Integer.parseInt(temp) < 9) {
-                validsyntax = true;
-                numplayers = Integer.parseInt(temp);
+            String input = scanner.nextLine();
+            if (!isNumeric(input)) {
+                System.out.println("Please enter a valid number of players");
             }
-            System.out.println("Please enter a valid number of players");
+            else if (Integer.parseInt(input) > 1 && Integer.parseInt(input) < 9) {
+                numplayers = Integer.parseInt(input);
+                break;
+            }
+            
         }
-        int currplayerindex = 0;
+
+        // Populate players
 
         for (int i = 0; i < numplayers; i++) {
             String playername = "Player " + (i + 1);
             Player player = new Player(playername, i);
             board.addPlayer(player);
-            // board
         }
-        setupGame();
+
+        // Game loop
+
         String input;
+        boolean toggle = true;
+        int currplayerindex = 0;
+
+
         while (toggle) {
 
             System.out.print(board.players.get(currplayerindex).getName() + " Please enter your move: ");
@@ -94,31 +138,14 @@ public class Deadwood {
         scanner.close();
     }
 
-    public void setupGame() {
+    // Gets the first 10 cards out of the deck (which should have been randomized)
+    private LinkedList<Scene> retrieveDailyCards(LinkedList<Scene> cards) {
 
-        
-        ParseXML parser = new ParseXML();
-        String[] xfiles = {"board.xml", "cards.xml"};
-        for(int i=0; i<2;i++){
-            
-                Document d;
-                try {
-                    d = parser.getDocFromFile(xfiles[i]);
-                    if(i==0){
-                        parser.readBoard(d);
-                    }else{
-                        parser.readCards(d);
-                    }
-                } catch (ParserConfigurationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                
+        LinkedList<Scene> dailyCards = new LinkedList<>();
+        for(int i = 0; i < 10; i++) {
+            dailyCards.add(cards.remove(0));
         }
-        //Doc
-
-
-
+        return dailyCards;
     }
 
     public void move(Player player, Set set, Board board) {
