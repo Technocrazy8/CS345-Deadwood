@@ -177,5 +177,53 @@ public class ParseXML{
     
             }
          }
+      
+      public ArrayList<Scene> readCards(Document d) {
+      
+      Element root = d.getDocumentElement();
+      NodeList cardNodes = root.getElementsByTagName("card");
+      ArrayList<Scene> scenes = new ArrayList<Scene>();
+
+      for (int i = 0; i < cardNodes.getLength(); i++) {
+
+         Node currentCardNode = cardNodes.item(i);
+         NamedNodeMap cardAttributes =  currentCardNode.getAttributes();
+
+         NodeList cardChildren = currentCardNode.getChildNodes();
+
+         String title = cardAttributes.getNamedItem("name").getNodeValue();
+         String description = "";
+         int budget = Integer.parseInt(cardAttributes.getNamedItem("budget").getNodeValue());
+         LinkedList<Role> parts = new LinkedList<Role>();
+         int actorCapacity;
+
+         for (int j = 0; j < cardChildren.getLength(); j++) {
+
+            Node cardChild = cardChildren.item(j);
+            
+            if (cardChild.getNodeName().compareTo("scene") == 0) {
+               description = cardChild.getTextContent();
+
+            }
+            else if (cardChild.getNodeName().compareTo("part") == 0) {
+               Role newRole = new Role();
+               NamedNodeMap roleAttributes = cardChild.getAttributes();
+
+               newRole.title = roleAttributes.getNamedItem("name").getNodeValue();
+
+               newRole.minRank = Integer.parseInt(roleAttributes.getNamedItem("level").getNodeValue());
+               newRole.description = cardChild.getLastChild().getTextContent();
+
+               parts.add(newRole);
+            }
+         }
+
+         actorCapacity = parts.size();
+         
+         scenes.add(new Scene(title, description, budget, parts, actorCapacity));
+      }
+
+      return scenes;
+   }
 
 }//class
