@@ -10,7 +10,6 @@
  */
 import java.util.*;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
