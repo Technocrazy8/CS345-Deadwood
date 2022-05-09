@@ -15,15 +15,14 @@ public class Scene {
     int budget;
     LinkedList<Role> parts;
     LinkedList<Player> actors;
-    int shotcounter;
+    //int shotcounter;
     int actorcapacity;
 
-    public Scene(String title, String description, int budgets, LinkedList<Role> parts, int shotcounter, int actcap) {
+    public Scene(String title, String description, int budgets, LinkedList<Role> parts, int actcap) {
         this.title = title;
         this.description = description;
         this.budget = budgets;
         this.parts = parts;
-        this.shotcounter = shotcounter;
         this.actors = new LinkedList<Player>();
         this.actorcapacity = actcap;
     }
