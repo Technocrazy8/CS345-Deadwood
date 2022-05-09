@@ -18,17 +18,6 @@ import java.io.File;
 import java.util.*;
 
 public class ParseXML{
-      public static void main(String[] args){
-         ParseXML doc  = new ParseXML();
-         try {
-            Document document = doc.getDocFromFile(args[0]);
-            doc.readBookData(document);
-         } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-         }
-
-      }
    
         // building a document from the XML file
         // returns a Document object after loading the book.xml file.
@@ -179,9 +168,10 @@ public class ParseXML{
                Role newRole = new Role();
                NamedNodeMap roleAttributes = cardChild.getAttributes();
 
-               newRole.title = roleAttributes.getNamedItem("name").getNodeValue();
+               newRole.setTitle(roleAttributes.getNamedItem("name").getNodeValue());
+               System.out.println("role title: " + newRole.title);
 
-               newRole.minRank = Integer.parseInt(roleAttributes.getNamedItem("level").getNodeValue());
+               newRole.setRank(Integer.parseInt(roleAttributes.getNamedItem("level").getNodeValue()));
                newRole.description = cardChild.getLastChild().getTextContent();
 
                parts.add(newRole);
