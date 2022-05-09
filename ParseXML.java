@@ -16,6 +16,8 @@ import org.w3c.dom.NamedNodeMap;
 
 import java.io.File;
 
+import java.util.*;
+
 public class ParseXML{
       public static void main(String[] args){
          ParseXML doc  = new ParseXML();
