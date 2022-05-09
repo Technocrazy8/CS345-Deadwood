@@ -20,6 +20,10 @@ public class Set {
     int completedshots;
     Scene scene;
 
+    // public Set(String name){
+    //     this.name=name;
+    // }
+
     public int calculatePayout(Player player) {
         int payout = 0;
         return payout;

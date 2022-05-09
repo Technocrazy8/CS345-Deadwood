@@ -28,7 +28,7 @@ public class Deadwood {
     public void run() {
         boolean toggle = true;
         boolean validsyntax = false;
-        Board board = new Board();
+        Board board = Board.getBoard();
         int numplayers = 0;
         Scanner scanner = new Scanner(System.in);
         LinkedList<Set> cards = new LinkedList<Set>();
