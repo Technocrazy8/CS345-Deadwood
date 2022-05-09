@@ -148,11 +148,11 @@ public class ParseXML{
             }
          }
       
-      public ArrayList<Scene> readCards(Document d) {
+      public LinkedList<Scene> readCards(Document d) {
       
       Element root = d.getDocumentElement();
       NodeList cardNodes = root.getElementsByTagName("card");
-      ArrayList<Scene> scenes = new ArrayList<Scene>();
+      LinkedList<Scene> scenes = new LinkedList<Scene>();
 
       for (int i = 0; i < cardNodes.getLength(); i++) {
 
