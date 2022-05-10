@@ -20,12 +20,45 @@ import org.w3c.dom.Element;
 import java.io.File;
 
 public class Deadwood {
+
+    private static final String[] PLAYER_NAMES = {"blue", "cyan", "green", "orange", "pink", "red", "violet", "yellow"};
+
     public static void main(String[] args) {
         Deadwood game = new Deadwood();
-        game.run();
+
+        if (args.length != 1) {
+            System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+            return;
+        }
+
+        int numPlayers;
+        try {
+            numPlayers = Integer.parseInt(args[0]);
+            
+        } catch (Exception e) {
+            System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+            return;
+        }
+
+        game.run(numPlayers);
     }
 
-    private void run() {
+    private void run(int numPlayers) {
+
+        Scanner scanner = new Scanner(System.in);
+        setupProcedure(numPlayers);
+
+        System.out.println("Welcome to Deadwood!");
+
+        for (int i = 0; i < 4; i++) {
+
+            dailyRoutine(scanner);
+        }
+
+        scanner.close();
+    }
+
+    private void setupProcedure(int numPlayers) {
 
         // Retrieve XML data
 
@@ -42,7 +75,7 @@ public class Deadwood {
                 d = parser.getDocFromFile(xfiles[i]);
                 switch (i) {
                     case 0:
-                        sets = parser.readBoard(d); TODO: switch these once readBoard returns the list of sets
+                        sets = parser.readBoard(d);
                         break;
                     case 1:
                         cards = parser.readCards(d);
@@ -63,37 +96,27 @@ public class Deadwood {
         
         
         //board.distributeScenes(retrieveDailyCards(cards)); TODO: at the start of every day
-
-
-        // Get number of players from user
-
-        int numplayers = 0;
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to Deadwood!");
-
-        while (true) {
-            System.out.print("Please enter the number of players (2 to 8): ");
-            String input = scanner.nextLine();
-            if (!isNumeric(input)) {
-                System.out.println("Please enter a valid number of players");
-            }
-            else if (Integer.parseInt(input) > 1 && Integer.parseInt(input) < 9) {
-                numplayers = Integer.parseInt(input);
-                break;
-            }
-            
-        }
+        
 
         // Populate players
 
-        for (int i = 0; i < numplayers; i++) {
-            String playername = "Player " + (i + 1);
-            Player player = new Player(playername, i);
+        for (int i = 0; i < numPlayers; i++) {
+            Player player = new Player(PLAYER_NAMES[i], i);
             board.addPlayer(player);
         }
+    }
 
-        // Game loop
+    // Gets the first 10 cards out of the deck (which should have been randomized)
+    private LinkedList<Scene> retrieveDailyCards(LinkedList<Scene> cards) {
 
+        LinkedList<Scene> dailyCards = new LinkedList<>();
+        for(int i = 0; i < 10; i++) {
+            dailyCards.add(cards.remove(0));
+        }
+        return dailyCards;
+    }
+
+    private void dailyRoutine(Scanner scanner) {
         String input;
         boolean toggle = true;
         int currplayerindex = 0;
@@ -135,17 +158,6 @@ public class Deadwood {
                 currplayerindex = 0;
             }
         }
-        scanner.close();
-    }
-
-    // Gets the first 10 cards out of the deck (which should have been randomized)
-    private LinkedList<Scene> retrieveDailyCards(LinkedList<Scene> cards) {
-
-        LinkedList<Scene> dailyCards = new LinkedList<>();
-        for(int i = 0; i < 10; i++) {
-            dailyCards.add(cards.remove(0));
-        }
-        return dailyCards;
     }
 
     public void move(Player player, Set set, Board board) {
