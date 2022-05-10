@@ -20,41 +20,108 @@ import org.w3c.dom.Element;
 import java.io.File;
 
 public class Deadwood {
+
+    private static final String[] PLAYER_NAMES = {"blue", "cyan", "green", "orange", "pink", "red", "violet", "yellow"};
+
     public static void main(String[] args) {
         Deadwood game = new Deadwood();
-        game.run();
+
+        if (args.length != 1) {
+            System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+            return;
+        }
+
+        int numPlayers;
+        try {
+            numPlayers = Integer.parseInt(args[0]);
+            
+        } catch (Exception e) {
+            System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+            return;
+        }
+
+        game.run(numPlayers);
     }
 
-    public void run() {
-        boolean toggle = true;
-        boolean validsyntax = false;
-        Board board = Board.getBoard();
-        int numplayers = 0;
+    private void run(int numPlayers) {
+
         Scanner scanner = new Scanner(System.in);
-        LinkedList<Set> cards = new LinkedList<Set>();
+        setupProcedure(numPlayers);
+
         System.out.println("Welcome to Deadwood!");
 
-        while (!validsyntax) {
-            System.out.print("Please enter the number of players (2 to 8): ");
-            String temp = scanner.nextLine();
-            if (!isNumeric(temp)) {
+        for (int i = 0; i < 4; i++) {
 
-            } else if (Integer.parseInt(temp) > 1 && Integer.parseInt(temp) < 9) {
-                validsyntax = true;
-                numplayers = Integer.parseInt(temp);
-            }
-            System.out.println("Please enter a valid number of players");
+            dailyRoutine(scanner);
         }
+
+        scanner.close();
+    }
+
+    private void setupProcedure(int numPlayers) {
+
+        // Retrieve XML data
+
+        LinkedList<Scene> cards; // card deck of 40 scenes for the 4 days of 10 sets
+        LinkedList<Set> sets;
+
+        ParseXML parser = new ParseXML();
+        String[] xfiles = {"board.xml", "cards.xml"};
+
+        try {
+            Document d;
+            for (int i = 0; i < 2; i++) {
+                
+                d = parser.getDocFromFile(xfiles[i]);
+                switch (i) {
+                    case 0:
+                        sets = parser.readBoard(d);
+                        break;
+                    case 1:
+                        cards = parser.readCards(d);
+                        break;
+                }
+            }
+        }
+        catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // Use data to populate board
+
+        Board board = Board.getBoard();
+        board.addSets(sets);
+        Collections.shuffle(cards);
+        
+        
+        //board.distributeScenes(retrieveDailyCards(cards)); TODO: at the start of every day
+        
+
+        // Populate players
+
+        for (int i = 0; i < numPlayers; i++) {
+            Player player = new Player(PLAYER_NAMES[i], i);
+            board.addPlayer(player);
+        }
+    }
+
+    // Gets the first 10 cards out of the deck (which should have been randomized)
+    private LinkedList<Scene> retrieveDailyCards(LinkedList<Scene> cards) {
+
+        LinkedList<Scene> dailyCards = new LinkedList<>();
+        for(int i = 0; i < 10; i++) {
+            dailyCards.add(cards.remove(0));
+        }
+        return dailyCards;
+    }
+
+    private void dailyRoutine(Scanner scanner) {
+        String input;
+        boolean toggle = true;
         int currplayerindex = 0;
 
-        for (int i = 0; i < numplayers; i++) {
-            String playername = "Player " + (i + 1);
-            Player player = new Player(playername, i);
-            board.addPlayer(player);
-            // board
-        }
-        setupGame();
-        String input;
+
         while (toggle) {
 
             System.out.print(board.players.get(currplayerindex).getName() + " Please enter your move: ");
@@ -91,34 +158,6 @@ public class Deadwood {
                 currplayerindex = 0;
             }
         }
-        scanner.close();
-    }
-
-    public void setupGame() {
-
-        
-        ParseXML parser = new ParseXML();
-        String[] xfiles = {"board.xml", "cards.xml"};
-        for(int i=0; i<2;i++){
-            
-                Document d;
-                try {
-                    d = parser.getDocFromFile(xfiles[i]);
-                    if(i==0){
-                        parser.readBoard(d);
-                    }else{
-                        parser.readCards(d);
-                    }
-                } catch (ParserConfigurationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                
-        }
-        //Doc
-
-
-
     }
 
     public void move(Player player, Set set, Board board) {
