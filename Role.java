@@ -9,6 +9,7 @@ public class Role{
     int rehearseBonus = -1; // may be trivial
     int actor =-1; // player id
 
+
     public void setTitle(String t){
         this.title =t;
     }

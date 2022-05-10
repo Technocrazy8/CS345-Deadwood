@@ -35,6 +35,24 @@ public class Board{
         // TODO
     }
 
+    public Player getPlayer(String name){
+        int size = players.size();
+        for(int i=0;i<size;i++){
+            Player curr = players.get(i);
+            if(curr.getName() == name){
+                return curr;
+            }
+        }
+        return null;
+    }
+    public Player getPlayer(int index){
+        int size = players.size();
+        if(index > players.size()){
+            return players.get(index);
+        }
+        return null;
+    }
+
     public void addSet(Set set){
         
     }

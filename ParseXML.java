@@ -135,7 +135,7 @@ public class ParseXML{
                         if("take".equals(takers.item(k).getNodeName())){
                            String number = takers.item(k).getAttributes().item(0).getNodeValue();
                            //System.out.println(k + " take amount = "+number);
-                           set.setActCapacity(Integer.parseInt(number));
+                           set.setShotCapacity(Integer.parseInt(number));
                         }                        
                      }
 
@@ -143,7 +143,8 @@ public class ParseXML{
                      NodeList parts = sub.getChildNodes();
                      for(int k = 0 ;k<parts.getLength();k++){
                         Node part = parts.item(k);
-                        Role role = new Role();
+                        //Role role = new Role();
+                        
                         if(part.getNodeName().equals("part")){
 
                            NamedNodeMap partattributes = part.getAttributes();
@@ -155,14 +156,20 @@ public class ParseXML{
 
                            System.out.println(k+" Role name: " + name+"\nmin rank: " + minrank);
                            System.out.println(desc);
+                           Role role = new Role();
                            role.setDesc(desc);
                            role.setTitle(name);
                            role.setRank(Integer.parseInt(minrank));
-
+                           set.addRole(role);
                         }
-                        
+                        //set.addRole(role);
+                        //set.setActCapacity(set.getRoleCount());
+                        //System.out.println("Actor capacity: " + set.getRoleCount());
                      }
-                  }        
+                     set.setActCapacity(set.getRoleCount());
+                     System.out.println("Actor capacity: " + set.getRoleCount());
+                  }
+
                }System.out.println("end set");
             }
             return boardSets;

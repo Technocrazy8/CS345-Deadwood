@@ -52,6 +52,9 @@ public class Set {
     }
 
     public void addPlayer(Player p){
+        if(this.extras == null){
+            this.extras = new LinkedList<Player>();
+        }
         if(this.actorcapacity == this.extras.size()){
             System.out.println("Actor capacity aready reached");
             return;
@@ -60,7 +63,18 @@ public class Set {
     }
 
     public void addRole(Role r){
+        if(this.roles == null){
+            this.roles = new LinkedList<Role>();
+        }
         this.roles.add(r);
+    }
+
+    public LinkedList<Role> getRoles(){
+        return this.roles;
+    }
+
+    public int getRoleCount(){
+        return this.roles.size();
     }
 
     public void setScene(Scene scene){
@@ -72,6 +86,9 @@ public class Set {
     }
 
     public void addNeighbor(Set set){
+        if (this.neighbors==null){
+            this.neighbors = new LinkedList<Set>();
+        }
         this.neighbors.add(set);
     }
 
