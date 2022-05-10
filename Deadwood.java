@@ -22,29 +22,44 @@ import java.io.File;
 public class Deadwood {
 
     private static final String[] PLAYER_NAMES = {"blue", "cyan", "green", "orange", "pink", "red", "violet", "yellow"};
+    private static Board board;
+    private static int numPlayers;
 
     public static void main(String[] args) {
         Deadwood game = new Deadwood();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to Deadwood!\n");
+        int numPlayers = 0;
 
-        if (args.length != 1) {
-            System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
-            return;
-        }
+        while(true){
+            System.out.print("Enter number of players: ");
+            String input = scanner.nextLine();
 
-        int numPlayers;
-        try {
-            numPlayers = Integer.parseInt(args[0]);
+            if(isNumeric(input)){
+                numPlayers=Integer.parseInt(input);
+                break;
+            }else{
+                System.out.println("\nPlease enter a valid number of players (2-8)\n");
+            }
+        }// if (args.length != 1) {
+        //     System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+        //     return;
+        // }
+
+        // int numPlayers;
+        // try {
+        //     numPlayers = Integer.parseInt(args[0]);
             
-        } catch (Exception e) {
-            System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
-            return;
-        }
+        // } catch (Exception e) {
+        //     System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+        //     return;
+        // }
 
         game.run(numPlayers);
     }
 
-    private void run(int numPlayers) {
-
+    private void run(int playerCount) {
+        numPlayers = playerCount;
         Scanner scanner = new Scanner(System.in);
         setupProcedure(numPlayers);
 
@@ -62,8 +77,8 @@ public class Deadwood {
 
         // Retrieve XML data
 
-        LinkedList<Scene> cards; // card deck of 40 scenes for the 4 days of 10 sets
-        LinkedList<Set> sets;
+        LinkedList<Scene> cards = null; // card deck of 40 scenes for the 4 days of 10 sets
+        LinkedList<Set> sets = null;
 
         ParseXML parser = new ParseXML();
         String[] xfiles = {"board.xml", "cards.xml"};
@@ -90,7 +105,7 @@ public class Deadwood {
 
         // Use data to populate board
 
-        Board board = Board.getBoard();
+        board = Board.getBoard();
         board.addSets(sets);
         Collections.shuffle(cards);
         
@@ -151,10 +166,11 @@ public class Deadwood {
                     currplayerindex++;
                     break;
                 default:
+                
                     break;
             }
             // currplayerindex++;
-            if (currplayerindex == numplayers) {
+            if (currplayerindex == numPlayers) {
                 currplayerindex = 0;
             }
         }
@@ -200,7 +216,15 @@ public class Deadwood {
 
     }
 
-    public boolean isNumeric(String s) {
+    // public boolean isNumeric(String s) {
+    //     for (int i = 0; i < s.length(); i++) {
+    //         if (!(Character.isDigit(s.charAt(i)))) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
+    public static boolean isNumeric(String s) {
         for (int i = 0; i < s.length(); i++) {
             if (!(Character.isDigit(s.charAt(i)))) {
                 return false;

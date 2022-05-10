@@ -4,13 +4,14 @@ import java.util.LinkedList;
  * Responsibilities:
  * - Store board status (model)
  */
-public class Board {
+public class Board{
 
     private static Board board = null;
 
     String name;
     LinkedList<Set> sets; // the tiles
     LinkedList<Player> players;
+    
 
     private Board() {
         this.players = new LinkedList<Player>();

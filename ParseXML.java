@@ -98,8 +98,10 @@ public class ParseXML{
         
         }// method
 
-        public void readBoard(Document d){
+        public LinkedList<Set> readBoard(Document d){
          Element root = d.getDocumentElement();
+
+         LinkedList<Set> boardSets = new LinkedList<Set>();
             
          NodeList sets = root.getElementsByTagName("set");
 
@@ -163,6 +165,7 @@ public class ParseXML{
                   }        
                }System.out.println("end set");
             }
+            return boardSets;
          }
       
       public LinkedList<Scene> readCards(Document d) {
