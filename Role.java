@@ -6,8 +6,8 @@ public class Role{
     String title;
     String description;
     int minRank;
-    int rehearseBonus; // may be trivial
-    int actor; // player id
+    int rehearseBonus = -1; // may be trivial
+    int actor =-1; // player id
 
     public void setTitle(String t){
         this.title =t;

@@ -104,14 +104,17 @@ public class ParseXML{
          NodeList sets = root.getElementsByTagName("set");
 
             for (int i=0; i<sets.getLength();i++){
+
                Set set = new Set();
                   
                System.out.println("Printing information for set "+(i+1));
                
                //reads data from the nodes
                Node node = sets.item(i);
-               System.out.println("Set name= " + node.getAttributes().getNamedItem("name").getNodeValue());
-               set.setName(node.getAttributes().getNamedItem("name").getNodeValue());
+               NamedNodeMap setAttributes = node.getAttributes();
+               String setname = setAttributes.getNamedItem("name").getNodeValue();
+               System.out.println("Set name= " + setname);
+               set.setName(setname);
 
                //reads data
                                           
@@ -120,20 +123,45 @@ public class ParseXML{
                for (int j=0; j < children.getLength(); j++){
                   
                   Node sub = children.item(j);
+                  //Nodelist parts = sub.getElementsByTagName("part");
                   
                   if("takes".equals(sub.getNodeName())){
                      System.out.println(sub.getNodeName());
-                     //while(){}
+                     
                      NodeList takers = sub.getChildNodes();
                      for(int k=0;k<takers.getLength();k++){
                         if("take".equals(takers.item(k).getNodeName())){
                            String number = takers.item(k).getAttributes().item(0).getNodeValue();
-                           System.out.println(k + " Author = "+number);
+                           //System.out.println(k + " take amount = "+number);
+                           set.setActCapacity(Integer.parseInt(number));
+                        }                        
+                     }
+
+                  }else if("parts".equals(sub.getNodeName())){
+                     NodeList parts = sub.getChildNodes();
+                     for(int k = 0 ;k<parts.getLength();k++){
+                        Node part = parts.item(k);
+                        Role role = new Role();
+                        if(part.getNodeName().equals("part")){
+
+                           NamedNodeMap partattributes = part.getAttributes();
+                           NodeList subs = part.getChildNodes();
+
+                           String name = ""+ partattributes.getNamedItem("name").getTextContent();
+                           String minrank = "" + partattributes.getNamedItem("level").getTextContent();
+                           String desc = subs.item(3).getTextContent();
+
+                           System.out.println(k+" Role name: " + name+"\nmin rank: " + minrank);
+                           System.out.println(desc);
+                           role.setDesc(desc);
+                           role.setTitle(name);
+                           role.setRank(Integer.parseInt(minrank));
+
                         }
                         
                      }
                   }        
-               }
+               }System.out.println("end set");
             }
          }
       
@@ -169,7 +197,6 @@ public class ParseXML{
                NamedNodeMap roleAttributes = cardChild.getAttributes();
 
                newRole.setTitle(roleAttributes.getNamedItem("name").getNodeValue());
-               System.out.println("role title: " + newRole.title);
 
                newRole.setRank(Integer.parseInt(roleAttributes.getNamedItem("level").getNodeValue()));
                newRole.description = cardChild.getLastChild().getTextContent();

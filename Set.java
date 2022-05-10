@@ -49,7 +49,6 @@ public class Set {
         if(n>this.shotstocompletion){
             this.shotstocompletion = n;
         }
-        //this.shotstocompletion = n;
     }
 
     public void addPlayer(Player p){
