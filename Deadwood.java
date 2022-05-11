@@ -27,10 +27,12 @@ public class Deadwood{
 
     public static void main(String[] args) {
         Deadwood game = new Deadwood();
-        Scanner scanner = new Scanner(System.in);
+        
         System.out.println("Welcome to Deadwood!\n");
         int numPlayers = 0;
 
+        /*
+        Scanner scanner = new Scanner(System.in);
         while(true){
             System.out.print("Enter number of players: ");
             String input = scanner.nextLine();
@@ -41,19 +43,21 @@ public class Deadwood{
             }else{
                 System.out.println("\nPlease enter a valid number of players (2-8)\n");
             }
-        }// if (args.length != 1) {
-        //     System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
-        //     return;
-        // }
+        }
+        scanner.close();
+        */
+        if (args.length != 1) {
+            System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+            return;
+        }
 
-        // int numPlayers;
-        // try {
-        //     numPlayers = Integer.parseInt(args[0]);
+        try {
+            numPlayers = Integer.parseInt(args[0]);
             
-        // } catch (Exception e) {
-        //     System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
-        //     return;
-        // }
+        } catch (Exception e) {
+            System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+            return;
+        }
 
         game.run(numPlayers);
     }
@@ -61,11 +65,14 @@ public class Deadwood{
     private void run(int playerCount) {
         numPlayers = playerCount;
         Scanner scanner = new Scanner(System.in);
-        setupProcedure(numPlayers);
+        LinkedList<Scene> cards = setupProcedure(numPlayers);
 
         System.out.println("Welcome to Deadwood!");
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 1; i < 5; i++) {
+
+            System.out.println("Day " + i);
+            board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set
 
             dailyRoutine(scanner);
         }
@@ -73,7 +80,9 @@ public class Deadwood{
         scanner.close();
     }
 
-    private void setupProcedure(int numPlayers) {
+    // Gets xml data and populates board with sets and players
+    // Returns the cards read from the xml in a randomized list
+    private LinkedList<Scene> setupProcedure(int numPlayers) {
 
         // Retrieve XML data
 
@@ -109,9 +118,6 @@ public class Deadwood{
         board.addSets(sets);
         Collections.shuffle(cards);
         
-        
-        //board.distributeScenes(retrieveDailyCards(cards)); TODO: at the start of every day
-        
 
         // Populate players
 
@@ -128,6 +134,7 @@ public class Deadwood{
             trailer.addPlayer(currPlayer);
             board.getPlayer(i).setLocation(trailer);
         }
+        return cards;
     }
 
     // Gets the first 10 cards out of the deck (which should have been randomized)
