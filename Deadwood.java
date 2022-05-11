@@ -117,6 +117,7 @@ public class Deadwood{
         board = Board.getBoard();
         board.addSets(sets);
         Collections.shuffle(cards);
+        System.out.println(cards.size());
         
 
         // Populate players
