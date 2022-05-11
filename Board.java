@@ -81,10 +81,11 @@ public class Board{
     
 
     // Takes 1 scene card for every set and assigns these cards accordingly
+    // cards should contain 10 scenes
     public void distributeScenes(LinkedList<Scene> cards) {
 
         if (cards.size() != sets.size()) {
-            System.out.println("error: number of cards does not match number of sets!!!");
+            System.out.println("Board.java:distributeScenes:error: number of cards does not match number of sets!!!");
         }
 
         for (int i = 0; i < cards.size(); i++) {
