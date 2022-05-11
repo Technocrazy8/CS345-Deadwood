@@ -17,8 +17,9 @@ public class Set {
     LinkedList<Role> roles;
     LinkedList<Set> neighbors;
     int shotstocompletion = -1;
-    int completedshots;
+    int completedshots =0;
     Scene scene;
+    String[][] upgradeList;
 
     // public Set(String name){
     //     this.name=name;
@@ -69,6 +70,10 @@ public class Set {
         this.roles.add(r);
     }
 
+    public void noRoles(){
+        this.roles = new LinkedList<Role>();
+    }
+
     public LinkedList<Role> getRoles(){
         return this.roles;
     }
@@ -94,5 +99,16 @@ public class Set {
 
     public LinkedList<Set> getNeighbors(){
         return this.neighbors;
+    }
+
+    public void completeShot(){
+        this.completedshots++;
+    }
+    public void resetShots(){
+        this.completedshots =0;
+    }
+
+    public void setUpList(String[][] list){
+        this.upgradeList = list;
     }
 }

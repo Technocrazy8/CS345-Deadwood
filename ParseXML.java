@@ -134,7 +134,6 @@ public class ParseXML{
                      for(int k=0;k<takers.getLength();k++){
                         if("take".equals(takers.item(k).getNodeName())){
                            String number = takers.item(k).getAttributes().item(0).getNodeValue();
-                           //System.out.println(k + " take amount = "+number);
                            set.setShotCapacity(Integer.parseInt(number));
                         }                        
                      }
@@ -143,7 +142,6 @@ public class ParseXML{
                      NodeList parts = sub.getChildNodes();
                      for(int k = 0 ;k<parts.getLength();k++){
                         Node part = parts.item(k);
-                        //Role role = new Role();
                         
                         if(part.getNodeName().equals("part")){
 
@@ -154,24 +152,147 @@ public class ParseXML{
                            String minrank = "" + partattributes.getNamedItem("level").getTextContent();
                            String desc = subs.item(3).getTextContent();
 
-                           System.out.println(k+" Role name: " + name+"\nmin rank: " + minrank);
-                           System.out.println(desc);
                            Role role = new Role();
                            role.setDesc(desc);
                            role.setTitle(name);
                            role.setRank(Integer.parseInt(minrank));
                            set.addRole(role);
                         }
-                        //set.addRole(role);
-                        //set.setActCapacity(set.getRoleCount());
-                        //System.out.println("Actor capacity: " + set.getRoleCount());
                      }
                      set.setActCapacity(set.getRoleCount());
-                     System.out.println("Actor capacity: " + set.getRoleCount());
                   }
-
-               }System.out.println("end set");
+               }
+               boardSets.add(set);
             }
+
+            NodeList forTrailer = root.getElementsByTagName("trailer");
+            Set trailer = new Set();
+            trailer.setName("trailer");
+            trailer.setScene(null);
+            trailer.setShotCapacity(-1);
+            trailer.setActCapacity(8);
+            trailer.noRoles();
+            for(int i=0;i<forTrailer.getLength();i++){
+               NodeList children = forTrailer.item(i).getChildNodes();
+               for(int j=0;j<children.getLength();j++){
+                  Node sub = children.item(j);
+                  if("neighbors".equals(sub.getNodeName())){
+                     NodeList nlist = sub.getChildNodes();
+                     for(int k=0;k<nlist.getLength();k++){
+                        Node neighbor = nlist.item(k);
+                        if(neighbor.getNodeName().equals("neighbor")){
+                           NamedNodeMap atts = neighbor.getAttributes();
+                           System.out.println(atts.getNamedItem("name").getTextContent());
+                           for(int p=0;p<boardSets.size();p++){
+                              if(boardSets.get(p).getName().equals(atts.getNamedItem("name").getTextContent())){
+                                 trailer.addNeighbor(boardSets.get(p));
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+            boardSets.add(trailer);
+            trailer.setName("office");
+            trailer.setScene(null);
+            trailer.setShotCapacity(-1);
+            trailer.setActCapacity(8);
+            trailer.noRoles();
+
+            NodeList forOffice = root.getElementsByTagName("office");
+            Set office = new Set();
+            office.setName("office");
+            office.setScene(null);
+            office.setShotCapacity(-1);
+            office.setActCapacity(8);
+            office.noRoles();
+
+            for(int i=0;i<forOffice.getLength();i++){
+               NodeList children = forOffice.item(i).getChildNodes();
+               for(int j=0;j<children.getLength();j++){
+                  Node sub = children.item(j);
+                  if("neighbors".equals(sub.getNodeName())){
+                     NodeList nlist = sub.getChildNodes();
+                     for(int k=0;k<nlist.getLength();k++){
+                        Node neighbor = nlist.item(k);
+                        if(neighbor.getNodeName().equals("neighbor")){
+                           NamedNodeMap atts = neighbor.getAttributes();
+                           System.out.println(atts.getNamedItem("name").getTextContent());
+                           for(int p=0;p<boardSets.size();p++){
+                              if(boardSets.get(p).getName().equals(atts.getNamedItem("name").getTextContent())){
+                                 office.addNeighbor(boardSets.get(p));
+                              }
+                           }
+                        }
+                     }
+                  }
+                  else if("upgrades".equals(sub.getNodeName())){
+                     
+                  }
+               }
+            }
+            boardSets.add(office);
+
+            // for getting neighbors
+            for(int i=0;i<sets.getLength();i++){
+               Node node = sets.item(i);
+               NodeList children = node.getChildNodes();
+               //Node node = sets.item(i);
+               NamedNodeMap setAttributes = node.getAttributes();
+               String setname = setAttributes.getNamedItem("name").getNodeValue();
+               System.out.println("Set name= " + setname);
+               Set parentSet =null;
+               for(int j=0;j<boardSets.size();j++){
+                  if(boardSets.get(j).getName().equals(setname)){
+                     parentSet = boardSets.get(j);
+                  }
+               }
+
+
+               for(int j=0;j<children.getLength();j++){
+                  Node sub = children.item(j);
+                  
+                  if("neighbors".equals(sub.getNodeName())){
+                     NodeList nlist = sub.getChildNodes();
+                     for(int k=0;k<nlist.getLength();k++){
+
+                        Node neighbor = nlist.item(k);
+                        if(neighbor.getNodeName().equals("neighbor")){
+                           NamedNodeMap atts = neighbor.getAttributes();
+                           System.out.println(atts.getNamedItem("name").getTextContent());
+                           //Set parentSet;
+                           for(int p=0;p<boardSets.size();p++){
+                              if(boardSets.get(p).getName().equals(atts.getNamedItem("name").getTextContent())){
+                                 parentSet.addNeighbor(boardSets.get(p));
+                              }
+                           }
+                        }
+                        //NamedNodeMap atts = neighbor.getAttributes();
+                        //System.out.println(atts.getNamedItem("name").getNodeValue());
+                        //System.out.println("|"+neighbor.getNodeValue());
+                     }
+                  }
+               }
+            }
+
+            for(int i=0;i<boardSets.size();i++){
+               Set set = boardSets.get(i);
+               System.out.println("Set name: " + set.getName()+ "\nRole count: " + set.getRoleCount()+ "\nSet actor cap: "+ set.getActCapacity());
+               System.out.println("Roles: ");
+               for(int j=0;j<set.getRoleCount();j++){
+                  Role curr = set.getRoles().get(j);
+                  System.out.println(" Name: " + curr.getTitle() + " Desc: " + curr.getDescription() + " Rank: " + curr.getRank());
+               }
+               System.out.println("neighbors: ");
+               for(int j=0;j<set.getNeighbors().size();j++){
+                  System.out.println("  "+set.getNeighbors().get(j).getName());
+               }
+            }
+            System.out.println("Total set count: " + boardSets.size());
+
+
+
             return boardSets;
          }
       

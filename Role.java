@@ -13,12 +13,27 @@ public class Role{
     public void setTitle(String t){
         this.title =t;
     }
+
+    public String getTitle(){
+        return this.title;
+    }
+
     public void setDesc(String desc){
         this.description = desc;
     }
+
+    public String getDescription(){
+        return this.description;
+    }
+
     public void setRank(int r){
         this.minRank=r;
     }
+
+    public int getRank(){
+        return this.minRank;
+    }
+
     public void setBonus(int b){
         this.rehearseBonus = b;
     }
