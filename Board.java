@@ -90,6 +90,7 @@ public class Board{
         }
 
         for (int i = 0; i < cards.size(); i++) {
+            if (sets.get(i).get)
             sets.get(i).setScene(cards.get(i));
         }
     }

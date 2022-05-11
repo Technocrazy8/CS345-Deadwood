@@ -26,4 +26,28 @@ public class Scene {
         this.actors = new LinkedList<Player>();
         this.actorcapacity = actcap;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public LinkedList<Role>  getParts() {
+        return parts;
+    }
+
+    public LinkedList<Player> getActors() {
+        return actors;
+    }
+
+    public int getActorCapacity() {
+        return actorcapacity;
+    }
 }
