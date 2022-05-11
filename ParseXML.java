@@ -227,7 +227,7 @@ public class ParseXML{
                   //System.out.println("  "+set.getNeighbors().get(j).getName());
                }
             }
-            System.out.println("Total set count: " + boardSets.size());
+            //System.out.println("Total set count: " + boardSets.size());
 
 
 

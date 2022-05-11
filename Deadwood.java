@@ -67,7 +67,7 @@ public class Deadwood{
         Scanner scanner = new Scanner(System.in);
         LinkedList<Scene> cards = setupProcedure(numPlayers);
 
-        System.out.println("Welcome to Deadwood!");
+        //System.out.println("Welcome to Deadwood!");
 
         for (int i = 1; i < 5; i++) {
 
