@@ -119,6 +119,15 @@ public class Deadwood{
             Player player = new Player(PLAYER_NAMES[i], i);
             board.addPlayer(player);
         }
+
+        // Populate trailer with players
+        Set trailer = board.grabSet("trailer");
+        for(int i=0;i<numPlayers;i++){
+            Player currPlayer = board.getPlayer(i);
+            currPlayer.setRole(null);
+            trailer.addPlayer(currPlayer);
+            board.getPlayer(i).setLocation(trailer);
+        }
     }
 
     // Gets the first 10 cards out of the deck (which should have been randomized)
@@ -139,7 +148,12 @@ public class Deadwood{
 
         while (toggle) {
 
-            System.out.print(board.players.get(currplayerindex).getName() + " Please enter your move: ");
+            Player currentPlayer = board.players.get(currplayerindex);
+            String playerName = currentPlayer.getName();
+            Set playerLocation = currentPlayer.getLocation();
+            System.out.println("\n"+playerName+"'s turn! \n You have: ($"+currentPlayer.getMoney()+", " + currentPlayer.getCredits()+" cr)\n Your location is: " +currentPlayer.getLocName());
+            System.out.println(" Your rank is: " + currentPlayer.getRank());
+            System.out.print("Please enter your move: ");
             input = scanner.next();
             input = input.toUpperCase();
 
@@ -150,6 +164,7 @@ public class Deadwood{
                         String answer = scanner.next();
                         answer = answer.toUpperCase();
                         if (answer.equals("Y")) {
+                            System.out.println("\nGAME OVER\n");
                             for (int i = 0; i < board.players.size(); i++) {
                                 System.out.println(
                                         board.players.get(i).name + "'s score: " + board.players.get(i).calculateScore());

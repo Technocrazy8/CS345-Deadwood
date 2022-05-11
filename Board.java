@@ -48,18 +48,37 @@ public class Board{
     public Player getPlayer(int index){
         int size = players.size();
         if(index > players.size()){
-            return players.get(index);
+            return null;
         }
-        return null;
+        return players.get(index);
+    }
+
+    public Set locationOfPlayer(Player p){
+        return p.getLocation();
+    }
+
+    public int playerCount(){
+        return this.players.size();
     }
 
     public void addSet(Set set){
-        
+        sets.add(set);
     }
 
     public void addSets(LinkedList<Set> sets) {
         this.sets = sets;
     }
+
+    public Set grabSet(String name){
+        for(int i=0;i<sets.size();i++){
+            Set currSet =sets.get(i);
+            if(currSet.getName().equals(name)){
+                return currSet;
+            }
+        }
+        return null;
+    }
+    
 
     // Takes 1 scene card for every set and assigns these cards accordingly
     public void distributeScenes(LinkedList<Scene> cards) {

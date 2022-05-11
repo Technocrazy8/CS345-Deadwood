@@ -109,13 +109,13 @@ public class ParseXML{
 
                Set set = new Set();
                   
-               System.out.println("Printing information for set "+(i+1));
+               //System.out.println("Printing information for set "+(i+1));
                
                //reads data from the nodes
                Node node = sets.item(i);
                NamedNodeMap setAttributes = node.getAttributes();
                String setname = setAttributes.getNamedItem("name").getNodeValue();
-               System.out.println("Set name= " + setname);
+               //System.out.println("Set name= " + setname);
                set.setName(setname);
 
                //reads data
@@ -128,7 +128,7 @@ public class ParseXML{
                   //Nodelist parts = sub.getElementsByTagName("part");
                   
                   if("takes".equals(sub.getNodeName())){
-                     System.out.println(sub.getNodeName());
+                     //System.out.println(sub.getNodeName());
                      
                      NodeList takers = sub.getChildNodes();
                      for(int k=0;k<takers.getLength();k++){
@@ -182,7 +182,7 @@ public class ParseXML{
                         Node neighbor = nlist.item(k);
                         if(neighbor.getNodeName().equals("neighbor")){
                            NamedNodeMap atts = neighbor.getAttributes();
-                           System.out.println(atts.getNamedItem("name").getTextContent());
+                           //System.out.println(atts.getNamedItem("name").getTextContent());
                            for(int p=0;p<boardSets.size();p++){
                               if(boardSets.get(p).getName().equals(atts.getNamedItem("name").getTextContent())){
                                  trailer.addNeighbor(boardSets.get(p));
@@ -192,13 +192,8 @@ public class ParseXML{
                      }
                   }
                }
-            }
+            }            
             boardSets.add(trailer);
-            trailer.setName("office");
-            trailer.setScene(null);
-            trailer.setShotCapacity(-1);
-            trailer.setActCapacity(8);
-            trailer.noRoles();
 
             NodeList forOffice = root.getElementsByTagName("office");
             Set office = new Set();
@@ -218,7 +213,7 @@ public class ParseXML{
                         Node neighbor = nlist.item(k);
                         if(neighbor.getNodeName().equals("neighbor")){
                            NamedNodeMap atts = neighbor.getAttributes();
-                           System.out.println(atts.getNamedItem("name").getTextContent());
+                           //System.out.println(atts.getNamedItem("name").getTextContent());
                            for(int p=0;p<boardSets.size();p++){
                               if(boardSets.get(p).getName().equals(atts.getNamedItem("name").getTextContent())){
                                  office.addNeighbor(boardSets.get(p));
@@ -241,7 +236,7 @@ public class ParseXML{
                //Node node = sets.item(i);
                NamedNodeMap setAttributes = node.getAttributes();
                String setname = setAttributes.getNamedItem("name").getNodeValue();
-               System.out.println("Set name= " + setname);
+               //System.out.println("Set name= " + setname);
                Set parentSet =null;
                for(int j=0;j<boardSets.size();j++){
                   if(boardSets.get(j).getName().equals(setname)){
@@ -260,7 +255,7 @@ public class ParseXML{
                         Node neighbor = nlist.item(k);
                         if(neighbor.getNodeName().equals("neighbor")){
                            NamedNodeMap atts = neighbor.getAttributes();
-                           System.out.println(atts.getNamedItem("name").getTextContent());
+                           //System.out.println(atts.getNamedItem("name").getTextContent());
                            //Set parentSet;
                            for(int p=0;p<boardSets.size();p++){
                               if(boardSets.get(p).getName().equals(atts.getNamedItem("name").getTextContent())){
@@ -278,15 +273,15 @@ public class ParseXML{
 
             for(int i=0;i<boardSets.size();i++){
                Set set = boardSets.get(i);
-               System.out.println("Set name: " + set.getName()+ "\nRole count: " + set.getRoleCount()+ "\nSet actor cap: "+ set.getActCapacity());
-               System.out.println("Roles: ");
+               //System.out.println("Set name: " + set.getName()+ "\nRole count: " + set.getRoleCount()+ "\nSet actor cap: "+ set.getActCapacity());
+               //System.out.println("Roles: ");
                for(int j=0;j<set.getRoleCount();j++){
                   Role curr = set.getRoles().get(j);
-                  System.out.println(" Name: " + curr.getTitle() + " Desc: " + curr.getDescription() + " Rank: " + curr.getRank());
+                  //System.out.println(" Name: " + curr.getTitle() + " Desc: " + curr.getDescription() + " Rank: " + curr.getRank());
                }
-               System.out.println("neighbors: ");
+               //System.out.println("neighbors: ");
                for(int j=0;j<set.getNeighbors().size();j++){
-                  System.out.println("  "+set.getNeighbors().get(j).getName());
+                  //System.out.println("  "+set.getNeighbors().get(j).getName());
                }
             }
             System.out.println("Total set count: " + boardSets.size());
