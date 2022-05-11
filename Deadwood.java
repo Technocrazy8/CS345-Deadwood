@@ -152,11 +152,12 @@ public class Deadwood{
         String input;
         boolean toggle = true;
         int currplayerindex = 0;
+        //int 
 
 
         while (toggle) {
 
-            Player currentPlayer = board.players.get(currplayerindex);
+            Player currentPlayer = board.getPlayer(currplayerindex);
             String playerName = currentPlayer.getName();
             Set playerLocation = currentPlayer.getLocation();
             System.out.println("\n"+playerName+"'s turn! \n You have: ($"+currentPlayer.getMoney()+", " + currentPlayer.getCredits()+" cr)\n Your location is: " +currentPlayer.getLocName());
@@ -173,9 +174,9 @@ public class Deadwood{
                         answer = answer.toUpperCase();
                         if (answer.equals("Y")) {
                             System.out.println("\nGAME OVER\n");
-                            for (int i = 0; i < board.players.size(); i++) {
+                            for (int i = 0; i < numPlayers; i++) {
                                 System.out.println(
-                                        board.players.get(i).name + "'s score: " + board.players.get(i).calculateScore());
+                                        board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
                             }
                             System.exit(0);
                         }else if(answer.equals("N")){
