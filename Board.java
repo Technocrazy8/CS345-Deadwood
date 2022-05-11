@@ -80,6 +80,7 @@ public class Board{
     }
     
     // Takes 1 scene card for every set and assigns these cards accordingly
+    // cards should contain 10 scenes
     public void distributeScenes(LinkedList<Scene> cards) {
         for (int i = 0; i < cards.size(); i++) {
             sets.get(i).setScene(cards.get(i));

@@ -72,7 +72,7 @@ public class Deadwood{
         for (int i = 1; i < 5; i++) {
 
             System.out.println("Day " + i);
-            board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set
+            board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
 
             dailyRoutine(scanner);
         }
@@ -116,8 +116,12 @@ public class Deadwood{
 
         board = Board.getBoard();
         board.addSets(sets);
+<<<<<<< HEAD
+        Collections.shuffle(cards); // shuffle cards
+=======
         Collections.shuffle(cards);
         System.out.println(cards.size());
+>>>>>>> afe92e817fb15ddec8a713b72ac49ff66fa28269
         
 
         // Populate players
