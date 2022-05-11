@@ -78,4 +78,11 @@ public class Player {
     public Role getRole(){
         return this.currentRole;
     }
+
+    public boolean checkInRole(){
+        if(this.currentRole == null){
+            return false;
+        }
+        return true;
+    }
 }

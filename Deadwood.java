@@ -116,13 +116,7 @@ public class Deadwood{
 
         board = Board.getBoard();
         board.addSets(sets);
-<<<<<<< HEAD
-        Collections.shuffle(cards); // shuffle cards
-=======
-        Collections.shuffle(cards);
-        System.out.println(cards.size());
->>>>>>> afe92e817fb15ddec8a713b72ac49ff66fa28269
-        
+        Collections.shuffle(cards); // shuffle cards        
 
         // Populate players
 
@@ -154,12 +148,12 @@ public class Deadwood{
 
     private void dailyRoutine(Scanner scanner) {
         String input;
-        boolean toggle = true;
+        //boolean toggle = true;
         int currplayerindex = 0;
         //int 
 
 
-        while (toggle) {
+        while (true) {
 
             Player currentPlayer = board.getPlayer(currplayerindex);
             String playerName = currentPlayer.getName();
@@ -171,25 +165,15 @@ public class Deadwood{
             input = input.toUpperCase();
 
             switch (input) {
-                case "QUIT":
-                    while(true){
-                        System.out.print("Are you sure? (Y) or (N): ");
-                        String answer = scanner.next();
-                        answer = answer.toUpperCase();
-                        if (answer.equals("Y")) {
-                            System.out.println("\nGAME OVER\n");
-                            for (int i = 0; i < numPlayers; i++) {
-                                System.out.println(
-                                        board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
-                            }
-                            System.exit(0);
-                        }else if(answer.equals("N")){
-                            break;
-                        }else{
-                            System.out.println("Please enter Y or N");
-                        }
+                case "QUIT":             
+                    quitGame();               
+                    break;
+                case "MOVE":
+                    if(currentPlayer.checkInRole()){
+                        System.out.println("Unable to ");
                     }
                     break;
+
                 case "TURN":
                     currplayerindex++;
                     break;
@@ -200,6 +184,28 @@ public class Deadwood{
             // currplayerindex++;
             if (currplayerindex == numPlayers) {
                 currplayerindex = 0;
+            }
+        }
+    }
+
+    public void quitGame(){
+        Scanner scanner = new Scanner(System.in);
+        while(true){
+            System.out.print("Are you sure? (Y) or (N): ");
+            String answer = scanner.next();
+            answer = answer.toUpperCase();
+            if (answer.equals("Y")) {
+                System.out.println("\nGAME OVER\n");
+                for (int i = 0; i < numPlayers; i++) {
+                    System.out.println(
+                            board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
+                }
+                scanner.close();
+                System.exit(0);
+            }else if(answer.equals("N")){
+                break;
+            }else{
+                System.out.println("Please enter Y or N");
             }
         }
     }
