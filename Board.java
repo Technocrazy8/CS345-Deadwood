@@ -79,15 +79,8 @@ public class Board{
         return null;
     }
     
-
     // Takes 1 scene card for every set and assigns these cards accordingly
     public void distributeScenes(LinkedList<Scene> cards) {
-
-        //System.out.println(cards.)
-        if (cards.size() != sets.size()) {
-            System.out.println("error: number of cards does not match number of sets!!!");
-        }
-
         for (int i = 0; i < cards.size(); i++) {
             sets.get(i).setScene(cards.get(i));
         }
