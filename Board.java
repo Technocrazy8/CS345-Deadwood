@@ -8,9 +8,9 @@ public class Board{
 
     private static Board board = null;
 
-    String name;
-    LinkedList<Set> sets; // the tiles
-    LinkedList<Player> players;
+    private String name;
+    private LinkedList<Set> sets; // the tiles
+    private LinkedList<Player> players;
     
 
     private Board() {

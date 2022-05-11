@@ -10,13 +10,13 @@ import java.util.LinkedList;
 public class Scene {
     // the cards on the tiles(sets) on the board
     // have the nonextras
-    String title;
-    String description;
-    int budget;
-    LinkedList<Role> parts;
-    LinkedList<Player> actors;
+    private String title;
+    private String description;
+    private int budget;
+    private LinkedList<Role> parts;
+    private LinkedList<Player> actors;
     //int shotcounter;
-    int actorcapacity;
+    private int actorcapacity;
 
     public Scene(String title, String description, int budgets, LinkedList<Role> parts, int actcap) {
         this.title = title;

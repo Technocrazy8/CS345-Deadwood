@@ -11,15 +11,15 @@ import java.util.LinkedList;
 public class Set {
     // the tiles on the board
     // have the extras
-    String name;
-    int actorcapacity; // the extras
-    LinkedList<Player> extras;
-    LinkedList<Role> roles;
-    LinkedList<Set> neighbors;
-    int shotstocompletion = -1;
-    int completedshots =0;
-    Scene scene;
-    String[][] upgradeList;
+    private String name;
+    private int actorcapacity; // the extras
+    private LinkedList<Player> extras;
+    private LinkedList<Role> roles;
+    private LinkedList<Set> neighbors;
+    private int shotstocompletion = -1;
+    private int completedshots =0;
+    private Scene scene;
+    private String[][] upgradeList;
 
     // public Set(String name){
     //     this.name=name;
