@@ -28,7 +28,7 @@ public class Board{
     }
 
     public void addPlayer(Player player) {
-        players.add(player);
+        this.players.add(player);
     }
 
     public void addPlayers(LinkedList<Player> players) {
@@ -62,7 +62,7 @@ public class Board{
     }
 
     public void addSet(Set set){
-        sets.add(set);
+        this.sets.add(set);
     }
 
     public void addSets(LinkedList<Set> sets) {
