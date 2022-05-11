@@ -3,11 +3,11 @@
  * - Hold role's info (model)
  */
 public class Role{
-    String title;
-    String description;
-    int minRank;
-    int rehearseBonus = -1; // may be trivial
-    int actor =-1; // player id
+    private String title;
+    private String description;
+    private int minRank;
+    private int rehearseBonus = -1; // may be trivial
+    private int actor =-1; // player id
 
 
     public void setTitle(String t){

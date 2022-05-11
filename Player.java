@@ -4,15 +4,15 @@
  */
 
 public class Player {
-    int rank=1;
-    int credits;
-    int money;
-    String name;
-    int id;
-    int rehearseChips;
-    int status;
-    Set location;
-    Role currentRole; 
+    private int rank=1;
+    private int credits;
+    private int money;
+    private String name;
+    private int id;
+    private int rehearseChips;
+    private int status;
+    private Set location;
+    private Role currentRole; 
     //int rank =1;
 
     public Player(String name, int id) {
