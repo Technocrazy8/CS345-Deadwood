@@ -19,15 +19,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 
-public class Deadwood{
+public class Deadwood {
 
-    private static final String[] PLAYER_NAMES = {"blue", "cyan", "green", "orange", "pink", "red", "violet", "yellow"};
+    private static final String[] PLAYER_NAMES = { "blue", "cyan", "green", "orange", "pink", "red", "violet",
+            "yellow" };
     private static Board board;
     private static int numPlayers;
 
     public static void main(String[] args) {
         Deadwood game = new Deadwood();
-        
+
         System.out.println("Welcome to Deadwood!\n");
         int numPlayers = 0;
 
@@ -38,7 +39,7 @@ public class Deadwood{
 
         try {
             numPlayers = Integer.parseInt(args[0]);
-            
+
         } catch (Exception e) {
             System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
             return;
@@ -52,7 +53,7 @@ public class Deadwood{
         Scanner scanner = new Scanner(System.in);
         LinkedList<Scene> cards = setupProcedure(numPlayers);
 
-        //System.out.println("Welcome to Deadwood!");
+        // System.out.println("Welcome to Deadwood!");
 
         for (int i = 1; i < 5; i++) {
 
@@ -75,12 +76,12 @@ public class Deadwood{
         LinkedList<Set> sets = null;
 
         ParseXML parser = new ParseXML();
-        String[] xfiles = {"board.xml", "cards.xml"};
+        String[] xfiles = { "board.xml", "cards.xml" };
 
         try {
             Document d;
             for (int i = 0; i < 2; i++) {
-                
+
                 d = parser.getDocFromFile(xfiles[i]);
                 switch (i) {
                     case 0:
@@ -91,8 +92,7 @@ public class Deadwood{
                         break;
                 }
             }
-        }
-        catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -101,7 +101,9 @@ public class Deadwood{
 
         board = Board.getBoard();
         board.addSets(sets);
-        Collections.shuffle(cards);        
+        board.setTrailer(sets.get(sets.size() - 2));
+        board.setOffice(sets.get(sets.size() - 1));
+        Collections.shuffle(cards);
 
         // Populate players
 
@@ -112,7 +114,7 @@ public class Deadwood{
 
         // Populate trailer with players
         Set trailer = board.grabSet("trailer");
-        for(int i=0;i<numPlayers;i++){
+        for (int i = 0; i < numPlayers; i++) {
             Player currPlayer = board.getPlayer(i);
             currPlayer.setRole(null);
             trailer.addPlayer(currPlayer);
@@ -125,7 +127,7 @@ public class Deadwood{
     private LinkedList<Scene> retrieveDailyCards(LinkedList<Scene> cards) {
 
         LinkedList<Scene> dailyCards = new LinkedList<>();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             dailyCards.add(cards.remove(0));
         }
         return dailyCards;
@@ -133,50 +135,48 @@ public class Deadwood{
 
     private void dailyRoutine(Scanner scanner) {
         String input;
-        //boolean toggle = true;
+        // boolean toggle = true;
         int currplayerindex = 0;
-        //int 
-
+        // int
 
         while (true) {
 
             Player currentPlayer = board.getPlayer(currplayerindex);
             String playerName = currentPlayer.getName();
             Set playerLocation = currentPlayer.getLocation();
-            System.out.println("\n"+playerName+"'s turn! \n You have: ($"+currentPlayer.getMoney()+", " + currentPlayer.getCredits()+" cr)\n Your location is: " +currentPlayer.getLocName());
+            System.out.println("\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "
+                    + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
             System.out.println(" Your rank is: " + currentPlayer.getRank());
             int opt;
-            if(currentPlayer.checkInRole()){
-                actingChoices(currentPlayer,currplayerindex);
-            }else{
+            if (currentPlayer.checkInRole()) {
+                actingChoices(currentPlayer, currplayerindex);
+            } else {
                 opt = basicChoices(currentPlayer);
-                if(opt == 1){
+                if (opt == 1) {
                     currplayerindex++;
                 }
-                
-            }
-            //System.out.print("Please enter your move: ");
-            //input = scanner.next();
-            //input = input.toUpperCase();
 
-            
+            }
+            // System.out.print("Please enter your move: ");
+            // input = scanner.next();
+            // input = input.toUpperCase();
 
             // switch (input) {
-            //     case "QUIT":             
-            //         quitGame();               
-            //         break;
-            //     case "MOVE":
-            //         if(currentPlayer.checkInRole()){
-            //             System.out.println("Unable to ");
-            //         }
-            //         break;
+            // case "QUIT":
+            // quitGame();
+            // break;
+            // case "MOVE":
+            // if(currentPlayer.checkInRole()){
+            // System.out.println("Unable to ");
+            // }
+            // break;
 
-            //     case "TURN":
-            //         currplayerindex++;
-            //         break;
-            //     default:
-                
-            //         break;
+            // case "TURN":
+            // currplayerindex++;
+            // break;
+            // default:
+
+            // break;
             // }
             // currplayerindex++;
             if (currplayerindex == numPlayers) {
@@ -185,9 +185,9 @@ public class Deadwood{
         }
     }
 
-    public void quitGame(){
+    public void quitGame() {
         Scanner scanner = new Scanner(System.in);
-        while(true){
+        while (true) {
             System.out.print("Are you sure? (Y) or (N): ");
             String answer = scanner.next();
             answer = answer.toUpperCase();
@@ -200,27 +200,27 @@ public class Deadwood{
                 scanner.close();
                 System.out.println();
                 System.exit(0);
-            }else if(answer.equals("N")){
+            } else if (answer.equals("N")) {
                 break;
-            }else{
+            } else {
                 System.out.println("Please enter Y or N");
             }
         }
     }
 
-    public int basicChoices(Player p){
+    public int basicChoices(Player p) {
         Scanner scanner = new Scanner(System.in); // DO NOT CLOSE SCANNER -- WILL BREAK THINGS
-        //String playerName = p.getName();
+        // String playerName = p.getName();
         Set playerLocation = p.getLocation();
         Scene scene = playerLocation.getScene();
         LinkedList<Role> totalRoles = new LinkedList<Role>();
-        //System.out.println()
+        // System.out.println()
         String op;
-        while(true){
+        while (true) {
             System.out.println("\nPlease enter your move (Turn, Quit, Take, Move or Upgrade)");
-            op= scanner.nextLine();
-            op=op.toUpperCase();
-            switch(op){
+            op = scanner.nextLine();
+            op = op.toUpperCase();
+            switch (op) {
                 case "QUIT":
                     quitGame();
                     break;
@@ -228,13 +228,13 @@ public class Deadwood{
                     return 1;
                 case "TAKE":
                     int ret = takeRole(p);
-                    if(ret == 0){
+                    if (ret == 0) {
                         break;
-                    }else{
+                    } else {
                         return ret;
-                    }                                      
+                    }
                 case "MOVE":
-                    
+
                     break;
                 case "UPGRADE":
 
@@ -248,12 +248,11 @@ public class Deadwood{
         return 0;
     }
 
-    public void actingChoices(Player p,int pindex){
-
+    public void actingChoices(Player p, int pindex) {
 
     }
 
-    public void move(Player player, Set set, Board board) { 
+    public void move(Player player, Set set, Board board) {
 
     }
 
@@ -262,7 +261,7 @@ public class Deadwood{
         LinkedList<Role> totalRoles = new LinkedList<Role>();
         Set playerLocation = player.getLocation();
         Scene scene = playerLocation.getScene();
-        if(playerLocation.getName().equals("trailer")||playerLocation.getName().equals("office")){
+        if (playerLocation.getName().equals("trailer") || playerLocation.getName().equals("office")) {
             System.out.println("\nNo roles are offered at: " + playerLocation.getName());
             return 0;
         }
@@ -271,32 +270,32 @@ public class Deadwood{
         totalRoles.addAll(sceneRoles);
         totalRoles.addAll(setRoles);
         int size = totalRoles.size();
-        if(size==0){
+        if (size == 0) {
             System.out.println("No available roles");
             return 0;
-        }else{
+        } else {
             String choice;
-            while(true){
+            while (true) {
                 System.out.println("Pick a role: ");
-                for(int i=0;i<size;i++){
+                for (int i = 0; i < size; i++) {
                     Role currRole = totalRoles.get(i);
-                    System.out.println(i+": " + currRole.getTitle());
+                    System.out.println(i + ": " + currRole.getTitle());
                 }
-                choice=scanner.nextLine();
-                if(isNumeric(choice)){
+                choice = scanner.nextLine();
+                if (isNumeric(choice)) {
                     int pick = Integer.parseInt(choice);
-                    if(pick<0||pick>size){
+                    if (pick < 0 || pick > size) {
                         System.out.println("Please pick a valid number\n");
-                    }else{
+                    } else {
                         Role chosen = totalRoles.get(pick);
-                        System.out.println("Role: '"+ chosen.getTitle()+"' taken");
+                        System.out.println("Role: '" + chosen.getTitle() + "' taken");
                         System.out.println(" Line: " + chosen.getDescription());
                         player.setRole(chosen);
                         chosen.fillRole();
                         scanner.close();
                         return 1;
                     }
-                }else{
+                } else {
                     System.out.println("Please pick a valid number\n");
                 }
             }
@@ -336,21 +335,21 @@ public class Deadwood{
     }
 
     public void upgrade() {
-        
+
     }
 
     // public boolean isNumeric(String s) {
-    //     for (int i = 0; i < s.length(); i++) {
-    //         if (!(Character.isDigit(s.charAt(i)))) {
-    //             return false;
-    //         }
-    //     }
-    //     return true;
+    // for (int i = 0; i < s.length(); i++) {
+    // if (!(Character.isDigit(s.charAt(i)))) {
+    // return false;
+    // }
+    // }
+    // return true;
     // }
     public boolean isNumeric(String s) {
-        int i=0;
-        if(s.charAt(0)=='-'){
-            i=1;
+        int i = 0;
+        if (s.charAt(0) == '-') {
+            i = 1;
         }
         for (; i < s.length(); i++) {
             if (!(Character.isDigit(s.charAt(i)))) {
