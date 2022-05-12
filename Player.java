@@ -9,7 +9,7 @@ public class Player {
     private int money;
     private String name;
     private int id;
-    private int rehearseChips;
+    private int rehearseChips =0;
     private int status;
     private Set location;
     private Role currentRole; 
@@ -20,7 +20,6 @@ public class Player {
         this.money = 0;
         this.id = id;
         this.name = name;
-        this.rehearseChips = 0;
     }
 
 
@@ -51,12 +50,20 @@ public class Player {
         return this.credits;
     }
 
-    public void addChip(int c) {
-        this.rehearseChips += c;
+    public void addChip() {
+        this.rehearseChips ++;
     }
 
     public int getRank(){
         return this.rank;
+    }
+
+    public void setRank(int r){
+        this.rank =r;
+    }
+
+    public void increaseRank(){
+        this.rank++;
     }
 
     public void setLocation(Set loc){

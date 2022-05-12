@@ -47,6 +47,10 @@ public class Deadwood {
 
         try {
             numPlayers = Integer.parseInt(args[0]);
+            if(numPlayers<2||numPlayers>8){
+                Exception e = new Exception();
+                throw e;
+            }
 
         } catch (Exception e) {
             System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
@@ -60,10 +64,13 @@ public class Deadwood {
         numPlayers = playerCount;
         Scanner scanner = new Scanner(System.in);
         LinkedList<Scene> cards = setupProcedure(numPlayers);
-
+        int dayCount = 4;
+        if(numPlayers ==2 || numPlayers==3){
+            dayCount = 3;
+        }
         // System.out.println("Welcome to Deadwood!");
 
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= dayCount; i++) {
 
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
@@ -117,6 +124,13 @@ public class Deadwood {
 
         for (int i = 0; i < numPlayers; i++) {
             Player player = new Player(PLAYER_NAMES[i], i);
+            if(numPlayers == 5){
+                player.addCredits(2);
+            }else if(numPlayers == 6){
+                player.addCredits(4);
+            }else if(numPlayers ==7 || numPlayers ==8){
+                player.setRank(2);
+            }
             board.addPlayer(player);
         }
 
@@ -141,7 +155,7 @@ public class Deadwood {
         return dailyCards;
     }
 
-    private void dailyRoutine(Scanner scanner) {
+    private void dailyRoutine(Scanner scanner) { 
         String input;
         // boolean toggle = true;
         int currplayerindex = 0;
@@ -261,17 +275,23 @@ public class Deadwood {
         Scanner pinput = new Scanner(System.in);
         String choice;
         while (true) {
-            System.out.println("\nWhat would you like to do? (Act or Rehearse)");
+            System.out.println("\nWhat would you like to do? (Act, Rehearse, Turn or Quit)");
             choice = pinput.nextLine();
             choice = choice.toUpperCase();
-            if (choice.equals("ACT")) {
+            switch(choice){
+                case "ACT":
 
-                break;
-            } else if (choice.equals("REHEARSE")) {
+                    break;
+                case "REHEARSE":
 
-                break;
-            } else {
-                System.out.println("\nPlease make a valid choice\n");
+                    break;
+                case "QUIT":
+                    quitGame();
+                    break;
+                case "TURN":
+                    return;
+                default:
+                    System.out.println("\nPlease make a valid choice\n");
             }
         }
 
@@ -286,15 +306,18 @@ public class Deadwood {
         for (int i = 0; i < count; i++) {
             Set currSet = neighbors.get(i);
             System.out.println(" " + i + " - Location: " + currSet.getName());
-        }
+        }System.out.println(" "+count +" - GO BACK");
         while (true) {
-            System.out.print("Select a location to move to (0-" + (count - 1) + "): ");
+            //System.out.print("Select a location to move to (0-" + (count - 1) + "): ");
             String input = scanner.nextLine();
             if (isNumeric(input)) {
                 int pick = Integer.parseInt(input);
-                if (pick > count - 1 || pick < 0) {
-                    System.out.println("\nPlease enter a valid option");
-                } else {
+                if (pick > count|| pick < 0) {
+                    System.out.println("\nPlease enter a valid option (0-"+count+")");
+                }else if(pick == count){
+                    return;
+                } 
+                else {
                     player.setLocation(neighbors.get(pick));
                     // debugBoard(2);
                     return;
@@ -331,10 +354,10 @@ public class Deadwood {
                 System.out.println("\nPick a role: ");
                 for (int i = 0; i < size; i++) {
                     Role currRole = totalRoles.get(i);
-                    System.out.println(i + " - Role: " + currRole.getTitle() + " minimum rank: " + currRole.getRank()
+                    System.out.println(" "+i + " - Role: " + currRole.getTitle() + " minimum rank: " + currRole.getRank()
                             + " is an extra: " + currRole.isExtra());
                 }
-                System.out.println(size +" - GO BACK");
+                System.out.println(" "+size +" - GO BACK");
                 choice = pinput.nextLine();
                 if (isNumeric(choice)) {
                     int pick = Integer.parseInt(choice);
@@ -426,7 +449,7 @@ public class Deadwood {
                 for (int i = 0; i < board.numSets(); i++) {
                     System.out.println("Set: " + board.getSets().get(i).getName());
                 }
-            case 4:
+            case 4: // FALL THROUGH ERROR IS ON PURPOSE PLEASE DONT TOUCH
                 for (int i = 0; i < board.numSets(); i++) {
                     Set currset = board.getSets().get(i);
                     int numNbrs = currset.getNeighbors().size();
