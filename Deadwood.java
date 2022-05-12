@@ -108,7 +108,6 @@ public class Deadwood {
                 }
             }
         } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -120,7 +119,7 @@ public class Deadwood {
         board.setOffice(sets.get(sets.size() - 1));
         Collections.shuffle(cards);
 
-        // Populate players
+        // Populate players and change their attributes depending on player count
 
         for (int i = 0; i < numPlayers; i++) {
             Player player = new Player(PLAYER_NAMES[i], i);
@@ -134,7 +133,7 @@ public class Deadwood {
             board.addPlayer(player);
         }
 
-        // Populate trailer with players
+        // Populate trailer with players, initialize player role as null
         Set trailer = board.grabSet("trailer");
         for (int i = 0; i < numPlayers; i++) {
             Player currPlayer = board.getPlayer(i);
