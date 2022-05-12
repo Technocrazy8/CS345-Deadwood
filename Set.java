@@ -19,12 +19,9 @@ public class Set {
     private int shotstocompletion = -1;
     private int completedshots = 0;
     private Scene scene;
-    private String[][] upgradeList;
     private LinkedList<String[]> creditLegend;// Only initiated w/ office
     private LinkedList<String[]> moneyLegend;// Only initiated w/ office
-    // public Set(String name){
-    // this.name=name;
-    // }
+
 
     public int calculatePayout(Player player) {
         int payout = 0;
@@ -139,10 +136,6 @@ public class Set {
 
     public boolean isComplete() {
         return (this.completedshots == this.shotstocompletion);
-    }
-
-    public void setUpList(String[][] list) {
-        this.upgradeList = list;
     }
 
     public void createMoneyLegend() {
