@@ -49,9 +49,17 @@ public class Player {
         return this.credits;
     }
 
-    public void addChip() {
-        this.rehearseChips ++;
+    public int getChips(){
+        return this.rehearseChips;
     }
+
+    public void addChip() {
+        this.rehearseChips++;
+    }
+
+    public void resetChips(){
+        this.rehearseChips = 0;
+    } 
 
     public int getRank(){
         return this.rank;

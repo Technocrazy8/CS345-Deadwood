@@ -75,6 +75,10 @@ public class Deadwood {
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
             board.resetTiles();
+            for(int j=0;j<numPlayers;j++){ // assert players start in trailer at beginning of each day
+                Player temp = board.getPlayer(j);
+                temp.setLocation(board.getTrailer());
+            }
             dailyRoutine(scanner);
         }
         scanner.close();
@@ -204,8 +208,8 @@ public class Deadwood {
 
             if (currplayerindex == numPlayers) {
                 currplayerindex = 0;
-                for(int i=0;i<numPlayers;i++){
-                    Player temp = board.getPlayer(i);
+                for(int i=0;i<numPlayers;i++){ // assert players can move again after their turn has completed 
+                    Player temp = board.getPlayer(i); // doesnt matter if player is already in a role. Current set up doesnt allow them to move if they are
                     if(!temp.canMove()){
                         temp.allowMove();
                     }
@@ -282,8 +286,7 @@ public class Deadwood {
                         upgrade(p);
                         break;
                     }else{
-                        System.out.println("\nYou moved to the office to upgrade...\n");
-                        p.setLocation(board.getOffice());
+                        System.out.println("\nPlease move to the office to upgrade...\n");
                         break;
                     }
                 case "DAY": //DELETE THIS IN FINAL PRODUCT
@@ -301,8 +304,13 @@ public class Deadwood {
         System.out.println("Welcome actor!");
         Scanner pinput = new Scanner(System.in);
         String choice;
+        Scene currScene = p.getLocation().getScene();
+        Role currRole = p.getRole();
+        int budget = currScene.getBudget();
         while (true) {
             System.out.println("\nWhat would you like to do? (Act, Rehearse, Turn or Quit)");
+            System.out.println(" Your current role is: "+currRole.getTitle()+"\n Is an extra: "+ currRole.isExtra());
+            System.out.println(" You currently have: "+p.getChips()+" chip(s)");
             choice = pinput.nextLine();
             choice = choice.toUpperCase();
             switch(choice){
@@ -310,7 +318,13 @@ public class Deadwood {
 
                     break;
                 case "REHEARSE":
-
+                    if(p.getChips() == budget){
+                        System.out.println("\nYou cannot rehearse anymore. Please act\n");
+                    }else{
+                        System.out.println("\nYou chose to rehearse\n");
+                        p.addChip();
+                        return 1;
+                    }
                     break;
                 case "QUIT":
                     quitGame();
@@ -347,6 +361,7 @@ public class Deadwood {
                 else {
                     player.setLocation(neighbors.get(pick));
                     player.moved();
+                    player.resetChips();
                     // debugBoard(2);
                     return;
                 }
