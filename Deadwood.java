@@ -226,48 +226,17 @@ public class Deadwood{
                 case "TURN":
                     return 1;
                 case "TAKE":
-                    if(playerLocation.getName().equals("trailer")||playerLocation.getName().equals("office")){
-                        System.out.println("\nNo roles are offered at: " + playerLocation.getName());
-                        break;
-                    }
-                    LinkedList<Role> sceneRoles = playerLocation.getAvailableRoles();
-                    LinkedList<Role> setRoles = scene.getAvailableRoles();
-                    totalRoles.addAll(sceneRoles);
-                    totalRoles.addAll(setRoles);
-                    int size = totalRoles.size();
-                    if(size==0){
-                        System.out.println("No available roles");
+                    int ret = takeRole(p);
+                    if(ret == 0){
                         break;
                     }else{
-                        String choice;
-                        while(true){
-                            System.out.println("Pick a role: ");
-                            for(int i=0;i<size;i++){
-                                Role currRole = totalRoles.get(i);
-                                System.out.println(i+": " + currRole.getTitle());
-                            }
-                            choice=scanner.nextLine();
-                            if(isNumeric(choice)){
-                                int pick = Integer.parseInt(choice);
-                                if(pick<0||pick>size){
-                                    System.out.println("Please pick a valid number\n");
-                                }else{
-                                    Role chosen = totalRoles.get(pick);
-                                    System.out.println("Role: '"+ chosen.getTitle()+"' taken");
-                                    System.out.println(" Line: " + chosen.getDescription());
-                                    p.setRole(chosen);
-                                    chosen.fillRole();
-                                    scanner.close();
-                                    return 1;
-                                }
-                            }else{
-                                System.out.println("Please pick a valid number\n");
-                            }
-                        }
-                    }                    
+                        return ret;
+                    }                                      
                 case "MOVE":
+                    
                     break;
                 case "UPGRADE":
+                
                     break;
                 default:
                     System.out.println("Please enter a valid option\n");
@@ -283,12 +252,54 @@ public class Deadwood{
 
     }
 
-    public void move(Player player, Set set, Board board) {
+    public void move(Player player, Set set, Board board) { 
 
     }
 
-    public void takeRole(Player player, Role role, Set set, Scene scene, Board board) {
-
+    public int takeRole(Player player) { // return 1 for successful role fill, 0 for no roles offered
+        Scanner scanner = new Scanner(System.in);
+        LinkedList<Role> totalRoles = new LinkedList<Role>();
+        Set playerLocation = player.getLocation();
+        Scene scene = playerLocation.getScene();
+        if(playerLocation.getName().equals("trailer")||playerLocation.getName().equals("office")){
+            System.out.println("\nNo roles are offered at: " + playerLocation.getName());
+            return 0;
+        }
+        LinkedList<Role> sceneRoles = playerLocation.getAvailableRoles();
+        LinkedList<Role> setRoles = scene.getAvailableRoles();
+        totalRoles.addAll(sceneRoles);
+        totalRoles.addAll(setRoles);
+        int size = totalRoles.size();
+        if(size==0){
+            System.out.println("No available roles");
+            return 0;
+        }else{
+            String choice;
+            while(true){
+                System.out.println("Pick a role: ");
+                for(int i=0;i<size;i++){
+                    Role currRole = totalRoles.get(i);
+                    System.out.println(i+": " + currRole.getTitle());
+                }
+                choice=scanner.nextLine();
+                if(isNumeric(choice)){
+                    int pick = Integer.parseInt(choice);
+                    if(pick<0||pick>size){
+                        System.out.println("Please pick a valid number\n");
+                    }else{
+                        Role chosen = totalRoles.get(pick);
+                        System.out.println("Role: '"+ chosen.getTitle()+"' taken");
+                        System.out.println(" Line: " + chosen.getDescription());
+                        player.setRole(chosen);
+                        chosen.fillRole();
+                        scanner.close();
+                        return 1;
+                    }
+                }else{
+                    System.out.println("Please pick a valid number\n");
+                }
+            }
+        }
     }
 
     public void resetBoard(Board board) {
