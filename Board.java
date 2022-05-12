@@ -93,8 +93,16 @@ public class Board {
         this.trailer = t;
     }
 
+    public Set getTrailer(){
+        return this.trailer;
+    }
+
     public void setOffice(Set o) {
         this.office = o;
+    }
+
+    public Set getOffice(){
+        return this.office;
     }
 
     public int numSets() {
@@ -103,5 +111,22 @@ public class Board {
 
     public LinkedList<Set> getSets() {
         return this.sets;
+    }
+
+    public void completeAll(){ // USED FOR TESTING
+        int count =10;
+
+        for(int i=0;i<10;i++){
+            board.sets.get(i).completeSet();
+        }
+    }
+
+    public boolean dayEnd(){ //Checker for end of day
+        int count = 10;
+        for(int i=0;i<count;i++){
+            if(!board.getSets().get(i).isComplete()){
+                return false;
+            }
+        }return true;
     }
 }

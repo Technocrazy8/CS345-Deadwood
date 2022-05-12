@@ -65,7 +65,7 @@ public class Deadwood {
         Scanner scanner = new Scanner(System.in);
         LinkedList<Scene> cards = setupProcedure(numPlayers);
         int dayCount = 4;
-        if(numPlayers ==2 || numPlayers==3){
+        if(numPlayers == 2 || numPlayers==3){
             dayCount = 3;
         }
         // System.out.println("Welcome to Deadwood!");
@@ -77,8 +77,8 @@ public class Deadwood {
 
             dailyRoutine(scanner);
         }
-
         scanner.close();
+        wrapUp();
     }
 
     // Gets xml data and populates board with sets and players
@@ -178,30 +178,17 @@ public class Deadwood {
                 if (opt == 1) {
                     currplayerindex++;
                 }
-
+                if(opt ==2){
+                    board.completeAll();
+                }
             }
-            // System.out.print("Please enter your move: ");
-            // input = scanner.next();
-            // input = input.toUpperCase();
+            
 
-            // switch (input) {
-            // case "QUIT":
-            // quitGame();
-            // break;
-            // case "MOVE":
-            // if(currentPlayer.checkInRole()){
-            // System.out.println("Unable to ");
-            // }
-            // break;
+            if(board.dayEnd()){
+                break;
+            }
 
-            // case "TURN":
-            // currplayerindex++;
-            // break;
-            // default:
 
-            // break;
-            // }
-            // currplayerindex++;
             if (currplayerindex == numPlayers) {
                 currplayerindex = 0;
             }
@@ -217,8 +204,7 @@ public class Deadwood {
             if (answer.equals("Y")) {
                 System.out.println("\nGAME OVER\n");
                 for (int i = 0; i < numPlayers; i++) {
-                    System.out.println(
-                            board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
+                    System.out.println(" "+board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
                 }
                 scanner.close();
                 System.out.println();
@@ -229,6 +215,16 @@ public class Deadwood {
                 System.out.println("Please enter Y or N");
             }
         }
+    }
+
+    public void wrapUp(){
+        System.out.println("\nGAME OVER\n");
+        System.out.println("Final scores:");
+        for (int i = 0; i < numPlayers; i++) {
+            System.out.println(" "+board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
+        }
+        System.out.println();
+        System.exit(0);
     }
 
     public int basicChoices(Player p) {
@@ -259,8 +255,16 @@ public class Deadwood {
                     move(p);
                     break;
                 case "UPGRADE":
-
-                    break;
+                    if(playerLocation == board.getOffice()){
+                        upgrade(p);
+                        break;
+                    }else{
+                        System.out.println("\nYou moved to the office to upgrade...\n");
+                        p.setLocation(board.getOffice());
+                        break;
+                    }
+                case "DAY": //DELETE THIS IN FINAL PRODUCT
+                    return 2;
                 default:
                     System.out.println("Please enter a valid option\n");
                     break;
@@ -392,14 +396,6 @@ public class Deadwood {
         return null;
     }
 
-    public void move(Player player, Set set) {
-
-    }
-
-    public void takeRole(Player player, Role role) {
-
-    }
-
     public void upgrade(Player player) {
 
     }
@@ -412,13 +408,6 @@ public class Deadwood {
 
     }
 
-    public void calculateScores(Board board) {
-
-    }
-
-    public void upgrade() {
-
-    }
 
     // public boolean isNumeric(String s) {
     // for (int i = 0; i < s.length(); i++) {

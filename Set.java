@@ -154,4 +154,7 @@ public class Set {
         this.creditLegend = new LinkedList<String[]>();
     }
 
+    public void completeSet(){
+        this.completedshots = this.shotstocompletion;
+    }
 }
