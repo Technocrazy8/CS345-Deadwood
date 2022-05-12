@@ -279,15 +279,18 @@ public class Deadwood {
                 System.out.println("Pick a role: ");
                 for (int i = 0; i < size; i++) {
                     Role currRole = totalRoles.get(i);
-                    System.out.println(i + ": " + currRole.getTitle());
+                    System.out.println(i + "- Role: " + currRole.getTitle() + " minimum rank: " + currRole.getRank()
+                            + " is an extra: " + currRole.isExtra());
                 }
                 choice = scanner.nextLine();
                 if (isNumeric(choice)) {
                     int pick = Integer.parseInt(choice);
+                    Role chosen = totalRoles.get(pick);
                     if (pick < 0 || pick > size) {
                         System.out.println("Please pick a valid number\n");
+                    } else if (player.getRank() < chosen.getRank()) {
+                        System.out.println("Not high enough rank, please choose a valid role\n");
                     } else {
-                        Role chosen = totalRoles.get(pick);
                         System.out.println("Role: '" + chosen.getTitle() + "' taken");
                         System.out.println(" Line: " + chosen.getDescription());
                         player.setRole(chosen);
