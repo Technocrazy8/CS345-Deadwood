@@ -8,6 +8,7 @@ public class Player {
     private int credits;
     private int money;
     private String name;
+    private boolean hasMoved = false;
     private int id;
     private int rehearseChips =0;
     private int status;
@@ -66,6 +67,18 @@ public class Player {
 
     public void setLocation(Set loc){
         this.location=loc;
+    }
+
+    public void moved(){
+        this.hasMoved = true;
+    }
+
+    public void allowMove(){
+        this.hasMoved = false;
+    }
+
+    public boolean canMove(){
+        return !this.hasMoved;
     }
 
     public Set getLocation(){

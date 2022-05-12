@@ -205,6 +205,12 @@ public class Deadwood {
 
             if (currplayerindex == numPlayers) {
                 currplayerindex = 0;
+                for(int i=0;i<numPlayers;i++){
+                    Player temp = board.getPlayer(i);
+                    if(!temp.canMove()){
+                        temp.allowMove();
+                    }
+                }
             }
         }
     }
@@ -249,7 +255,7 @@ public class Deadwood {
         // System.out.println()
         String op;
         while (true) {
-            System.out.println("\nPlease enter your move (Turn, Quit, Take, Move or Upgrade)");
+            System.out.println("\nPlease enter your move (Turn, Quit, Work, Move or Upgrade)");
             op = scanner.nextLine();
             op = op.toUpperCase();
             switch (op) {
@@ -258,7 +264,7 @@ public class Deadwood {
                     break;
                 case "TURN":
                     return 1;
-                case "TAKE":
+                case "WORK":
                     int ret = takeRole(p);
                     if (ret == 0) {
                         break;
@@ -266,7 +272,11 @@ public class Deadwood {
                         return ret;
                     }
                 case "MOVE":
-                    move(p);
+                    if(p.canMove()){
+                        move(p);
+                    }else{
+                        System.out.println("\nYou have already moved this turn\n");
+                    }
                     break;
                 case "UPGRADE":
                     if(playerLocation == board.getOffice()){
@@ -337,6 +347,7 @@ public class Deadwood {
                 } 
                 else {
                     player.setLocation(neighbors.get(pick));
+                    player.moved();
                     // debugBoard(2);
                     return;
                 }
