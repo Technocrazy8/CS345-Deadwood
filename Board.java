@@ -114,7 +114,7 @@ public class Board {
     }
 
     public void completeAll(){ // USED FOR TESTING
-        for(int i=0;i<10;i++){
+        for(int i=0;i<9;i++){
             board.sets.get(i).completeSet();
             //board.sets.get(i).
             
