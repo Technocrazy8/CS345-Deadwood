@@ -138,9 +138,14 @@ public class Board {
 
     public boolean dayEnd(){ //Checker for end of day
         int count = 10;
+        boolean end = true;
+        int notComplete = 0;
         for(int i=0;i<count;i++){
             if(!board.getSets().get(i).isComplete()){
-                return false;
+                notComplete++;
+                if(notComplete>1){
+                    return false;
+                }
             }
         }return true;
     }
