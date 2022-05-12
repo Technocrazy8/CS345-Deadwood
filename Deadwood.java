@@ -150,7 +150,7 @@ public class Deadwood {
             int opt;
             // debugBoard(3);
             if (currentPlayer.checkInRole()) {
-                actingChoices(currentPlayer, currplayerindex);
+                actingChoices(currentPlayer);
             } else {
                 opt = basicChoices(currentPlayer);
                 if (opt == 1) {
@@ -249,7 +249,24 @@ public class Deadwood {
         return 0;
     }
 
-    public void actingChoices(Player p, int pindex) {
+    public void actingChoices(Player p) {
+        System.out.println("Welcome actor!");
+        Scanner pinput = new Scanner(System.in);
+        String choice;
+        while (true) {
+            System.out.println("\nWhat would you like to do? (Act or Rehearse)");
+            choice = pinput.nextLine();
+            choice = choice.toUpperCase();
+            if (choice.equals("ACT")) {
+
+                break;
+            } else if (choice.equals("REHEARSE")) {
+
+                break;
+            } else {
+                System.out.println("\nPlease make a valid choice\n");
+            }
+        }
 
     }
 
@@ -298,7 +315,7 @@ public class Deadwood {
         totalRoles.addAll(sceneRoles);
         totalRoles.addAll(setRoles);
         int size = totalRoles.size();
-        if (size == 0) {
+        if (size == 0 || playerLocation.isComplete()) {
             System.out.println("No available roles");
             return 0;
         } else {

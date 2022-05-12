@@ -120,6 +120,10 @@ public class Set {
         this.completedshots = 0;
     }
 
+    public boolean isComplete() {
+        return (this.completedshots == this.shotstocompletion);
+    }
+
     public void setUpList(String[][] list) {
         this.upgradeList = list;
     }
@@ -142,5 +146,4 @@ public class Set {
         this.creditLegend = new LinkedList<String[]>();
     }
 
-    
 }
