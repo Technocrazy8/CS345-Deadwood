@@ -114,11 +114,26 @@ public class Board {
     }
 
     public void completeAll(){ // USED FOR TESTING
-        int count =10;
-
         for(int i=0;i<10;i++){
             board.sets.get(i).completeSet();
+            //board.sets.get(i).
+            
         }
+        for(int i=0;i<playerCount();i++){
+            Player currPlayer =board.players.get(i);
+            if(currPlayer.getRole()!= null){
+                currPlayer.setRole(null);
+            }
+        }
+    }
+
+    public void resetTiles(){
+        for(int i=0;i<10;i++){
+            Set currSet = board.sets.get(i);
+            currSet.resetRoles();
+            currSet.resetShots();
+        }
+
     }
 
     public boolean dayEnd(){ //Checker for end of day

@@ -87,6 +87,15 @@ public class Set {
         return this.roles;
     }
 
+    public void resetRoles(){
+        int count =getRoleCount();
+        
+        for(int i=0;i<count;i++){
+            Role currRole = getRoles().get(i);
+            currRole.vacateRole();
+        }
+    }
+
     public int getRoleCount() {
         return this.roles.size();
     }

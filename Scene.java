@@ -43,6 +43,10 @@ public class Scene {
         return parts;
     }
 
+    public int getRoleCOunt(){
+        return this.parts.size();
+    }
+
     public LinkedList<Player> getActors() {
         return actors;
     }
@@ -59,5 +63,14 @@ public class Scene {
             }
         }
         return available;
+    }
+
+    public void resetRoles(){
+        int count = this.parts.size();//getRoleCount();
+        
+        for(int i=0;i<count;i++){
+            Role currRole = parts.get(i);
+            currRole.vacateRole();
+        }
     }
 }

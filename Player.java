@@ -22,8 +22,6 @@ public class Player {
         this.name = name;
     }
 
-
-
     public int calculateScore() {
         int score = 0;
         score = this.money + this.credits + (this.rank * 5);

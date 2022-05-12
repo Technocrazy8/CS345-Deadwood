@@ -29,8 +29,8 @@ import java.io.File;
 
 public class Deadwood {
 
-    private static final String[] PLAYER_NAMES = { "blue", "cyan", "green", "orange", "pink", "red", "violet",
-            "yellow" };
+    private static final String[] PLAYER_NAMES = { "Blue", "Cyan", "Green", "Orange", "Pink", "Red", "Violet",
+            "Yellow" };
     private static Board board;
     private static int numPlayers;
 
@@ -74,7 +74,7 @@ public class Deadwood {
 
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
-
+            board.resetTiles();
             dailyRoutine(scanner);
         }
         scanner.close();
@@ -171,9 +171,23 @@ public class Deadwood {
             System.out.println(" Your rank is: " + currentPlayer.getRank());
             int opt;
             // debugBoard(3);
-            if (currentPlayer.checkInRole()) {
-                actingChoices(currentPlayer);
-            } else {
+            if(playerLocation.isComplete() && currentPlayer.checkInRole()){
+                System.out.println("Congrats! Your scene was completed!");
+                currentPlayer.setRole(null);
+
+            }
+
+            if(playerLocation.isComplete()){
+                System.out.println("\nThis scene has already been completed");
+            }
+
+            if (currentPlayer.checkInRole()&&!playerLocation.isComplete()) {
+                opt = actingChoices(currentPlayer);
+                if (opt == 1) {
+                    currplayerindex++;
+                }
+            } 
+            else {
                 opt = basicChoices(currentPlayer);
                 if (opt == 1) {
                     currplayerindex++;
@@ -274,7 +288,7 @@ public class Deadwood {
         return 0;
     }
 
-    public void actingChoices(Player p) {
+    public int actingChoices(Player p) {
         System.out.println("Welcome actor!");
         Scanner pinput = new Scanner(System.in);
         String choice;
@@ -293,7 +307,7 @@ public class Deadwood {
                     quitGame();
                     break;
                 case "TURN":
-                    return;
+                    return 1;
                 default:
                     System.out.println("\nPlease make a valid choice\n");
             }
@@ -358,8 +372,8 @@ public class Deadwood {
                 System.out.println("\nPick a role: ");
                 for (int i = 0; i < size; i++) {
                     Role currRole = totalRoles.get(i);
-                    System.out.println(" "+i + " - Role: " + currRole.getTitle() + " minimum rank: " + currRole.getRank()
-                            + " is an extra: " + currRole.isExtra());
+                    System.out.println(" "+i + " - Role: " + currRole.getTitle() + " Minimum rank: " + currRole.getRank()
+                            + " Is an extra: " + currRole.isExtra());
                 }
                 System.out.println(" "+size +" - GO BACK");
                 choice = pinput.nextLine();
