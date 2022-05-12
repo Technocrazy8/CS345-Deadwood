@@ -305,7 +305,7 @@ public class Deadwood {
         }
     }
 
-    public int takeRole(Player player) { // return 1 for successful role fill, 0 for no roles offered
+    public int takeRole(Player player) { // return 1 for successful role fill, 0 for no roles offered or back
         Scanner pinput = new Scanner(System.in);
         LinkedList<Role> totalRoles = new LinkedList<Role>();
         Set playerLocation = player.getLocation();
@@ -328,19 +328,22 @@ public class Deadwood {
         } else {
             String choice;
             while (true) {
-                System.out.println("Pick a role: ");
+                System.out.println("\nPick a role: ");
                 for (int i = 0; i < size; i++) {
                     Role currRole = totalRoles.get(i);
                     System.out.println(i + " - Role: " + currRole.getTitle() + " minimum rank: " + currRole.getRank()
                             + " is an extra: " + currRole.isExtra());
                 }
+                System.out.println(size +" - GO BACK");
                 choice = pinput.nextLine();
                 if (isNumeric(choice)) {
                     int pick = Integer.parseInt(choice);
                     // Role chosen = totalRoles.get(pick);
-                    if (pick < 0 || pick > size - 1) {
+                    if (pick < 0 || pick > size) {
                         System.out.println("Please pick a valid number\n");
-                    } else if (player.getRank() < totalRoles.get(pick).getRank()) {
+                    } else if(pick == size){
+                        return 0;
+                    }else if (player.getRank() < totalRoles.get(pick).getRank()) {
                         System.out.println("Not high enough rank, please choose a valid role\n");
                     } else {
                         Role chosen = totalRoles.get(pick);
@@ -416,6 +419,7 @@ public class Deadwood {
     }
 
     public void debugBoard(int opt) {
+        //Board board = Board.getBoard();
 
         switch (opt) {
             case 5:

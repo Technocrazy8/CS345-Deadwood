@@ -53,6 +53,14 @@ public class Set {
         }
     }
 
+    public int getShotCapacity(){
+        return this.shotstocompletion;
+    }
+
+    public int shotsRemaining(){
+        return (this.shotstocompletion - this.completedshots);
+    }
+
     public void addPlayer(Player p) {
         if (this.extras == null) {
             this.extras = new LinkedList<Player>();
