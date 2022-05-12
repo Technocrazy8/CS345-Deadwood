@@ -50,4 +50,14 @@ public class Scene {
     public int getActorCapacity() {
         return actorcapacity;
     }
+
+    public LinkedList<Role> getAvailableRoles(){
+        LinkedList<Role> available = new LinkedList<Role>();
+        for(int i=0;i<this.parts.size();i++){
+            if(this.parts.get(i).isAvailable()){
+                available.add(this.parts.get(i));
+            }
+        }
+        return available;
+    }
 }

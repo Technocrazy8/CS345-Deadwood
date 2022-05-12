@@ -31,21 +31,6 @@ public class Deadwood{
         System.out.println("Welcome to Deadwood!\n");
         int numPlayers = 0;
 
-        /*
-        Scanner scanner = new Scanner(System.in);
-        while(true){
-            System.out.print("Enter number of players: ");
-            String input = scanner.nextLine();
-
-            if(isNumeric(input)){
-                numPlayers=Integer.parseInt(input);
-                break;
-            }else{
-                System.out.println("\nPlease enter a valid number of players (2-8)\n");
-            }
-        }
-        scanner.close();
-        */
         if (args.length != 1) {
             System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
             return;
@@ -160,27 +145,39 @@ public class Deadwood{
             Set playerLocation = currentPlayer.getLocation();
             System.out.println("\n"+playerName+"'s turn! \n You have: ($"+currentPlayer.getMoney()+", " + currentPlayer.getCredits()+" cr)\n Your location is: " +currentPlayer.getLocName());
             System.out.println(" Your rank is: " + currentPlayer.getRank());
-            System.out.print("Please enter your move: ");
-            input = scanner.next();
-            input = input.toUpperCase();
-
-            switch (input) {
-                case "QUIT":             
-                    quitGame();               
-                    break;
-                case "MOVE":
-                    if(currentPlayer.checkInRole()){
-                        System.out.println("Unable to ");
-                    }
-                    break;
-
-                case "TURN":
+            int opt;
+            if(currentPlayer.checkInRole()){
+                actingChoices(currentPlayer,currplayerindex);
+            }else{
+                opt = basicChoices(currentPlayer);
+                if(opt == 1){
                     currplayerindex++;
-                    break;
-                default:
+                }
                 
-                    break;
             }
+            //System.out.print("Please enter your move: ");
+            //input = scanner.next();
+            //input = input.toUpperCase();
+
+            
+
+            // switch (input) {
+            //     case "QUIT":             
+            //         quitGame();               
+            //         break;
+            //     case "MOVE":
+            //         if(currentPlayer.checkInRole()){
+            //             System.out.println("Unable to ");
+            //         }
+            //         break;
+
+            //     case "TURN":
+            //         currplayerindex++;
+            //         break;
+            //     default:
+                
+            //         break;
+            // }
             // currplayerindex++;
             if (currplayerindex == numPlayers) {
                 currplayerindex = 0;
@@ -208,6 +205,82 @@ public class Deadwood{
                 System.out.println("Please enter Y or N");
             }
         }
+    }
+
+    public int basicChoices(Player p){
+        Scanner scanner = new Scanner(System.in); // DO NOT CLOSE SCANNER -- WILL BREAK THINGS
+        //String playerName = p.getName();
+        Set playerLocation = p.getLocation();
+        Scene scene = playerLocation.getScene();
+        LinkedList<Role> totalRoles = new LinkedList<Role>();
+        //System.out.println()
+        String op;
+        while(true){
+            System.out.println("\nPlease enter your move (Turn, Quit, Take, Move or Upgrade)");
+            op= scanner.nextLine();
+            op=op.toUpperCase();
+            switch(op){
+                case "QUIT":
+                    quitGame();
+                    break;
+                case "TURN":
+                    return 1;
+                case "TAKE":
+                    if(playerLocation.getName().equals("trailer")||playerLocation.getName().equals("office")){
+                        System.out.println("\nNo roles are offered at: " + playerLocation.getName());
+                        break;
+                    }
+                    LinkedList<Role> sceneRoles = playerLocation.getAvailableRoles();
+                    LinkedList<Role> setRoles = scene.getAvailableRoles();
+                    totalRoles.addAll(sceneRoles);
+                    totalRoles.addAll(setRoles);
+                    int size = totalRoles.size();
+                    if(size==0){
+                        System.out.println("No available roles");
+                        break;
+                    }else{
+                        String choice;
+                        while(true){
+                            System.out.println("Pick a role: ");
+                            for(int i=0;i<size;i++){
+                                Role currRole = totalRoles.get(i);
+                                System.out.println(i+": " + currRole.getTitle());
+                            }
+                            choice=scanner.nextLine();
+                            if(isNumeric(choice)){
+                                int pick = Integer.parseInt(choice);
+                                if(pick<0||pick>size){
+                                    System.out.println("Please pick a valid number\n");
+                                }else{
+                                    Role chosen = totalRoles.get(pick);
+                                    System.out.println("Role: '"+ chosen.getTitle()+"' taken");
+                                    System.out.println(" Line: " + chosen.getDescription());
+                                    p.setRole(chosen);
+                                    chosen.fillRole();
+                                    scanner.close();
+                                    return 1;
+                                }
+                            }else{
+                                System.out.println("Please pick a valid number\n");
+                            }
+                        }
+                    }                    
+                case "MOVE":
+                    break;
+                case "UPGRADE":
+                    break;
+                default:
+                    System.out.println("Please enter a valid option\n");
+                    break;
+            }
+            break;
+        }
+        return 0;
+    }
+
+    public void actingChoices(Player p,int pindex){
+
+
     }
 
     public void move(Player player, Set set, Board board) {
@@ -262,8 +335,12 @@ public class Deadwood{
     //     }
     //     return true;
     // }
-    public static boolean isNumeric(String s) {
-        for (int i = 0; i < s.length(); i++) {
+    public boolean isNumeric(String s) {
+        int i=0;
+        if(s.charAt(0)=='-'){
+            i=1;
+        }
+        for (; i < s.length(); i++) {
             if (!(Character.isDigit(s.charAt(i)))) {
                 return false;
             }

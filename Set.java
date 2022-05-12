@@ -82,6 +82,18 @@ public class Set {
         return this.roles.size();
     }
 
+    public LinkedList<Role> getAvailableRoles(){
+        LinkedList<Role> available = new LinkedList<Role>();
+        for(int i=0;i<this.roles.size();i++){
+            if(this.roles.get(i).isAvailable()){
+                available.add(this.roles.get(i));
+            }
+        }
+        return available;
+    }
+
+
+
     public void setScene(Scene scene){
         this.scene=scene;
     }

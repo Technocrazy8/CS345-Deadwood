@@ -5,6 +5,7 @@
 public class Role{
     private String title;
     private String description;
+    private boolean taken = false;
     private int minRank;
     private int rehearseBonus = -1; // may be trivial
     private int actor =-1; // player id
@@ -39,5 +40,17 @@ public class Role{
     }
     public void setActorID(int i){
         this.actor = i;
+    }
+
+    public boolean isAvailable(){
+        return this.taken;
+    }
+
+    public void fillRole(){
+        this.taken = true;
+    }
+
+    public void vacateRole(){
+        this.taken = false;
     }
 }
