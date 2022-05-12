@@ -145,6 +145,8 @@ public class ParseXML {
       office.setShotCapacity(-1);
       office.setActCapacity(8);
       office.noRoles();
+      office.createCreditLegend();
+      office.createMoneyLegend();
 
       for (int i = 0; i < forOffice.getLength(); i++) {
          NodeList children = forOffice.item(i).getChildNodes();
@@ -171,7 +173,13 @@ public class ParseXML {
                for (int k = 0; k < upcount; k++) {
                   Node upgraNode = upgradeChildren.item(k);
                   if (upgraNode.getNodeName().equals("upgrade")) {
-
+                     NamedNodeMap atts = upgraNode.getAttributes();
+                     String type = atts.getNamedItem("currency").getTextContent();
+                     String amount = atts.getNamedItem("amt").getTextContent();
+                     String level = atts.getNamedItem("level").getTextContent();
+                     // System.out.println(type + " " + amount + " " + level);
+                     String[] tuple = { type, level, amount };
+                     office.addToLegend(tuple);
                   }
                }
             }

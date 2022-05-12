@@ -17,12 +17,13 @@ public class Set {
     private LinkedList<Role> roles;
     private LinkedList<Set> neighbors;
     private int shotstocompletion = -1;
-    private int completedshots =0;
+    private int completedshots = 0;
     private Scene scene;
     private String[][] upgradeList;
-
+    private LinkedList<String[]> creditLegend;// Only initiated w/ office
+    private LinkedList<String[]> moneyLegend;// Only initiated w/ office
     // public Set(String name){
-    //     this.name=name;
+    // this.name=name;
     // }
 
     public int calculatePayout(Player player) {
@@ -30,97 +31,114 @@ public class Set {
         return payout;
     }
 
-    public void setName(String name){
-        this.name=name;
+    public void setName(String name) {
+        this.name = name;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
 
-    public void setActCapacity(int n){
+    public void setActCapacity(int n) {
         this.actorcapacity = n;
     }
 
-    public int getActCapacity(){
+    public int getActCapacity() {
         return this.actorcapacity;
     }
 
-    public void setShotCapacity(int n){
-        if(n>this.shotstocompletion){
+    public void setShotCapacity(int n) {
+        if (n > this.shotstocompletion) {
             this.shotstocompletion = n;
         }
     }
 
-    public void addPlayer(Player p){
-        if(this.extras == null){
+    public void addPlayer(Player p) {
+        if (this.extras == null) {
             this.extras = new LinkedList<Player>();
         }
-        if(this.actorcapacity == this.extras.size()){
+        if (this.actorcapacity == this.extras.size()) {
             System.out.println("Actor capacity aready reached");
             return;
         }
         this.extras.add(p);
     }
 
-    public void addRole(Role r){
-        if(this.roles == null){
+    public void addRole(Role r) {
+        if (this.roles == null) {
             this.roles = new LinkedList<Role>();
         }
         this.roles.add(r);
     }
 
-    public void noRoles(){
+    public void noRoles() {
         this.roles = new LinkedList<Role>();
     }
 
-    public LinkedList<Role> getRoles(){
+    public LinkedList<Role> getRoles() {
         return this.roles;
     }
 
-    public int getRoleCount(){
+    public int getRoleCount() {
         return this.roles.size();
     }
 
-    public LinkedList<Role> getAvailableRoles(){
+    public LinkedList<Role> getAvailableRoles() {
         LinkedList<Role> available = new LinkedList<Role>();
-        for(int i=0;i<this.roles.size();i++){
-            if(this.roles.get(i).isAvailable()){
+        for (int i = 0; i < this.roles.size(); i++) {
+            if (this.roles.get(i).isAvailable()) {
                 available.add(this.roles.get(i));
             }
         }
         return available;
     }
 
-
-
-    public void setScene(Scene scene){
-        this.scene=scene;
+    public void setScene(Scene scene) {
+        this.scene = scene;
     }
 
-    public Scene getScene(){
+    public Scene getScene() {
         return this.scene;
     }
 
-    public void addNeighbor(Set set){
-        if (this.neighbors==null){
+    public void addNeighbor(Set set) {
+        if (this.neighbors == null) {
             this.neighbors = new LinkedList<Set>();
         }
         this.neighbors.add(set);
     }
 
-    public LinkedList<Set> getNeighbors(){
+    public LinkedList<Set> getNeighbors() {
         return this.neighbors;
     }
 
-    public void completeShot(){
+    public void completeShot() {
         this.completedshots++;
     }
-    public void resetShots(){
-        this.completedshots =0;
+
+    public void resetShots() {
+        this.completedshots = 0;
     }
 
-    public void setUpList(String[][] list){
+    public void setUpList(String[][] list) {
         this.upgradeList = list;
+    }
+
+    public void createMoneyLegend() {
+        this.moneyLegend = new LinkedList<String[]>();
+    }
+
+    public void addToLegend(String[] tuple) {
+        if (tuple[0].equals("credit")) {
+            System.out.println("cred");
+            this.creditLegend.add(tuple);
+        } else {
+            System.out.println("$");
+            this.moneyLegend.add(tuple);
+        }
+    }
+
+    public void createCreditLegend() {
+        this.creditLegend = new LinkedList<String[]>();
     }
 }

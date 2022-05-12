@@ -306,7 +306,7 @@ public class Deadwood {
     }
 
     public void resetBoard(Board board) {
-
+        
     }
 
     public Scene[] shuffleScenes(Scene[] scenes) {
