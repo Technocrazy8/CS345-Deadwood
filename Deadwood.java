@@ -148,6 +148,7 @@ public class Deadwood {
                     + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
             System.out.println(" Your rank is: " + currentPlayer.getRank());
             int opt;
+            // debugBoard(3);
             if (currentPlayer.checkInRole()) {
                 actingChoices(currentPlayer, currplayerindex);
             } else {
@@ -234,7 +235,7 @@ public class Deadwood {
                         return ret;
                     }
                 case "MOVE":
-
+                    move(p);
                     break;
                 case "UPGRADE":
 
@@ -252,21 +253,48 @@ public class Deadwood {
 
     }
 
-    public void move(Player player, Set set, Board board) {
-
+    public void move(Player player) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nWhere would you like to move to?");
+        Set location = player.getLocation();
+        LinkedList<Set> neighbors = location.getNeighbors();
+        int count = location.getNeighbors().size();
+        for (int i = 0; i < count; i++) {
+            Set currSet = neighbors.get(i);
+            System.out.println(" " + i + " - Location: " + currSet.getName());
+        }
+        while (true) {
+            System.out.print("Select a location to move to (0-" + (count - 1) + "): ");
+            String input = scanner.nextLine();
+            if (isNumeric(input)) {
+                int pick = Integer.parseInt(input);
+                if (pick > count - 1 || pick < 0) {
+                    System.out.println("\nPlease enter a valid option");
+                } else {
+                    player.setLocation(neighbors.get(pick));
+                    // debugBoard(2);
+                    return;
+                }
+            } else {
+                System.out.println("\nPlease enter a valid option");
+            }
+        }
     }
 
     public int takeRole(Player player) { // return 1 for successful role fill, 0 for no roles offered
-        Scanner scanner = new Scanner(System.in);
+        Scanner pinput = new Scanner(System.in);
         LinkedList<Role> totalRoles = new LinkedList<Role>();
         Set playerLocation = player.getLocation();
         Scene scene = playerLocation.getScene();
+        // debugBoard(3);
         if (playerLocation.getName().equals("trailer") || playerLocation.getName().equals("office")) {
             System.out.println("\nNo roles are offered at: " + playerLocation.getName());
             return 0;
         }
         LinkedList<Role> sceneRoles = playerLocation.getAvailableRoles();
+        // System.out.println("num scene roles: " + sceneRoles.size());
         LinkedList<Role> setRoles = scene.getAvailableRoles();
+        // System.out.println("num set roles: " + setRoles.size());
         totalRoles.addAll(sceneRoles);
         totalRoles.addAll(setRoles);
         int size = totalRoles.size();
@@ -279,23 +307,24 @@ public class Deadwood {
                 System.out.println("Pick a role: ");
                 for (int i = 0; i < size; i++) {
                     Role currRole = totalRoles.get(i);
-                    System.out.println(i + "- Role: " + currRole.getTitle() + " minimum rank: " + currRole.getRank()
+                    System.out.println(i + " - Role: " + currRole.getTitle() + " minimum rank: " + currRole.getRank()
                             + " is an extra: " + currRole.isExtra());
                 }
-                choice = scanner.nextLine();
+                choice = pinput.nextLine();
                 if (isNumeric(choice)) {
                     int pick = Integer.parseInt(choice);
-                    Role chosen = totalRoles.get(pick);
-                    if (pick < 0 || pick > size) {
+                    // Role chosen = totalRoles.get(pick);
+                    if (pick < 0 || pick > size - 1) {
                         System.out.println("Please pick a valid number\n");
-                    } else if (player.getRank() < chosen.getRank()) {
+                    } else if (player.getRank() < totalRoles.get(pick).getRank()) {
                         System.out.println("Not high enough rank, please choose a valid role\n");
                     } else {
+                        Role chosen = totalRoles.get(pick);
                         System.out.println("Role: '" + chosen.getTitle() + "' taken");
                         System.out.println(" Line: " + chosen.getDescription());
                         player.setRole(chosen);
                         chosen.fillRole();
-                        scanner.close();
+                        // scanner.close();
                         return 1;
                     }
                 } else {
@@ -306,7 +335,7 @@ public class Deadwood {
     }
 
     public void resetBoard(Board board) {
-        
+
     }
 
     public Scene[] shuffleScenes(Scene[] scenes) {
@@ -360,6 +389,68 @@ public class Deadwood {
             }
         }
         return true;
+    }
+
+    public void debugBoard(int opt) {
+
+        switch (opt) {
+            case 5:
+                for (int i = 0; i < board.numSets(); i++) {
+                    System.out.println("Set: " + board.getSets().get(i).getName());
+                }
+            case 4:
+                for (int i = 0; i < board.numSets(); i++) {
+                    Set currset = board.getSets().get(i);
+                    int numNbrs = currset.getNeighbors().size();
+                    System.out.println(" Neighbors:");
+                    for (int j = 0; j < numNbrs; j++) {
+                        Set nbr = currset.getNeighbors().get(j);
+                        System.out.println(" -" + nbr.getName());
+                    }
+                }
+                break;
+            case 3:
+                for (int i = 0; i < board.numSets(); i++) {
+                    Set currset = board.getSets().get(i);
+                    System.out.println("Set: " + currset.getName());
+                    int numNbrs = currset.getNeighbors().size();
+                    int nroles = currset.getRoleCount();
+                    LinkedList<Role> roles = currset.getRoles();
+                    System.out.println(" Roles:");
+                    for (int j = 0; j < nroles; j++) {
+                        System.out.println(" -" + roles.get(j).getTitle());
+                    }
+                    System.out.println(" Neighbors:");
+                    for (int j = 0; j < numNbrs; j++) {
+                        Set nbr = currset.getNeighbors().get(j);
+                        System.out.println(" -" + nbr.getName());
+                    }
+                }
+                break;
+            case 2:
+                for (int i = 0; i < board.numSets(); i++) {
+                    Set currset = board.getSets().get(i);
+                    System.out.println("Set: " + currset.getName());
+                    int numNbrs = currset.getNeighbors().size();
+                    int nroles = currset.getRoleCount();
+                    // LinkedList<Role> roles = currset.getRoles();
+                    // System.out.println(" Roles:");
+                    // for (int j = 0; j < nroles; j++) {
+                    // System.out.println(" -" + roles.get(j).getTitle());
+                    // }
+                    System.out.println(" Neighbors:");
+                    for (int j = 0; j < numNbrs; j++) {
+                        Set nbr = currset.getNeighbors().get(j);
+                        System.out.println(" -" + nbr.getName());
+                        LinkedList<Role> roles = currset.getRoles();
+                        System.out.println("  nRoles:");
+                        for (int p = 0; p < nroles; p++) {
+                            System.out.println("  -" + roles.get(p).getTitle());
+                        }
+                    }
+                }
+                break;
+        }
     }
 }
 /**

@@ -167,7 +167,6 @@ public class ParseXML {
                   }
                }
             } else if ("upgrades".equals(sub.getNodeName())) {
-               System.out.println("upgrades");
                NodeList upgradeChildren = sub.getChildNodes();
                int upcount = upgradeChildren.getLength();
                for (int k = 0; k < upcount; k++) {
@@ -232,8 +231,8 @@ public class ParseXML {
       // FOR PRINTING AND ERROR CHECKING
       for (int i = 0; i < boardSets.size(); i++) {
          Set set = boardSets.get(i);
-         // System.out.println("Set name: " + set.getName()+ "\nRole count: " +
-         // set.getRoleCount()+ "\nSet actor cap: "+ set.getActCapacity());
+         // System.out.println("Set name: " + set.getName() + "\nRole count: " +
+         // set.getRoleCount() + "\nSet actor cap: " + set.getActCapacity());
          // System.out.println("Roles: ");
          for (int j = 0; j < set.getRoleCount(); j++) {
             Role curr = set.getRoles().get(j);

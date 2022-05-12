@@ -44,7 +44,7 @@ public class Role {
     }
 
     public boolean isAvailable() {
-        return this.taken;
+        return !this.taken;
     }
 
     public void fillRole() {
@@ -55,11 +55,11 @@ public class Role {
         this.taken = false;
     }
 
-    public void toggleExtra(){
+    public void toggleExtra() {
         this.isExtra = true;
     }
 
-    public boolean isExtra(){
+    public boolean isExtra() {
         return this.isExtra;
     }
 }

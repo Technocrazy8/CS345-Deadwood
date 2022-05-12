@@ -96,4 +96,12 @@ public class Board {
     public void setOffice(Set o) {
         this.office = o;
     }
+
+    public int numSets() {
+        return this.sets.size();
+    }
+
+    public LinkedList<Set> getSets() {
+        return this.sets;
+    }
 }
