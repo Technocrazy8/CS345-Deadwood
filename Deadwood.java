@@ -198,6 +198,7 @@ public class Deadwood{
                             board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
                 }
                 scanner.close();
+                System.out.println();
                 System.exit(0);
             }else if(answer.equals("N")){
                 break;
@@ -236,7 +237,7 @@ public class Deadwood{
                     
                     break;
                 case "UPGRADE":
-                
+
                     break;
                 default:
                     System.out.println("Please enter a valid option\n");
