@@ -91,7 +91,7 @@ public class Board {
         this.trailer = t;
     }
 
-    public Set getTrailer(){
+    public Set getTrailer() {
         return this.trailer;
     }
 
@@ -99,7 +99,7 @@ public class Board {
         this.office = o;
     }
 
-    public Set getOffice(){
+    public Set getOffice() {
         return this.office;
     }
 
@@ -111,36 +111,38 @@ public class Board {
         return this.sets;
     }
 
-    public void completeAll(){ // USED FOR TESTING
-        for(int i=0;i<9;i++){
-            board.sets.get(i).completeSet();            
+    public void completeAll() { // USED FOR TESTING
+        for (int i = 0; i < 9; i++) {
+            board.sets.get(i).completeSet();
         }
-        for(int i=0;i<playerCount();i++){
-            Player currPlayer =board.players.get(i);
-            if(currPlayer.getRole()!= null){
+        for (int i = 0; i < playerCount(); i++) {
+            Player currPlayer = board.players.get(i);
+            if (currPlayer.getRole() != null) {
                 currPlayer.setRole(null);
             }
         }
     }
 
-    public void resetTiles(){
-        for(int i=0;i<10;i++){
+    public void resetTiles() {
+        for (int i = 0; i < 10; i++) {
             Set currSet = board.sets.get(i);
             currSet.resetRoles();
             currSet.resetShots();
+            currSet.imcomplete();
         }
     }
 
-    public boolean dayEnd(){ //Checker for end of day
+    public boolean dayEnd() { // Checker for end of day
         int count = 10;
         int notComplete = 0;
-        for(int i=0;i<count;i++){
-            if(!board.getSets().get(i).isComplete()){
+        for (int i = 0; i < count; i++) {
+            if (!board.getSets().get(i).isComplete()) {
                 notComplete++;
-                if(notComplete>1){
+                if (notComplete > 1) {
                     return false;
                 }
             }
-        }return true;
+        }
+        return true;
     }
 }

@@ -75,6 +75,7 @@ public class Deadwood {
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
             board.resetTiles();
+            
             for (int j = 0; j < numPlayers; j++) { // assert players start in trailer at beginning of each day
                 Player temp = board.getPlayer(j);
                 temp.setLocation(board.getTrailer()); // change back to trailer after testing upgrade
@@ -178,8 +179,7 @@ public class Deadwood {
             System.out.println(" Your rank is: " + currentPlayer.getRank());
             int opt;
             // debugBoard(3);
-            if ((shotsRemaining == 0 && currentPlayer.checkInRole())
-                    || (playerLocation.isComplete() && currentPlayer.checkInRole())) {
+            if ((shotsRemaining == 0 && currentPlayer.checkInRole())) {
                 System.out.println("Congrats! Your scene was completed!");
                 currentPlayer.setRole(null);
                 currentPlayer.resetChips();
@@ -190,6 +190,12 @@ public class Deadwood {
                     playerLocation.resetRoles();
                     playerLocation.getScene().resetRoles();
                 }
+            }
+
+            else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) {
+                System.out.println("Congrats! Your scene was completed!");
+                currentPlayer.setRole(null);
+                currentPlayer.resetChips();
             }
 
             else if (playerLocation.isComplete()) {
