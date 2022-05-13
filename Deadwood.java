@@ -77,7 +77,7 @@ public class Deadwood {
             board.resetTiles();
             for(int j=0;j<numPlayers;j++){ // assert players start in trailer at beginning of each day
                 Player temp = board.getPlayer(j);
-                temp.setLocation(board.getTrailer());
+                temp.setLocation(board.getOffice()); // change back to trailer after testing upgrade
             }
             dailyRoutine(scanner);
         }
@@ -281,7 +281,7 @@ public class Deadwood {
                         System.out.println("\nYou have already moved this turn\n");
                     }
                     break;
-                case "UPGRADE":
+                case "UPGRADE":                    
                     if(p.getRank() == 6){
                         System.out.println("\nYou are already max rank. Upgrade denied\n");
                         break;
@@ -441,6 +441,7 @@ public class Deadwood {
 
     public void upgrade(Player player) {
         int rank = player.getRank();
+        Scanner scanner = new Scanner(System.in);
         
         int playerMoney= player.getMoney();
         int playerCredit=player.getCredits();
@@ -448,9 +449,50 @@ public class Deadwood {
         LinkedList<String[]> creditLegend =office.getCreditLegend();
         LinkedList<String[]> moneyLegend = office.getMoneyLegend();
         String[] moneyCost = moneyLegend.get(rank-1);
+        int mCost = Integer.parseInt(moneyCost[2]);
         String[] creditCost = creditLegend.get(rank-1);
-        System.out.println(Arrays.toString(moneyCost));
-        System.out.println(Arrays.toString(creditCost));
+        int cCost = Integer.parseInt(creditCost[2]);
+        //System.out.println(Arrays.toString(moneyCost));
+        //System.out.println(Arrays.toString(creditCost));
+        String choice;
+        if(playerMoney >= mCost && playerCredit >= cCost){
+            System.out.println("\nYou have the choice of spending your money or credits");
+            
+            while(true){
+                System.out.println("\nYou have $"+playerMoney+" and "+playerCredit+" credits");
+                System.out.print(" What would you like to spend (M or C)? ");
+                choice = scanner.nextLine();
+                choice = choice.toUpperCase();
+                switch(choice){
+                    case "M":
+                        System.out.println("Rank increased");
+                        player.subMoney(mCost);
+                        player.increaseRank();
+                        return;
+                    case "C":
+                        System.out.println("Rank increased");
+                        player.subCredits(cCost);
+                        player.increaseRank();
+                        return;
+                    default:
+                        System.out.println("\nPlease enter a valid option (M or C)\n");
+                        break;
+                }
+            }
+        }else if(playerMoney >= mCost){
+            System.out.println("You spent money to increase your rank");
+            player.subMoney(mCost);
+            player.increaseRank();
+            return;
+        }else if(playerCredit>= cCost){
+            System.out.println("You spent credits to increase your rank");
+            player.subCredits(cCost);
+            player.increaseRank();
+            return;
+        }else{
+            System.out.println("\nYou dont have the resources to increase your rank. Try again later.");
+            return;
+        }
 
     }
 

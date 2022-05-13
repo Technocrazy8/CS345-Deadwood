@@ -37,12 +37,20 @@ public class Player {
         this.money += m;
     }
 
+    public void subMoney(int m) {
+        this.money -= m;
+    }
+
     public int getMoney() {
         return this.money;
     }
 
     public void addCredits(int c) {
         this.credits += c;
+    }
+
+    public void subCredits(int c) {
+        this.credits -= c;
     }
 
     public int getCredits() {
