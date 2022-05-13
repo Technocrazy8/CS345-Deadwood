@@ -184,5 +184,6 @@ public class Set {
 
     public void completeSet() {
         this.completedshots = this.shotstocompletion;
+        this.completed = true;
     }
 }
