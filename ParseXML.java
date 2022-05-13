@@ -278,12 +278,14 @@ public class ParseXML {
             } else if (cardChild.getNodeName().compareTo("part") == 0) {
                Role newRole = new Role();
                NamedNodeMap roleAttributes = cardChild.getAttributes();
+               NodeList rolechildren = cardChild.getChildNodes();
+               //System.out.println("num: "+rolechildren.getLength());
 
                newRole.setTitle(roleAttributes.getNamedItem("name").getNodeValue());
 
                newRole.setRank(Integer.parseInt(roleAttributes.getNamedItem("level").getNodeValue()));
-               newRole.setDesc(cardChild.getLastChild().getTextContent());
-
+               newRole.setDesc(rolechildren.item(3).getTextContent());
+               //System.out.println("Card desc: "+ newRole.getDescription());
                parts.add(newRole);
             }
          }

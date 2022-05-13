@@ -77,7 +77,7 @@ public class Deadwood {
             board.resetTiles();
             for(int j=0;j<numPlayers;j++){ // assert players start in trailer at beginning of each day
                 Player temp = board.getPlayer(j);
-                temp.setLocation(board.getOffice()); // change back to trailer after testing upgrade
+                temp.setLocation(board.getTrailer()); // change back to trailer after testing upgrade
             }
             dailyRoutine(scanner);
         }
@@ -127,6 +127,8 @@ public class Deadwood {
 
         for (int i = 0; i < numPlayers; i++) {
             Player player = new Player(PLAYER_NAMES[i], i);
+            //player.addCredits(76);
+            //player.addMoney(101);
             if(numPlayers == 5){
                 player.addCredits(2);
             }else if(numPlayers == 6){
