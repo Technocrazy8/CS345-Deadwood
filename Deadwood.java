@@ -1,11 +1,11 @@
 
 /**
- * Clement Faisandier and Evan Johnson
+ * Evan Johnson and Clement Faisandier
  * Spring 2022
  * CS 345 - Object Oriented Design
  * Western Washington University
  * Professor: Dr. Sharmin
- * We (Clement and Evan) attest that this implementation
+ * We (Evan and Clement) attest that this implementation
  * of Deadwood is a work of our own
  * 
  * Our game controller
