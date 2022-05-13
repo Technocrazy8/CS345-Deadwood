@@ -18,10 +18,10 @@ public class Set {
     private LinkedList<Set> neighbors;
     private int shotstocompletion = -1;
     private int completedshots = 0;
+    private boolean completed = false;
     private Scene scene;
     private LinkedList<String[]> creditLegend;// Only initiated w/ office
     private LinkedList<String[]> moneyLegend;// Only initiated w/ office
-
 
     public int calculatePayout(Player player) {
         int payout = 0;
@@ -50,11 +50,11 @@ public class Set {
         }
     }
 
-    public int getShotCapacity(){
+    public int getShotCapacity() {
         return this.shotstocompletion;
     }
 
-    public int shotsRemaining(){
+    public int shotsRemaining() {
         return (this.shotstocompletion - this.completedshots);
     }
 
@@ -84,10 +84,10 @@ public class Set {
         return this.roles;
     }
 
-    public void resetRoles(){
-        int count =getRoleCount();
-        
-        for(int i=0;i<count;i++){
+    public void resetRoles() {
+        int count = getRoleCount();
+
+        for (int i = 0; i < count; i++) {
             Role currRole = getRoles().get(i);
             currRole.vacateRole();
         }
@@ -105,6 +105,16 @@ public class Set {
             }
         }
         return available;
+    }
+
+    public LinkedList<Role> getTakenRoles() {
+        LinkedList<Role> taken = new LinkedList<Role>();
+        for (int i = 0; i < this.roles.size(); i++) {
+            if (!this.roles.get(i).isAvailable()) {
+                taken.add(this.roles.get(i));
+            }
+        }
+        return taken;
     }
 
     public void setScene(Scene scene) {
@@ -135,7 +145,15 @@ public class Set {
     }
 
     public boolean isComplete() {
-        return (this.completedshots == this.shotstocompletion);
+        return this.completed;
+    }
+
+    public void complete() {
+        this.completed = true;
+    }
+
+    public void imcomplete() {
+        this.completed = false;
     }
 
     public void createMoneyLegend() {
@@ -164,7 +182,7 @@ public class Set {
         return this.creditLegend;
     }
 
-    public void completeSet(){
+    public void completeSet() {
         this.completedshots = this.shotstocompletion;
     }
 }

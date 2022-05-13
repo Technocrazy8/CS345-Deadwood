@@ -8,7 +8,7 @@ public class Role {
     private boolean taken = false;
     private boolean isExtra = false;
     private int minRank;
-    private int rehearseBonus = -1; // may be trivial
+    // private int rehearseBonus = -1; // may be trivial
     private int actor = -1; // player id
 
     public void setTitle(String t) {
@@ -35,9 +35,9 @@ public class Role {
         return this.minRank;
     }
 
-    public void setBonus(int b) {
-        this.rehearseBonus = b;
-    }
+    // public void setBonus(int b) {
+    // this.rehearseBonus = b;
+    // }
 
     public void setActorID(int i) {
         this.actor = i;

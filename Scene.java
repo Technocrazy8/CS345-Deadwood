@@ -15,7 +15,8 @@ public class Scene {
     private int budget;
     private LinkedList<Role> parts;
     private LinkedList<Player> actors;
-    //int shotcounter;
+    // int shotcounter;
+    //boolean isComplete = false;
     private int actorcapacity;
 
     public Scene(String title, String description, int budgets, LinkedList<Role> parts, int actcap) {
@@ -39,11 +40,11 @@ public class Scene {
         return budget;
     }
 
-    public LinkedList<Role>  getParts() {
+    public LinkedList<Role> getParts() {
         return parts;
     }
 
-    public int getRoleCOunt(){
+    public int getRoleCOunt() {
         return this.parts.size();
     }
 
@@ -55,20 +56,30 @@ public class Scene {
         return actorcapacity;
     }
 
-    public LinkedList<Role> getAvailableRoles(){
+    public LinkedList<Role> getAvailableRoles() {
         LinkedList<Role> available = new LinkedList<Role>();
-        for(int i=0;i<this.parts.size();i++){
-            if(this.parts.get(i).isAvailable()){
+        for (int i = 0; i < this.parts.size(); i++) {
+            if (this.parts.get(i).isAvailable()) {
                 available.add(this.parts.get(i));
             }
         }
         return available;
     }
 
-    public void resetRoles(){
-        int count = this.parts.size();//getRoleCount();
-        
-        for(int i=0;i<count;i++){
+    public LinkedList<Role> getTakenRoles() {
+        LinkedList<Role> taken = new LinkedList<Role>();
+        for (int i = 0; i < this.parts.size(); i++) {
+            if (!this.parts.get(i).isAvailable()) {
+                taken.add(this.parts.get(i));
+            }
+        }
+        return taken;
+    }
+
+    public void resetRoles() {
+        int count = this.parts.size();// getRoleCount();
+
+        for (int i = 0; i < count; i++) {
             Role currRole = parts.get(i);
             currRole.vacateRole();
         }

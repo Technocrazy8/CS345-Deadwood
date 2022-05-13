@@ -47,7 +47,7 @@ public class Deadwood {
 
         try {
             numPlayers = Integer.parseInt(args[0]);
-            if(numPlayers<2||numPlayers>8){
+            if (numPlayers < 2 || numPlayers > 8) {
                 Exception e = new Exception();
                 throw e;
             }
@@ -65,7 +65,7 @@ public class Deadwood {
         Scanner scanner = new Scanner(System.in);
         LinkedList<Scene> cards = setupProcedure(numPlayers);
         int dayCount = 4;
-        if(numPlayers == 2 || numPlayers==3){
+        if (numPlayers == 2 || numPlayers == 3) {
             dayCount = 3;
         }
         // System.out.println("Welcome to Deadwood!");
@@ -75,7 +75,7 @@ public class Deadwood {
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
             board.resetTiles();
-            for(int j=0;j<numPlayers;j++){ // assert players start in trailer at beginning of each day
+            for (int j = 0; j < numPlayers; j++) { // assert players start in trailer at beginning of each day
                 Player temp = board.getPlayer(j);
                 temp.setLocation(board.getTrailer()); // change back to trailer after testing upgrade
             }
@@ -127,13 +127,13 @@ public class Deadwood {
 
         for (int i = 0; i < numPlayers; i++) {
             Player player = new Player(PLAYER_NAMES[i], i);
-            //player.addCredits(76);
-            //player.addMoney(101);
-            if(numPlayers == 5){
+            // player.addCredits(76);
+            // player.addMoney(101);
+            if (numPlayers == 5) {
                 player.addCredits(2);
-            }else if(numPlayers == 6){
+            } else if (numPlayers == 6) {
                 player.addCredits(4);
-            }else if(numPlayers ==7 || numPlayers ==8){
+            } else if (numPlayers == 7 || numPlayers == 8) {
                 player.setRank(2);
             }
             board.addPlayer(player);
@@ -160,7 +160,7 @@ public class Deadwood {
         return dailyCards;
     }
 
-    private void dailyRoutine(Scanner scanner) { 
+    private void dailyRoutine(Scanner scanner) {
         String input;
         // boolean toggle = true;
         int currplayerindex = 0;
@@ -171,46 +171,54 @@ public class Deadwood {
             Player currentPlayer = board.getPlayer(currplayerindex);
             String playerName = currentPlayer.getName();
             Set playerLocation = currentPlayer.getLocation();
+            int shotsRemaining = playerLocation.shotsRemaining();
+            int shotCap = playerLocation.getShotCapacity();
             System.out.println("\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "
                     + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
             System.out.println(" Your rank is: " + currentPlayer.getRank());
             int opt;
             // debugBoard(3);
-            if(playerLocation.isComplete() && currentPlayer.checkInRole()){
+            if ((shotsRemaining == 0 && currentPlayer.checkInRole()) || (playerLocation.isComplete() && currentPlayer.checkInRole())) {
                 System.out.println("Congrats! Your scene was completed!");
                 currentPlayer.setRole(null);
                 currentPlayer.resetChips();
+                boolean completed = determineCompletion(playerLocation);
+                if (completed == false) {
+                    playerLocation.resetShots();
+                    playerLocation.resetRoles();
+                    playerLocation.getScene().resetRoles();
+                }
             }
 
-            if(playerLocation.isComplete()){
+            else if (playerLocation.isComplete()) {
                 System.out.println("\nThis scene has already been completed");
             }
 
-            if (currentPlayer.checkInRole()&&!playerLocation.isComplete()) {
+            if (currentPlayer.checkInRole() && !playerLocation.isComplete()) {
                 opt = actingChoices(currentPlayer);
                 if (opt == 1) {
                     currplayerindex++;
                 }
-            } 
-            else {
+            } else {
                 opt = basicChoices(currentPlayer);
                 if (opt == 1) {
                     currplayerindex++;
                 }
-                if(opt ==2){
+                if (opt == 2) {
                     board.completeAll();
                 }
             }
-            
-            if(board.dayEnd()){
+
+            if (board.dayEnd()) {
                 break;
             }
 
             if (currplayerindex == numPlayers) {
                 currplayerindex = 0;
-                for(int i=0;i<numPlayers;i++){ // assert players can move again after their turn has completed 
-                    Player temp = board.getPlayer(i); // doesnt matter if player is already in a role. Current set up doesnt allow them to move if they are
-                    if(!temp.canMove()){
+                for (int i = 0; i < numPlayers; i++) { // assert players can move again after their turn has completed
+                    Player temp = board.getPlayer(i); // doesnt matter if player is already in a role. Current set up
+                                                      // doesnt allow them to move if they are
+                    if (!temp.canMove()) {
                         temp.allowMove();
                     }
                 }
@@ -227,7 +235,8 @@ public class Deadwood {
             if (answer.equals("Y")) {
                 System.out.println("\nGAME OVER\n");
                 for (int i = 0; i < numPlayers; i++) {
-                    System.out.println(" "+board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
+                    System.out.println(
+                            " " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
                 }
                 scanner.close();
                 System.out.println();
@@ -240,11 +249,11 @@ public class Deadwood {
         }
     }
 
-    public void wrapUp(){
+    public void wrapUp() {
         System.out.println("\nGAME OVER\n");
         System.out.println("Final scores:");
         for (int i = 0; i < numPlayers; i++) {
-            System.out.println(" "+board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
+            System.out.println(" " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
         }
         System.out.println();
         System.exit(0);
@@ -273,25 +282,25 @@ public class Deadwood {
                         return ret;
                     }
                 case "MOVE":
-                    if(p.canMove()){
+                    if (p.canMove()) {
                         move(p);
-                    }else{
+                    } else {
                         System.out.println("\nYou have already moved this turn\n");
                     }
                     break;
-                case "UPGRADE":                    
-                    if(p.getRank() == 6){
+                case "UPGRADE":
+                    if (p.getRank() == 6) {
                         System.out.println("\nYou are already max rank. Upgrade denied\n");
                         break;
                     }
-                    if(playerLocation == board.getOffice()){
+                    if (playerLocation == board.getOffice()) {
                         upgrade(p);
                         break;
-                    }else{
+                    } else {
                         System.out.println("\nPlease move to the office to upgrade...\n");
                         break;
                     }
-                case "DAY": //DELETE THIS IN FINAL PRODUCT
+                case "DAY": // DELETE THIS IN FINAL PRODUCT
                     return 2;
                 default:
                     System.out.println("Please enter a valid option\n");
@@ -303,26 +312,30 @@ public class Deadwood {
     }
 
     public int actingChoices(Player p) {
-        System.out.println("Welcome actor!");
+        // System.out.println("\nWelcome actor!");
         Scanner pinput = new Scanner(System.in);
         String choice;
         Scene currScene = p.getLocation().getScene();
         Role currRole = p.getRole();
         int budget = currScene.getBudget();
+        // System.out.println(" There are " + p.getLocation().shotsRemaining() + " shots
+        // remaining");
         while (true) {
             System.out.println("\nWhat would you like to do? (Act, Rehearse, Turn or Quit)");
-            System.out.println(" Your current role is: "+currRole.getTitle()+"\n Is an extra: "+ currRole.isExtra());
-            System.out.println(" You currently have: "+p.getChips()+" chip(s)");
+            System.out.println(" Your current role is: " + currRole.getTitle() + "\n Is an extra: " + currRole.isExtra()
+                    + "\n Scene budget: " + budget);
+            System.out.println(" Shots remaining: " + p.getLocation().shotsRemaining());
+            System.out.println(" You currently have: " + p.getChips() + " chip(s)");
             choice = pinput.nextLine();
             choice = choice.toUpperCase();
-            switch(choice){
+            switch (choice) {
                 case "ACT":
-
-                    break;
+                    act(p, currRole);
+                    return 1;
                 case "REHEARSE":
-                    if(p.getChips() == budget){
+                    if (p.getChips() == budget - 1) {
                         System.out.println("\nYou cannot rehearse anymore. Please act\n");
-                    }else{
+                    } else {
                         System.out.println("\nYou chose to rehearse\n");
                         p.addChip();
                         return 1;
@@ -348,19 +361,25 @@ public class Deadwood {
         int count = location.getNeighbors().size();
         for (int i = 0; i < count; i++) {
             Set currSet = neighbors.get(i);
-            System.out.println(" " + i + " - Location: " + currSet.getName());
-        }System.out.println(" "+count +" - GO BACK");
+            Scene currScene = currSet.getScene();
+            if (currScene == null) {
+                System.out.println(" " + i + " - Location: " + currSet.getName());
+            } else {
+                System.out
+                        .println(" " + i + " - Location: " + currSet.getName() + " -Budget: $" + currScene.getBudget());
+            }
+        }
+        System.out.println(" " + count + " - GO BACK");
         while (true) {
-            //System.out.print("Select a location to move to (0-" + (count - 1) + "): ");
+            // System.out.print("Select a location to move to (0-" + (count - 1) + "): ");
             String input = scanner.nextLine();
             if (isNumeric(input)) {
                 int pick = Integer.parseInt(input);
-                if (pick > count|| pick < 0) {
-                    System.out.println("\nPlease enter a valid option (0-"+count+")");
-                }else if(pick == count){
+                if (pick > count || pick < 0) {
+                    System.out.println("\nPlease enter a valid option (0-" + count + ")");
+                } else if (pick == count) {
                     return;
-                } 
-                else {
+                } else {
                     player.setLocation(neighbors.get(pick));
                     player.moved();
                     player.resetChips();
@@ -399,19 +418,20 @@ public class Deadwood {
                 System.out.println("\nPick a role: ");
                 for (int i = 0; i < size; i++) {
                     Role currRole = totalRoles.get(i);
-                    System.out.println(" "+i + " - Role: " + currRole.getTitle() + " Minimum rank: " + currRole.getRank()
-                            + " Is an extra: " + currRole.isExtra());
+                    System.out.println(
+                            " " + i + " - Role: " + currRole.getTitle() + " Minimum rank: " + currRole.getRank()
+                                    + " Is an extra: " + currRole.isExtra());
                 }
-                System.out.println(" "+size +" - GO BACK");
+                System.out.println(" " + size + " - GO BACK");
                 choice = pinput.nextLine();
                 if (isNumeric(choice)) {
                     int pick = Integer.parseInt(choice);
                     // Role chosen = totalRoles.get(pick);
                     if (pick < 0 || pick > size) {
                         System.out.println("Please pick a valid number\n");
-                    } else if(pick == size){
+                    } else if (pick == size) {
                         return 0;
-                    }else if (player.getRank() < totalRoles.get(pick).getRank()) {
+                    } else if (player.getRank() < totalRoles.get(pick).getRank()) {
                         System.out.println("Not high enough rank, please choose a valid role\n");
                     } else {
                         Role chosen = totalRoles.get(pick);
@@ -440,28 +460,28 @@ public class Deadwood {
     public void upgrade(Player player) {
         int rank = player.getRank();
         Scanner scanner = new Scanner(System.in);
-        
-        int playerMoney= player.getMoney();
-        int playerCredit=player.getCredits();
+
+        int playerMoney = player.getMoney();
+        int playerCredit = player.getCredits();
         Set office = player.getLocation();
-        LinkedList<String[]> creditLegend =office.getCreditLegend();
+        LinkedList<String[]> creditLegend = office.getCreditLegend();
         LinkedList<String[]> moneyLegend = office.getMoneyLegend();
-        String[] moneyCost = moneyLegend.get(rank-1);
+        String[] moneyCost = moneyLegend.get(rank - 1);
         int mCost = Integer.parseInt(moneyCost[2]);
-        String[] creditCost = creditLegend.get(rank-1);
+        String[] creditCost = creditLegend.get(rank - 1);
         int cCost = Integer.parseInt(creditCost[2]);
-        //System.out.println(Arrays.toString(moneyCost));
-        //System.out.println(Arrays.toString(creditCost));
+        // System.out.println(Arrays.toString(moneyCost));
+        // System.out.println(Arrays.toString(creditCost));
         String choice;
-        if(playerMoney >= mCost && playerCredit >= cCost){
+        if (playerMoney >= mCost && playerCredit >= cCost) {
             System.out.println("\nYou have the choice of spending your money or credits");
-            
-            while(true){
-                System.out.println("\nYou have $"+playerMoney+" and "+playerCredit+" credits");
+
+            while (true) {
+                System.out.println("\nYou have $" + playerMoney + " and " + playerCredit + " credits");
                 System.out.print(" What would you like to spend (M or C)? ");
                 choice = scanner.nextLine();
                 choice = choice.toUpperCase();
-                switch(choice){
+                switch (choice) {
                     case "M":
                         System.out.println("Rank increased");
                         player.subMoney(mCost);
@@ -477,25 +497,71 @@ public class Deadwood {
                         break;
                 }
             }
-        }else if(playerMoney >= mCost){
+        } else if (playerMoney >= mCost) {
             System.out.println("You spent money to increase your rank");
             player.subMoney(mCost);
             player.increaseRank();
             return;
-        }else if(playerCredit>= cCost){
+        } else if (playerCredit >= cCost) {
             System.out.println("You spent credits to increase your rank");
             player.subCredits(cCost);
             player.increaseRank();
             return;
-        }else{
+        } else {
             System.out.println("\nYou dont have the resources to increase your rank. Try again later.");
             return;
         }
+    }
+
+    public void act(Player player, Role currRole) {
+        // System.out.println("You chose to act\n");
+        int budget = player.getLocation().getScene().getBudget();
+        Set currScene = player.getLocation();
+        int roll = (int) (Math.random() * (6 - 1 + 1) + 1);
+        System.out.println("You rolled a: " + roll);
+        int total = roll + player.getChips();
+        if (total >= budget) {
+            System.out.println("Act success! Your total was: " + total);
+            currScene.completeShot();
+            if (currRole.isExtra()) {
+                System.out.println(" Payout: 1 dollar and 1 credit");
+                player.addCredits(1);
+                player.addMoney(1);
+            } else {
+                System.out.println(" Payout: 2 credits");
+                player.addCredits(2);
+            }
+            return;
+        } else {
+            System.out.println("Act failure! Your total was: " + total);
+            if (currRole.isExtra()) {
+                System.out.println(" You're an extra though, you still get a dollar");
+                player.addMoney(1);
+            } else {
+                System.out.println(" Sucks to not be an extra. You get nothing");
+            }
+            return;
+        }
+    }
+
+    public void payout(Scene cScene) {
 
     }
 
-    public void act(Player player) {
-        System.out.println("You chose to act");
+    public boolean determineCompletion(Set set) {
+        LinkedList<Role> occupiedRoles = set.getTakenRoles();
+        occupiedRoles.addAll(set.getScene().getTakenRoles());
+        int size = occupiedRoles.size();
+        for (int i = 0; i < size; i++) {
+            Role currRole = occupiedRoles.get(i);
+            if (!currRole.isExtra()) {
+                set.complete();
+                
+                //System.out.println("Non extra detected");
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isNumeric(String s) {
@@ -512,7 +578,7 @@ public class Deadwood {
     }
 
     public void debugBoard(int opt) {
-        //Board board = Board.getBoard();
+        // Board board = Board.getBoard();
 
         switch (opt) {
             case 5:
