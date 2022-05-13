@@ -8,7 +8,6 @@ public class Board {
 
     private static Board board = null;
 
-    private String name;
     private LinkedList<Set> sets; // the tiles
     private LinkedList<Player> players;
     private Set trailer;
@@ -48,7 +47,6 @@ public class Board {
     }
 
     public Player getPlayer(int index) {
-        int size = players.size();
         if (index > players.size()) {
             return null;
         }
@@ -115,9 +113,7 @@ public class Board {
 
     public void completeAll(){ // USED FOR TESTING
         for(int i=0;i<9;i++){
-            board.sets.get(i).completeSet();
-            //board.sets.get(i).
-            
+            board.sets.get(i).completeSet();            
         }
         for(int i=0;i<playerCount();i++){
             Player currPlayer =board.players.get(i);
@@ -133,12 +129,10 @@ public class Board {
             currSet.resetRoles();
             currSet.resetShots();
         }
-
     }
 
     public boolean dayEnd(){ //Checker for end of day
         int count = 10;
-        boolean end = true;
         int notComplete = 0;
         for(int i=0;i<count;i++){
             if(!board.getSets().get(i).isComplete()){

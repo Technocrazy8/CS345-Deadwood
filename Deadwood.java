@@ -179,7 +179,7 @@ public class Deadwood {
             if(playerLocation.isComplete() && currentPlayer.checkInRole()){
                 System.out.println("Congrats! Your scene was completed!");
                 currentPlayer.setRole(null);
-
+                currentPlayer.resetChips();
             }
 
             if(playerLocation.isComplete()){
