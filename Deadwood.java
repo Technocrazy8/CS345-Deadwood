@@ -202,11 +202,9 @@ public class Deadwood {
                 }
             }
             
-
             if(board.dayEnd()){
                 break;
             }
-
 
             if (currplayerindex == numPlayers) {
                 currplayerindex = 0;
@@ -254,10 +252,8 @@ public class Deadwood {
 
     public int basicChoices(Player p) {
         Scanner scanner = new Scanner(System.in); // DO NOT CLOSE SCANNER -- WILL BREAK THINGS
-        // String playerName = p.getName();
         Set playerLocation = p.getLocation();
         Scene scene = playerLocation.getScene();
-        // System.out.println()
         String op;
         while (true) {
             System.out.println("\nPlease enter your move (Turn, Quit, Work, Move or Upgrade)");
@@ -498,18 +494,10 @@ public class Deadwood {
 
     }
 
-    public void act(Player player, Set set, Scene scene, Board board) {
-
+    public void act(Player player) {
+        System.out.println("You chose to act");
     }
 
-    // public boolean isNumeric(String s) {
-    // for (int i = 0; i < s.length(); i++) {
-    // if (!(Character.isDigit(s.charAt(i)))) {
-    // return false;
-    // }
-    // }
-    // return true;
-    // }
     public boolean isNumeric(String s) {
         int i = 0;
         if (s.charAt(0) == '-') {
