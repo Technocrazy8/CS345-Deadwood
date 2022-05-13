@@ -16,7 +16,7 @@ public class Scene {
     private LinkedList<Role> parts;
     private LinkedList<Player> actors;
     // int shotcounter;
-    //boolean isComplete = false;
+    // boolean isComplete = false;
     private int actorcapacity;
 
     public Scene(String title, String description, int budgets, LinkedList<Role> parts, int actcap) {
@@ -44,7 +44,7 @@ public class Scene {
         return parts;
     }
 
-    public int getRoleCOunt() {
+    public int getRoleCount() {
         return this.parts.size();
     }
 

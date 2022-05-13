@@ -75,7 +75,7 @@ public class Deadwood {
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
             board.resetTiles();
-            
+
             for (int j = 0; j < numPlayers; j++) { // assert players start in trailer at beginning of each day
                 Player temp = board.getPlayer(j);
                 temp.setLocation(board.getTrailer()); // change back to trailer after testing upgrade
@@ -127,7 +127,7 @@ public class Deadwood {
         // Populate players and change their attributes depending on player count
 
         for (int i = 0; i < numPlayers; i++) {
-            Player player = new Player(PLAYER_NAMES[i], i);
+            Player player = new Player(PLAYER_NAMES[i]);
             // player.addCredits(76);
             // player.addMoney(101);
             if (numPlayers == 5) {
@@ -524,13 +524,16 @@ public class Deadwood {
     public void act(Player player, Role currRole) {
         // System.out.println("You chose to act\n");
         int budget = player.getLocation().getScene().getBudget();
-        Set currScene = player.getLocation();
+        Set currSet = player.getLocation();
         int roll = (int) (Math.random() * (6 - 1 + 1) + 1);
         System.out.println("You rolled a: " + roll);
         int total = roll + player.getChips();
         if (total >= budget) {
             System.out.println("Act success! Your total was: " + total);
-            currScene.completeShot();
+            currSet.completeShot();
+            if (currSet.shotsRemaining() == 0) {
+                payout(currSet);
+            }
             if (currRole.isExtra()) {
                 System.out.println(" Payout: 1 dollar and 1 credit");
                 player.addCredits(1);
@@ -552,8 +555,36 @@ public class Deadwood {
         }
     }
 
-    public void payout(Scene cScene) {
-
+    public void payout(Set currsSet) {
+        LinkedList<Role> roleList = currsSet.getRoles();
+        roleList.addAll(currsSet.getScene().getParts());
+        int count = 0;
+        for (int i = 0; i < numPlayers; i++) {
+            Player currPlayer = board.getPlayer(i);
+            for (int j = 0; j < roleList.size(); j++) {
+                Role currRole = roleList.get(j);
+                if (currPlayer.getRole() == currRole) {
+                    if (!currRole.isExtra()) {
+                        count++;
+                    }
+                }
+            }
+        }
+        if (count != 0) {
+            for (int i = 0; i < numPlayers; i++) {
+                Player currPlayer = board.getPlayer(i);
+                for (int j = 0; j < roleList.size(); j++) {
+                    Role currRole = roleList.get(j);
+                    if (currPlayer.getRole() == currRole) {
+                        if (currRole.isExtra()) {
+                            currPlayer.addMoney(currRole.getRank());
+                        }
+                    }
+                }
+            }
+        } else {
+            System.out.println("No lead actors were present\n No bonuses will be awarded");
+        }
     }
 
     public boolean determineCompletion(Set set) {

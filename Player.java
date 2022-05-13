@@ -4,22 +4,18 @@
  */
 
 public class Player {
-    private int rank=1;
+    private int rank = 1;
     private int credits;
     private int money;
     private String name;
     private boolean hasMoved = false;
-    private int id;
-    private int rehearseChips =0;
-    private int status;
+    private int rehearseChips = 0;
     private Set location;
-    private Role currentRole; 
-    //int rank =1;
+    private Role currentRole;
 
-    public Player(String name, int id) {
+    public Player(String name) {
         this.credits = 0;
         this.money = 0;
-        this.id = id;
         this.name = name;
     }
 
@@ -57,7 +53,7 @@ public class Player {
         return this.credits;
     }
 
-    public int getChips(){
+    public int getChips() {
         return this.rehearseChips;
     }
 
@@ -65,56 +61,56 @@ public class Player {
         this.rehearseChips++;
     }
 
-    public void resetChips(){
+    public void resetChips() {
         this.rehearseChips = 0;
-    } 
+    }
 
-    public int getRank(){
+    public int getRank() {
         return this.rank;
     }
 
-    public void setRank(int r){
-        this.rank =r;
+    public void setRank(int r) {
+        this.rank = r;
     }
 
-    public void increaseRank(){
+    public void increaseRank() {
         this.rank++;
     }
 
-    public void setLocation(Set loc){
-        this.location=loc;
+    public void setLocation(Set loc) {
+        this.location = loc;
     }
 
-    public void moved(){
+    public void moved() {
         this.hasMoved = true;
     }
 
-    public void allowMove(){
+    public void allowMove() {
         this.hasMoved = false;
     }
 
-    public boolean canMove(){
+    public boolean canMove() {
         return !this.hasMoved;
     }
 
-    public Set getLocation(){
+    public Set getLocation() {
         return this.location;
     }
 
-    public String getLocName(){
+    public String getLocName() {
         return this.location.getName();
     }
 
-    public void setRole(Role r){
-        this.currentRole=r;
+    public void setRole(Role r) {
+        this.currentRole = r;
     }
 
-    public Role getRole(){
+    public Role getRole() {
         return this.currentRole;
     }
 
-    public boolean checkInRole(){
-        if(this.currentRole == null){
+    public boolean checkInRole() {
+        if (this.currentRole == null) {
             return false;
         }
         return true;
