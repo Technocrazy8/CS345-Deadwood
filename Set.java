@@ -142,6 +142,10 @@ public class Set {
         this.moneyLegend = new LinkedList<String[]>();
     }
 
+    public LinkedList<String[]> getMoneyLegend() {
+        return this.moneyLegend;
+    }
+
     public void addToLegend(String[] tuple) {
         if (tuple[0].equals("credit")) {
             // System.out.println("cred");
@@ -154,6 +158,10 @@ public class Set {
 
     public void createCreditLegend() {
         this.creditLegend = new LinkedList<String[]>();
+    }
+
+    public LinkedList<String[]> getCreditLegend() {
+        return this.creditLegend;
     }
 
     public void completeSet(){

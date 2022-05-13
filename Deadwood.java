@@ -282,6 +282,10 @@ public class Deadwood {
                     }
                     break;
                 case "UPGRADE":
+                    if(p.getRank() == 6){
+                        System.out.println("\nYou are already max rank. Upgrade denied\n");
+                        break;
+                    }
                     if(playerLocation == board.getOffice()){
                         upgrade(p);
                         break;
@@ -436,17 +440,23 @@ public class Deadwood {
     }
 
     public void upgrade(Player player) {
+        int rank = player.getRank();
+        
+        int playerMoney= player.getMoney();
+        int playerCredit=player.getCredits();
+        Set office = player.getLocation();
+        LinkedList<String[]> creditLegend =office.getCreditLegend();
+        LinkedList<String[]> moneyLegend = office.getMoneyLegend();
+        String[] moneyCost = moneyLegend.get(rank-1);
+        String[] creditCost = creditLegend.get(rank-1);
+        System.out.println(Arrays.toString(moneyCost));
+        System.out.println(Arrays.toString(creditCost));
 
     }
 
     public void act(Player player, Set set, Scene scene, Board board) {
 
     }
-
-    public void rehearse(Player player, Set set, Scene scene) {
-
-    }
-
 
     // public boolean isNumeric(String s) {
     // for (int i = 0; i < s.length(); i++) {
