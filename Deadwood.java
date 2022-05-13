@@ -178,10 +178,12 @@ public class Deadwood {
             System.out.println(" Your rank is: " + currentPlayer.getRank());
             int opt;
             // debugBoard(3);
-            if ((shotsRemaining == 0 && currentPlayer.checkInRole()) || (playerLocation.isComplete() && currentPlayer.checkInRole())) {
+            if ((shotsRemaining == 0 && currentPlayer.checkInRole())
+                    || (playerLocation.isComplete() && currentPlayer.checkInRole())) {
                 System.out.println("Congrats! Your scene was completed!");
                 currentPlayer.setRole(null);
                 currentPlayer.resetChips();
+
                 boolean completed = determineCompletion(playerLocation);
                 if (completed == false) {
                     playerLocation.resetShots();
@@ -555,9 +557,8 @@ public class Deadwood {
         for (int i = 0; i < size; i++) {
             Role currRole = occupiedRoles.get(i);
             if (!currRole.isExtra()) {
+                System.out.println("non extra detected");
                 set.complete();
-                
-                //System.out.println("Non extra detected");
                 return true;
             }
         }
