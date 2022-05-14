@@ -163,14 +163,14 @@ public class Deadwood {
 
     // main turn loop for each player
     private void dailyRoutine(Scanner scanner) {
-        String input; 
+        String input;
         // boolean toggle = true;
         int currplayerindex = 0;
         // int
 
         while (true) {
 
-            Player currentPlayer = board.getPlayer(currplayerindex); // get the current player 
+            Player currentPlayer = board.getPlayer(currplayerindex); // get the current player
             String playerName = currentPlayer.getName(); // get players name
             Set playerLocation = currentPlayer.getLocation(); // get players location
             int shotsRemaining = playerLocation.shotsRemaining(); // get the shots remaining for players' location
@@ -179,14 +179,16 @@ public class Deadwood {
             System.out.println(" Your rank is: " + currentPlayer.getRank()); // print out the players attributes
             int opt;
             // debugBoard(3);
-            if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is completed
+            if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is
+                                                                        // completed
                 System.out.println("Congrats! Your scene was completed!");
                 currentPlayer.setRole(null); // reset the players current role
                 currentPlayer.resetChips(); // reset their chip count
                 playerLocation.complete(); // say location is complete
             }
 
-            else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is completed -- may be redundant
+            else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is
+                                                                                     // completed -- may be redundant
                 System.out.println("Congrats! Your scene was completed!");
                 currentPlayer.setRole(null);
                 currentPlayer.resetChips();
@@ -196,7 +198,8 @@ public class Deadwood {
                 System.out.println("\nThis scene has already been completed");
             }
 
-            if (currentPlayer.checkInRole() && !playerLocation.isComplete()) { // check if player is in role and if their scene isnt completed
+            if (currentPlayer.checkInRole() && !playerLocation.isComplete()) { // check if player is in role and if
+                                                                               // their scene isnt completed
                 opt = actingChoices(currentPlayer); // give the player the choices for acting
                 if (opt == 1) { // player finished their turn
                     currplayerindex++;
@@ -206,7 +209,7 @@ public class Deadwood {
                 if (opt == 1) {
                     currplayerindex++;
                 }
-                if (opt == 2) { //for testing purposes
+                if (opt == 2) { // for testing purposes
                     board.completeAll();
                 }
             }
@@ -264,7 +267,6 @@ public class Deadwood {
     public int basicChoices(Player p) { // present the choices to the player who isnt acting
         Scanner scanner = new Scanner(System.in); // DO NOT CLOSE SCANNER -- WILL BREAK THINGS
         Set playerLocation = p.getLocation();
-        Scene scene = playerLocation.getScene();
         String op;
         while (true) {
             System.out.println("\nPlease enter your move (Turn, Quit, Work, Move or Upgrade)");
@@ -302,8 +304,8 @@ public class Deadwood {
                         System.out.println("\nPlease move to the office to upgrade...\n");
                         break;
                     }
-                case "DAY": // DELETE THIS IN FINAL PRODUCT
-                    return 2;
+                // case "DAY": // DELETE THIS IN FINAL PRODUCT
+                //     return 2;
                 default:
                     System.out.println("Please enter a valid option\n");
                     break;
@@ -335,7 +337,8 @@ public class Deadwood {
                     act(p, currRole); // let player act
                     return 1;
                 case "REHEARSE":
-                    if (p.getChips() == budget - 1) { //if player is at a point of guaranteed succes, dont let them rehearse again
+                    if (p.getChips() == budget - 1) { // if player is at a point of guaranteed succes, dont let them
+                                                      // rehearse again
                         System.out.println("\nYou cannot rehearse anymore. Please act\n");
                     } else {
                         System.out.println("\nYou chose to rehearse\n");
@@ -399,7 +402,7 @@ public class Deadwood {
             return 0;
         }
         LinkedList<Role> sceneRoles = playerLocation.getAvailableRoles(); // grab the nontaken scene roles
-        LinkedList<Role> setRoles = scene.getAvailableRoles(); //grab the nontaken set roles
+        LinkedList<Role> setRoles = scene.getAvailableRoles(); // grab the nontaken set roles
         totalRoles.addAll(sceneRoles);
         totalRoles.addAll(setRoles);// combine them to one list
         int size = totalRoles.size();
@@ -424,7 +427,8 @@ public class Deadwood {
                         System.out.println("Please pick a valid number\n");
                     } else if (pick == size) {// player picked go back option
                         return 0;
-                    } else if (player.getRank() < totalRoles.get(pick).getRank()) { // player chose a role without the means
+                    } else if (player.getRank() < totalRoles.get(pick).getRank()) { // player chose a role without the
+                                                                                    // means
                         System.out.println("Not high enough rank, please choose a valid role\n");
                     } else {
                         Role chosen = totalRoles.get(pick); // give player the chosen role
@@ -456,7 +460,8 @@ public class Deadwood {
         String[] creditCost = creditLegend.get(rank - 1);
         int cCost = Integer.parseInt(creditCost[2]); // grab the credit cost
         String choice;
-        if (playerMoney >= mCost && playerCredit >= cCost) { // if the player has enough of both credits and money to upgrade
+        if (playerMoney >= mCost && playerCredit >= cCost) { // if the player has enough of both credits and money to
+                                                             // upgrade
             System.out.println("\nYou have the choice of spending your money or credits");
 
             while (true) { // give player the choice of what they want to spend
@@ -496,7 +501,7 @@ public class Deadwood {
         }
     }
 
-    public void act(Player player, Role currRole) { // player chose to act 
+    public void act(Player player, Role currRole) { // player chose to act
         int budget = player.getLocation().getScene().getBudget();
         Set currSet = player.getLocation();
         int roll = (int) (Math.random() * (6 - 1 + 1) + 1); // role the dice
@@ -542,35 +547,39 @@ public class Deadwood {
         }
     }
 
-    public int countLeads(LinkedList<Role> roleList){
+    public int countLeads(LinkedList<Role> roleList) { // counts the amount of players in lead roles for a scene
         int count = 0;
         for (int i = 0; i < numPlayers; i++) {
             Player currPlayer = board.getPlayer(i);
             for (int j = 0; j < roleList.size(); j++) {
                 Role currRole = roleList.get(j);
-                if (currPlayer.getRole() == currRole) {                 
-                    count++;                  
+                if (currPlayer.getRole() == currRole) {
+                    count++;
                 }
             }
         }
         return count;
     }
 
-    public ArrayList<Player> getSpots(LinkedList<Role> roleList,ArrayList<Player> playersInRole){
-        //ArrayList<Player> playersInRole = new ArrayList<Player>();
-        for(int i=0;i<numPlayers;i++){
+    public ArrayList<Player> getSpots(LinkedList<Role> roleList, ArrayList<Player> playersInRole) { // returns an
+                                                                                                    // arraylist of
+                                                                                                    // people in their
+                                                                                                    // role spots.
+        // similar to how it would look like on the board
+        for (int i = 0; i < numPlayers; i++) {
             Player currPlayer = board.getPlayer(i);
             Role playerRole = currPlayer.getRole();
-            for(int j=0;j<roleList.size();j++){
-                if(playerRole == roleList.get(j)){
-                    playersInRole.set(j,currPlayer);
+            for (int j = 0; j < roleList.size(); j++) {
+                if (playerRole == roleList.get(j)) {
+                    playersInRole.set(j, currPlayer);
                 }
             }
         }
         return playersInRole;
     }
 
-    public void payExtras(LinkedList<Role> roleList){
+    // method that pays the players who are in the extra spots of a scene
+    public void payExtras(LinkedList<Role> roleList) {
         for (int i = 0; i < numPlayers; i++) {
             Player currPlayer = board.getPlayer(i);
             for (int j = 0; j < roleList.size(); j++) {
@@ -582,51 +591,42 @@ public class Deadwood {
         }
     }
 
-    public void payLeads(LinkedList<Role> roleList, int budget){
+    // method that pays players who are in lead rolls
+    public void payLeads(LinkedList<Role> roleList, int budget) {
         ArrayList<Integer> diceRolls = new ArrayList<Integer>();
-        //ArrayList<Player> leadPlayers = new ArrayList<Player>();
+        // ArrayList<Player> leadPlayers = new ArrayList<Player>();
         ArrayList<Player> playersInRole = new ArrayList<Player>();
         int rolecount = roleList.size();
-        for(int i=0;i<roleList.size();i++){
+        for (int i = 0; i < roleList.size(); i++) {
             playersInRole.add(null);
         }
-        //playersInRole = getSpots(roleList);
-        getSpots(roleList,playersInRole);
-        // for(int i=0;i<numPlayers;i++){
-        //     Player currPlayer = board.getPlayer(i);
-        //     Role playerRole = currPlayer.getRole();
-        //     for(int j=0;j<roleList.size();j++){
-        //         if(playerRole == roleList.get(j)){
-        //             playersInRole.set(j,currPlayer);
-        //         }
-        //     }
-        // }
-        System.out.println(playersInRole.toString());
-        
+        getSpots(roleList, playersInRole);
 
-        for(int i =0;i<budget;i++){
-            int roll =(int) (Math.random() * (6 - 1 + 1) + 1);
+        System.out.println(playersInRole.toString());
+
+        for (int i = 0; i < budget; i++) {
+            int roll = (int) (Math.random() * (6 - 1 + 1) + 1);
             diceRolls.add(roll);
         }
-        Collections.sort(diceRolls,Collections.reverseOrder());
-        //System.out.println()
-        for(int i=0;i<diceRolls.size();i++){
-            System.out.println("dice roll: " +diceRolls.get(i));
+        Collections.sort(diceRolls, Collections.reverseOrder());
+        // System.out.println()
+        for (int i = 0; i < diceRolls.size(); i++) {
+            System.out.println("dice roll: " + diceRolls.get(i));
         }
-        int index=0;
-        for(int i=0;i<budget;i++){
+        int index = 0;
+        for (int i = 0; i < budget; i++) {
             Player curPlayer = playersInRole.get(index);
-            if(curPlayer != null){
+            if (curPlayer != null) {
                 curPlayer.addMoney(diceRolls.get(i));
             }
             index++;
-            if(index == rolecount){
-                index=0;
+            if (index == rolecount) {
+                index = 0;
             }
         }
     }
 
-    public boolean determineCompletion(Set set) {
+    public boolean determineCompletion(Set set) { // method that determines if a scene is wrapped
         LinkedList<Role> occupiedRoles = set.getTakenRoles();
         occupiedRoles.addAll(set.getScene().getTakenRoles());
         int size = occupiedRoles.size();
@@ -641,7 +641,7 @@ public class Deadwood {
         return false;
     }
 
-    public boolean isNumeric(String s) {
+    public boolean isNumeric(String s) { // helper method for input handling
         int i = 0;
         if (s.charAt(0) == '-') {
             i = 1;
@@ -654,7 +654,7 @@ public class Deadwood {
         return true;
     }
 
-    public void debugBoard(int opt) {
+    public void debugBoard(int opt) { // method that helps with debugging the board
         // Board board = Board.getBoard();
 
         switch (opt) {
