@@ -47,7 +47,7 @@ public class Board {
     }
 
     public Player getPlayer(int index) {
-        if (index > players.size()) {
+        if (index >= players.size()) {
             return null;
         }
         return players.get(index);

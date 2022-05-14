@@ -183,13 +183,14 @@ public class Deadwood {
                 System.out.println("Congrats! Your scene was completed!");
                 currentPlayer.setRole(null);
                 currentPlayer.resetChips();
+                playerLocation.complete();
 
-                boolean completed = determineCompletion(playerLocation);
-                if (completed == false) {
-                    playerLocation.resetShots();
-                    playerLocation.resetRoles();
-                    playerLocation.getScene().resetRoles();
-                }
+                // boolean completed = determineCompletion(playerLocation);
+                // if (completed == false) {
+                //     playerLocation.resetShots();
+                //     playerLocation.resetRoles();
+                //     playerLocation.getScene().resetRoles();
+                // }
             }
 
             else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) {
@@ -556,34 +557,102 @@ public class Deadwood {
     }
 
     public void payout(Set currsSet) {
-        LinkedList<Role> roleList = currsSet.getRoles();
-        roleList.addAll(currsSet.getScene().getParts());
+        //LinkedList<Role> roleList = currsSet.getScene().getParts();
+        LinkedList<Role> leads = currsSet.getScene().getParts();
+        LinkedList<Role> extras = currsSet.getRoles();
+        //int nonextrascount = roleList.size();
+        //roleList.addAll(currsSet.getRoles());
+        int count = countLeads(leads);
+        int budget = currsSet.getScene().getBudget();
+        if (count != 0) {
+            payExtras(extras);
+            payLeads(leads, budget);
+        } else {
+            System.out.println("No lead actors were present\n No bonuses will be awarded");
+        }
+    }
+
+    public int countLeads(LinkedList<Role> roleList){
         int count = 0;
         for (int i = 0; i < numPlayers; i++) {
             Player currPlayer = board.getPlayer(i);
             for (int j = 0; j < roleList.size(); j++) {
                 Role currRole = roleList.get(j);
-                if (currPlayer.getRole() == currRole) {
-                    if (!currRole.isExtra()) {
-                        count++;
-                    }
+                if (currPlayer.getRole() == currRole) {                 
+                    count++;                  
                 }
             }
         }
-        if (count != 0) {
-            for (int i = 0; i < numPlayers; i++) {
-                Player currPlayer = board.getPlayer(i);
-                for (int j = 0; j < roleList.size(); j++) {
-                    Role currRole = roleList.get(j);
-                    if (currPlayer.getRole() == currRole) {
-                        if (currRole.isExtra()) {
-                            currPlayer.addMoney(currRole.getRank());
-                        }
-                    }
+        return count;
+    }
+
+    public ArrayList<Player> getSpots(LinkedList<Role> roleList,ArrayList<Player> playersInRole){
+        //ArrayList<Player> playersInRole = new ArrayList<Player>();
+        for(int i=0;i<numPlayers;i++){
+            Player currPlayer = board.getPlayer(i);
+            Role playerRole = currPlayer.getRole();
+            for(int j=0;j<roleList.size();j++){
+                if(playerRole == roleList.get(j)){
+                    playersInRole.set(j,currPlayer);
                 }
             }
-        } else {
-            System.out.println("No lead actors were present\n No bonuses will be awarded");
+        }
+        return playersInRole;
+    }
+
+    public void payExtras(LinkedList<Role> roleList){
+        for (int i = 0; i < numPlayers; i++) {
+            Player currPlayer = board.getPlayer(i);
+            for (int j = 0; j < roleList.size(); j++) {
+                Role currRole = roleList.get(j);
+                if (currPlayer.getRole() == currRole) {
+                    currPlayer.addMoney(currRole.getRank());
+                }
+            }
+        }
+    }
+
+    public void payLeads(LinkedList<Role> roleList, int budget){
+        ArrayList<Integer> diceRolls = new ArrayList<Integer>();
+        //ArrayList<Player> leadPlayers = new ArrayList<Player>();
+        ArrayList<Player> playersInRole = new ArrayList<Player>();
+        int rolecount = roleList.size();
+        for(int i=0;i<roleList.size();i++){
+            playersInRole.add(null);
+        }
+        //playersInRole = getSpots(roleList);
+        getSpots(roleList,playersInRole);
+        // for(int i=0;i<numPlayers;i++){
+        //     Player currPlayer = board.getPlayer(i);
+        //     Role playerRole = currPlayer.getRole();
+        //     for(int j=0;j<roleList.size();j++){
+        //         if(playerRole == roleList.get(j)){
+        //             playersInRole.set(j,currPlayer);
+        //         }
+        //     }
+        // }
+        System.out.println(playersInRole.toString());
+        
+
+        for(int i =0;i<budget;i++){
+            int roll =(int) (Math.random() * (6 - 1 + 1) + 1);
+            diceRolls.add(roll);
+        }
+        Collections.sort(diceRolls,Collections.reverseOrder());
+        //System.out.println()
+        for(int i=0;i<diceRolls.size();i++){
+            System.out.println("dice roll: " +diceRolls.get(i));
+        }
+        int index=0;
+        for(int i=0;i<budget;i++){
+            Player curPlayer = playersInRole.get(index);
+            if(curPlayer != null){
+                curPlayer.addMoney(diceRolls.get(i));
+            }
+            index++;
+            if(index == rolecount){
+                index=0;
+            }
         }
     }
 
