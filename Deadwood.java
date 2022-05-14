@@ -28,7 +28,6 @@ import org.w3c.dom.Element;
 import java.io.File;
 
 public class Deadwood {
-
     private static final String[] PLAYER_NAMES = { "Blue", "Cyan", "Green", "Orange", "Pink", "Red", "Violet",
             "Yellow" };
     private static Board board;

@@ -1,10 +1,11 @@
 default:
-	javac Deadwood.java
+	rm -f *.class
+	javac *.java
 
 run:
 	rm -f *.class
-	javac Deadwood.java
-	java Deadwood 2
+	javac *.java
+	java Deadwood.java
 	rm -f *.class
 
 clean:
