@@ -70,20 +70,20 @@ public class Deadwood {
         }
         // System.out.println("Welcome to Deadwood!");
 
-        for (int i = 1; i <= dayCount; i++) {
+        for (int i = 1; i <= dayCount; i++) { // this it the main day loop
 
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
-            board.resetTiles();
+            board.resetTiles(); // prepare the tiles
 
             for (int j = 0; j < numPlayers; j++) { // assert players start in trailer at beginning of each day
                 Player temp = board.getPlayer(j);
                 temp.setLocation(board.getTrailer()); // change back to trailer after testing upgrade
             }
-            dailyRoutine(scanner);
+            dailyRoutine(scanner); // run main game loop for the player
         }
         scanner.close();
-        wrapUp();
+        wrapUp(); // modified quit game that doesnt prompt for input
     }
 
     // Gets xml data and populates board with sets and players
@@ -105,10 +105,10 @@ public class Deadwood {
                 d = parser.getDocFromFile(xfiles[i]);
                 switch (i) {
                     case 0:
-                        sets = parser.readBoard(d);
+                        sets = parser.readBoard(d); // grab the board tiles
                         break;
                     case 1:
-                        cards = parser.readCards(d);
+                        cards = parser.readCards(d); // grab the cards
                         break;
                 }
             }
@@ -118,11 +118,11 @@ public class Deadwood {
 
         // Use data to populate board
 
-        board = Board.getBoard();
-        board.addSets(sets);
-        board.setTrailer(sets.get(sets.size() - 2));
-        board.setOffice(sets.get(sets.size() - 1));
-        Collections.shuffle(cards);
+        board = Board.getBoard(); // set the board global variable
+        board.addSets(sets); // add all the sets to the board
+        board.setTrailer(sets.get(sets.size() - 2)); // add the trailer tile to the board
+        board.setOffice(sets.get(sets.size() - 1)); // add the office tile to the board
+        Collections.shuffle(cards); // shuffle so cards arent in order
 
         // Populate players and change their attributes depending on player count
 
@@ -161,72 +161,65 @@ public class Deadwood {
         return dailyCards;
     }
 
+    // main turn loop for each player
     private void dailyRoutine(Scanner scanner) {
-        String input;
+        String input; 
         // boolean toggle = true;
         int currplayerindex = 0;
         // int
 
         while (true) {
 
-            Player currentPlayer = board.getPlayer(currplayerindex);
-            String playerName = currentPlayer.getName();
-            Set playerLocation = currentPlayer.getLocation();
-            int shotsRemaining = playerLocation.shotsRemaining();
-            int shotCap = playerLocation.getShotCapacity();
+            Player currentPlayer = board.getPlayer(currplayerindex); // get the current player 
+            String playerName = currentPlayer.getName(); // get players name
+            Set playerLocation = currentPlayer.getLocation(); // get players location
+            int shotsRemaining = playerLocation.shotsRemaining(); // get the shots remaining for players' location
             System.out.println("\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "
                     + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
-            System.out.println(" Your rank is: " + currentPlayer.getRank());
+            System.out.println(" Your rank is: " + currentPlayer.getRank()); // print out the players attributes
             int opt;
             // debugBoard(3);
-            if ((shotsRemaining == 0 && currentPlayer.checkInRole())) {
+            if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is completed
                 System.out.println("Congrats! Your scene was completed!");
-                currentPlayer.setRole(null);
-                currentPlayer.resetChips();
-                playerLocation.complete();
-
-                // boolean completed = determineCompletion(playerLocation);
-                // if (completed == false) {
-                //     playerLocation.resetShots();
-                //     playerLocation.resetRoles();
-                //     playerLocation.getScene().resetRoles();
-                // }
+                currentPlayer.setRole(null); // reset the players current role
+                currentPlayer.resetChips(); // reset their chip count
+                playerLocation.complete(); // say location is complete
             }
 
-            else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) {
+            else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is completed -- may be redundant
                 System.out.println("Congrats! Your scene was completed!");
                 currentPlayer.setRole(null);
                 currentPlayer.resetChips();
             }
 
-            else if (playerLocation.isComplete()) {
+            else if (playerLocation.isComplete()) { // if a player moves to a completed scene
                 System.out.println("\nThis scene has already been completed");
             }
 
-            if (currentPlayer.checkInRole() && !playerLocation.isComplete()) {
-                opt = actingChoices(currentPlayer);
-                if (opt == 1) {
+            if (currentPlayer.checkInRole() && !playerLocation.isComplete()) { // check if player is in role and if their scene isnt completed
+                opt = actingChoices(currentPlayer); // give the player the choices for acting
+                if (opt == 1) { // player finished their turn
                     currplayerindex++;
                 }
             } else {
-                opt = basicChoices(currentPlayer);
+                opt = basicChoices(currentPlayer); // player completed their turn
                 if (opt == 1) {
                     currplayerindex++;
                 }
-                if (opt == 2) {
+                if (opt == 2) { //for testing purposes
                     board.completeAll();
                 }
             }
 
-            if (board.dayEnd()) {
+            if (board.dayEnd()) { // if 9/10 scenes are completed, end the day
                 break;
             }
 
-            if (currplayerindex == numPlayers) {
+            if (currplayerindex == numPlayers) { // loop back around to starting player
                 currplayerindex = 0;
                 for (int i = 0; i < numPlayers; i++) { // assert players can move again after their turn has completed
                     Player temp = board.getPlayer(i); // doesnt matter if player is already in a role. Current set up
-                                                      // doesnt allow them to move if they are
+                                                      // doesnt allow them to move if they already did in the turn
                     if (!temp.canMove()) {
                         temp.allowMove();
                     }
@@ -235,7 +228,7 @@ public class Deadwood {
         }
     }
 
-    public void quitGame() {
+    public void quitGame() { // exit method that prompts user if they want to quit
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("Are you sure? (Y) or (N): ");
@@ -243,32 +236,32 @@ public class Deadwood {
             answer = answer.toUpperCase();
             if (answer.equals("Y")) {
                 System.out.println("\nGAME OVER\n");
-                for (int i = 0; i < numPlayers; i++) {
+                for (int i = 0; i < numPlayers; i++) { // print out each players end game score
                     System.out.println(
                             " " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
                 }
                 scanner.close();
                 System.out.println();
                 System.exit(0);
-            } else if (answer.equals("N")) {
+            } else if (answer.equals("N")) { // return back to game loop
                 break;
             } else {
-                System.out.println("Please enter Y or N");
+                System.out.println("Please enter Y or N"); // invalid input was given
             }
         }
     }
 
-    public void wrapUp() {
+    public void wrapUp() { // end game method that doesnt take input
         System.out.println("\nGAME OVER\n");
         System.out.println("Final scores:");
-        for (int i = 0; i < numPlayers; i++) {
+        for (int i = 0; i < numPlayers; i++) { // print players end game score
             System.out.println(" " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
         }
         System.out.println();
         System.exit(0);
     }
 
-    public int basicChoices(Player p) {
+    public int basicChoices(Player p) { // present the choices to the player who isnt acting
         Scanner scanner = new Scanner(System.in); // DO NOT CLOSE SCANNER -- WILL BREAK THINGS
         Set playerLocation = p.getLocation();
         Scene scene = playerLocation.getScene();
@@ -279,30 +272,30 @@ public class Deadwood {
             op = op.toUpperCase();
             switch (op) {
                 case "QUIT":
-                    quitGame();
+                    quitGame(); // end game
                     break;
                 case "TURN":
-                    return 1;
+                    return 1; // return 1 to change player
                 case "WORK":
-                    int ret = takeRole(p);
+                    int ret = takeRole(p); // ask player what role to take
                     if (ret == 0) {
                         break;
                     } else {
-                        return ret;
+                        return ret; // if a role was taken return a 1 signifying end of turn
                     }
                 case "MOVE":
-                    if (p.canMove()) {
-                        move(p);
+                    if (p.canMove()) { // if a player hasnt moved in their turn already
+                        move(p); // allow them to move
                     } else {
                         System.out.println("\nYou have already moved this turn\n");
                     }
                     break;
                 case "UPGRADE":
-                    if (p.getRank() == 6) {
+                    if (p.getRank() == 6) { // player cant upgrade past rank 6
                         System.out.println("\nYou are already max rank. Upgrade denied\n");
                         break;
                     }
-                    if (playerLocation == board.getOffice()) {
+                    if (playerLocation == board.getOffice()) { // assert player is at office before letting them upgrade
                         upgrade(p);
                         break;
                     } else {
@@ -320,7 +313,7 @@ public class Deadwood {
         return 0;
     }
 
-    public int actingChoices(Player p) {
+    public int actingChoices(Player p) { // present the choices to the actor
         // System.out.println("\nWelcome actor!");
         Scanner pinput = new Scanner(System.in);
         String choice;
@@ -330,7 +323,7 @@ public class Deadwood {
         // System.out.println(" There are " + p.getLocation().shotsRemaining() + " shots
         // remaining");
         while (true) {
-            System.out.println("\nWhat would you like to do? (Act, Rehearse, Turn or Quit)");
+            System.out.println("\nWhat would you like to do? (Act, Rehearse or Quit)");
             System.out.println(" Your current role is: " + currRole.getTitle() + "\n Is an extra: " + currRole.isExtra()
                     + "\n Scene budget: " + budget);
             System.out.println(" Shots remaining: " + p.getLocation().shotsRemaining());
@@ -339,60 +332,55 @@ public class Deadwood {
             choice = choice.toUpperCase();
             switch (choice) {
                 case "ACT":
-                    act(p, currRole);
+                    act(p, currRole); // let player act
                     return 1;
                 case "REHEARSE":
-                    if (p.getChips() == budget - 1) {
+                    if (p.getChips() == budget - 1) { //if player is at a point of guaranteed succes, dont let them rehearse again
                         System.out.println("\nYou cannot rehearse anymore. Please act\n");
                     } else {
                         System.out.println("\nYou chose to rehearse\n");
-                        p.addChip();
+                        p.addChip(); // incread players chip count
                         return 1;
                     }
                     break;
                 case "QUIT":
-                    quitGame();
+                    quitGame(); // quit game
                     break;
-                case "TURN":
-                    return 1;
                 default:
                     System.out.println("\nPlease make a valid choice\n");
             }
         }
-
     }
 
-    public void move(Player player) {
+    public void move(Player player) { // show the locations a player can move to. prompt them to pick one
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nWhere would you like to move to?");
-        Set location = player.getLocation();
-        LinkedList<Set> neighbors = location.getNeighbors();
+        Set location = player.getLocation(); // get players current location
+        LinkedList<Set> neighbors = location.getNeighbors(); // grab the neighbor sets
         int count = location.getNeighbors().size();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) { // print neighboring locations
             Set currSet = neighbors.get(i);
             Scene currScene = currSet.getScene();
-            if (currScene == null) {
+            if (currScene == null) { // if the neighbor is office or trailer
                 System.out.println(" " + i + " - Location: " + currSet.getName());
-            } else {
+            } else { // print attributes of neighboring tile
                 System.out
                         .println(" " + i + " - Location: " + currSet.getName() + " -Budget: $" + currScene.getBudget());
             }
         }
-        System.out.println(" " + count + " - GO BACK");
-        while (true) {
-            // System.out.print("Select a location to move to (0-" + (count - 1) + "): ");
+        System.out.println(" " + count + " - GO BACK"); // give them a go back option
+        while (true) { // prompt for input
             String input = scanner.nextLine();
             if (isNumeric(input)) {
                 int pick = Integer.parseInt(input);
-                if (pick > count || pick < 0) {
+                if (pick > count || pick < 0) { // make sure player entered a valid choice
                     System.out.println("\nPlease enter a valid option (0-" + count + ")");
-                } else if (pick == count) {
+                } else if (pick == count) { // go back choice
                     return;
-                } else {
+                } else {// move player to the tile
                     player.setLocation(neighbors.get(pick));
                     player.moved();
                     player.resetChips();
-                    // debugBoard(2);
                     return;
                 }
             } else {
@@ -406,26 +394,23 @@ public class Deadwood {
         LinkedList<Role> totalRoles = new LinkedList<Role>();
         Set playerLocation = player.getLocation();
         Scene scene = playerLocation.getScene();
-        // debugBoard(3);
         if (playerLocation.getName().equals("trailer") || playerLocation.getName().equals("office")) {
             System.out.println("\nNo roles are offered at: " + playerLocation.getName());
             return 0;
         }
-        LinkedList<Role> sceneRoles = playerLocation.getAvailableRoles();
-        // System.out.println("num scene roles: " + sceneRoles.size());
-        LinkedList<Role> setRoles = scene.getAvailableRoles();
-        // System.out.println("num set roles: " + setRoles.size());
+        LinkedList<Role> sceneRoles = playerLocation.getAvailableRoles(); // grab the nontaken scene roles
+        LinkedList<Role> setRoles = scene.getAvailableRoles(); //grab the nontaken set roles
         totalRoles.addAll(sceneRoles);
-        totalRoles.addAll(setRoles);
+        totalRoles.addAll(setRoles);// combine them to one list
         int size = totalRoles.size();
-        if (size == 0 || playerLocation.isComplete()) {
+        if (size == 0 || playerLocation.isComplete()) {// if no roles are offered or tile is complete
             System.out.println("No available roles");
             return 0;
         } else {
             String choice;
             while (true) {
                 System.out.println("\nPick a role: ");
-                for (int i = 0; i < size; i++) {
+                for (int i = 0; i < size; i++) {// display the role choices to the player and ask to pick one
                     Role currRole = totalRoles.get(i);
                     System.out.println(
                             " " + i + " - Role: " + currRole.getTitle() + " Minimum rank: " + currRole.getRank()
@@ -433,23 +418,22 @@ public class Deadwood {
                 }
                 System.out.println(" " + size + " - GO BACK");
                 choice = pinput.nextLine();
-                if (isNumeric(choice)) {
+                if (isNumeric(choice)) {// prompt user for choice
                     int pick = Integer.parseInt(choice);
-                    // Role chosen = totalRoles.get(pick);
-                    if (pick < 0 || pick > size) {
+                    if (pick < 0 || pick > size) { // if pick out of scope
                         System.out.println("Please pick a valid number\n");
-                    } else if (pick == size) {
+                    } else if (pick == size) {// player picked go back option
                         return 0;
-                    } else if (player.getRank() < totalRoles.get(pick).getRank()) {
+                    } else if (player.getRank() < totalRoles.get(pick).getRank()) { // player chose a role without the means
                         System.out.println("Not high enough rank, please choose a valid role\n");
                     } else {
-                        Role chosen = totalRoles.get(pick);
+                        Role chosen = totalRoles.get(pick); // give player the chosen role
                         System.out.println("Role: '" + chosen.getTitle() + "' taken");
                         System.out.println(" Line: " + chosen.getDescription());
                         player.setRole(chosen);
                         chosen.fillRole();
                         // scanner.close();
-                        return 1;
+                        return 1; // end the turn
                     }
                 } else {
                     System.out.println("Please pick a valid number\n");
@@ -458,84 +442,73 @@ public class Deadwood {
         }
     }
 
-    public void resetBoard(Board board) {
-
-    }
-
-    public Scene[] shuffleScenes(Scene[] scenes) {
-        return null;
-    }
-
     public void upgrade(Player player) {
         int rank = player.getRank();
         Scanner scanner = new Scanner(System.in);
-
+        // grab the players resources
         int playerMoney = player.getMoney();
         int playerCredit = player.getCredits();
-        Set office = player.getLocation();
+        Set office = player.getLocation(); // get curr location
         LinkedList<String[]> creditLegend = office.getCreditLegend();
-        LinkedList<String[]> moneyLegend = office.getMoneyLegend();
+        LinkedList<String[]> moneyLegend = office.getMoneyLegend(); // grab the two different payment method rubrics
         String[] moneyCost = moneyLegend.get(rank - 1);
-        int mCost = Integer.parseInt(moneyCost[2]);
+        int mCost = Integer.parseInt(moneyCost[2]); // grab the money cost
         String[] creditCost = creditLegend.get(rank - 1);
-        int cCost = Integer.parseInt(creditCost[2]);
-        // System.out.println(Arrays.toString(moneyCost));
-        // System.out.println(Arrays.toString(creditCost));
+        int cCost = Integer.parseInt(creditCost[2]); // grab the credit cost
         String choice;
-        if (playerMoney >= mCost && playerCredit >= cCost) {
+        if (playerMoney >= mCost && playerCredit >= cCost) { // if the player has enough of both credits and money to upgrade
             System.out.println("\nYou have the choice of spending your money or credits");
 
-            while (true) {
+            while (true) { // give player the choice of what they want to spend
                 System.out.println("\nYou have $" + playerMoney + " and " + playerCredit + " credits");
                 System.out.print(" What would you like to spend (M or C)? ");
                 choice = scanner.nextLine();
                 choice = choice.toUpperCase();
                 switch (choice) {
-                    case "M":
+                    case "M": // spend their money and increase rank
                         System.out.println("Rank increased");
                         player.subMoney(mCost);
                         player.increaseRank();
                         return;
-                    case "C":
+                    case "C": // spend their credits and increase their rank
                         System.out.println("Rank increased");
                         player.subCredits(cCost);
                         player.increaseRank();
                         return;
-                    default:
+                    default: // enter valid option
                         System.out.println("\nPlease enter a valid option (M or C)\n");
                         break;
                 }
             }
-        } else if (playerMoney >= mCost) {
+        } else if (playerMoney >= mCost) { // player only has enough money to upgrade rank
             System.out.println("You spent money to increase your rank");
             player.subMoney(mCost);
             player.increaseRank();
             return;
-        } else if (playerCredit >= cCost) {
+        } else if (playerCredit >= cCost) { // player only has enough credits to upgrade rank
             System.out.println("You spent credits to increase your rank");
             player.subCredits(cCost);
             player.increaseRank();
             return;
-        } else {
+        } else { // player doesnt have the means to increase their rank
             System.out.println("\nYou dont have the resources to increase your rank. Try again later.");
             return;
         }
     }
 
-    public void act(Player player, Role currRole) {
-        // System.out.println("You chose to act\n");
+    public void act(Player player, Role currRole) { // player chose to act 
         int budget = player.getLocation().getScene().getBudget();
         Set currSet = player.getLocation();
-        int roll = (int) (Math.random() * (6 - 1 + 1) + 1);
+        int roll = (int) (Math.random() * (6 - 1 + 1) + 1); // role the dice
         System.out.println("You rolled a: " + roll);
-        int total = roll + player.getChips();
-        if (total >= budget) {
+        int total = roll + player.getChips(); // get their total roll
+        if (total >= budget) { // if the roll is successful
             System.out.println("Act success! Your total was: " + total);
-            currSet.completeShot();
-            if (currSet.shotsRemaining() == 0) {
+            currSet.completeShot(); // increase amount of shots completed
+            if (currSet.shotsRemaining() == 0) { // if tile is done, determine if their is a bonus to pay out
                 payout(currSet);
             }
-            if (currRole.isExtra()) {
+            if (currRole.isExtra()) { // pay the player the amount determined by role
                 System.out.println(" Payout: 1 dollar and 1 credit");
                 player.addCredits(1);
                 player.addMoney(1);
@@ -546,7 +519,7 @@ public class Deadwood {
             return;
         } else {
             System.out.println("Act failure! Your total was: " + total);
-            if (currRole.isExtra()) {
+            if (currRole.isExtra()) { // if the player was an extra, they still get paid
                 System.out.println(" You're an extra though, you still get a dollar");
                 player.addMoney(1);
             } else {
@@ -556,12 +529,9 @@ public class Deadwood {
         }
     }
 
-    public void payout(Set currsSet) {
-        //LinkedList<Role> roleList = currsSet.getScene().getParts();
+    public void payout(Set currsSet) { // method that determines if a bonus should be rewared
         LinkedList<Role> leads = currsSet.getScene().getParts();
         LinkedList<Role> extras = currsSet.getRoles();
-        //int nonextrascount = roleList.size();
-        //roleList.addAll(currsSet.getRoles());
         int count = countLeads(leads);
         int budget = currsSet.getScene().getBudget();
         if (count != 0) {
