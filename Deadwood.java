@@ -601,7 +601,7 @@ public class Deadwood {
         }
         getSpots(roleList, playersInRole);
 
-        System.out.println(playersInRole.toString());
+        //System.out.println(playersInRole.toString());
 
         for (int i = 0; i < budget; i++) {
             int roll = (int) (Math.random() * (6 - 1 + 1) + 1);
@@ -632,7 +632,7 @@ public class Deadwood {
         for (int i = 0; i < size; i++) {
             Role currRole = occupiedRoles.get(i);
             if (!currRole.isExtra()) {
-                System.out.println("non extra detected");
+                //System.out.println("non extra detected");
                 set.complete();
                 return true;
             }

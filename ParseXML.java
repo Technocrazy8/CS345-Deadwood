@@ -279,7 +279,6 @@ public class ParseXML {
                Role newRole = new Role();
                NamedNodeMap roleAttributes = cardChild.getAttributes();
                NodeList rolechildren = cardChild.getChildNodes();
-               //System.out.println("num: "+rolechildren.getLength());
 
                newRole.setTitle(roleAttributes.getNamedItem("name").getNodeValue());
 
