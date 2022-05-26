@@ -7,9 +7,9 @@
  * Professor: Dr. Sharmin
  * We (Evan and Clement) attest that this implementation
  * of Deadwood is a work of our own
- * 
+ *
  * Our game controller
- * 
+ *
  * Responsiblities:
  * - Loop through game routine
  * - Manage player's interaction with the game
@@ -21,6 +21,22 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.ImageIcon;
+import javax.swing.JTabbedPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -28,39 +44,66 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 
-public class Deadwood {
+public class Deadwood extends BoardLayersListener{
     private static final String[] PLAYER_NAMES = { "Blue", "Cyan", "Green", "Orange", "Pink", "Red", "Violet",
             "Yellow" };
     private static Board board;
     private static int numPlayers;
+    private static JFrame frame = new JFrame("Deadwood");
+    private static JPanel mainPanel = new JPanel();
+    private static JLabel boardlabel = new JLabel();
 
-    public static void main(String[] args) {
-        Deadwood game = new Deadwood();
+    // public static void main(String[] args) {
+    //     Deadwood game = new Deadwood();
+    //     // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //     //
+    //     // boardlabel.setIcon(new ImageIcon("Deadwood Needed Image Files/board.jpg"));
+    //     // Dimension size = boardlabel.getPreferredSize();
+    //     // //label.setPreferredSize(new Dimension(175, 100));
+    //     // boardlabel.setBounds(0,0,size.width,size.height);
+    //     // frame.getContentPane().add(boardlabel, BorderLayout.CENTER);
+    //     // Button quitbtn = new Button("Quit");
+    //     // Button turnbtn = new Button("End turn");
+    //     // //btn.setBounds(50, 50, 150, 150);
+    //     // quitbtn.setPreferredSize(new Dimension(100,75));
+    //     // mainPanel.setLayout(new GridLayout(3,2));
+    //     // mainPanel.setBounds(5000,5000,5000,5000);
+    //     // mainPanel.setLocation(15000,11500);
+    //     // mainPanel.add(quitbtn);
+    //     // mainPanel.add(turnbtn);
+    //     // frame.add(mainPanel);
+    //     // frame.setSize(150, 150);
+    //     // frame.setTitle("DeadWood");
+    //     // frame.setLayout(new FlowLayout());
+    //     // frame.pack();
+    //     // frame.setVisible(true);
+    //
+    //     System.out.println("Welcome to Deadwood!\n");
+    //     int numPlayers = 0;
+    //
+    //     if (args.length != 1) {
+    //         System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+    //         return;
+    //     }
+    //
+    //     try {
+    //         numPlayers = Integer.parseInt(args[0]);
+    //         if (numPlayers < 2 || numPlayers > 8) {
+    //             Exception e = new Exception();
+    //             throw e;
+    //         }
+    //
+    //     } catch (Exception e) {
+    //         System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+    //         return;
+    //     }
+    //     game.run(numPlayers);
+    // }
 
-        System.out.println("Welcome to Deadwood!\n");
-        int numPlayers = 0;
-
-        if (args.length != 1) {
-            System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
-            return;
-        }
-
-        try {
-            numPlayers = Integer.parseInt(args[0]);
-            if (numPlayers < 2 || numPlayers > 8) {
-                Exception e = new Exception();
-                throw e;
-            }
-
-        } catch (Exception e) {
-            System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
-            return;
-        }
-
-        game.run(numPlayers);
-    }
-
-    private void run(int playerCount) {
+    public void run(int playerCount) {
+        // BoardLayersListener viewer = new BoardLayersListener();
+        // viewer.setVisible(true);
+        // JOptionPane.showInputDialog(board, "How many players?");
         numPlayers = playerCount;
         Scanner scanner = new Scanner(System.in);
         LinkedList<Scene> cards = setupProcedure(numPlayers);
@@ -234,8 +277,8 @@ public class Deadwood {
     public void quitGame() { // exit method that prompts user if they want to quit
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.print("Are you sure? (Y) or (N): ");
-            String answer = scanner.next();
+            //System.out.print("Are you sure? (Y) or (N): ");
+            String answer = JOptionPane.showInputDialog("Are You Sure? (Y) or (N)");
             answer = answer.toUpperCase();
             if (answer.equals("Y")) {
                 System.out.println("\nGAME OVER\n");
@@ -247,7 +290,7 @@ public class Deadwood {
                 System.out.println();
                 System.exit(0);
             } else if (answer.equals("N")) { // return back to game loop
-                break;
+                return;
             } else {
                 System.out.println("Please enter Y or N"); // invalid input was given
             }
