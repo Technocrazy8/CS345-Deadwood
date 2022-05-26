@@ -20,6 +20,7 @@ import java.util.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.swing.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -303,8 +304,8 @@ public class Deadwood {
                         System.out.println("\nPlease move to the office to upgrade...\n");
                         break;
                     }
-                // case "DAY": // DELETE THIS IN FINAL PRODUCT
-                //     return 2;
+                    // case "DAY": // DELETE THIS IN FINAL PRODUCT
+                    // return 2;
                 default:
                     System.out.println("Please enter a valid option\n");
                     break;
