@@ -82,7 +82,7 @@ public class BoardLayersListener extends JFrame {
        // Add the card to the lower layer
        bPane.add(cardlabel, 1);
 
-
+       boardMouseListener mouseListener = new boardMouseListener();
 
 
        // Add a dice to represent a player.
@@ -174,7 +174,7 @@ public class BoardLayersListener extends JFrame {
          }
          else if(e.getSource() == bQuit){
            System.out.println("Quit is Selected\n");
-           //game.quitGame();
+           game.quitGame();
          }
       }
       public void mousePressed(MouseEvent e) {

@@ -56,57 +56,18 @@ public class Deadwood{
     //private static
 
     public static void main(String[] args) {
-    Deadwood game = new Deadwood();
-    //     // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //     //
-    //     // boardlabel.setIcon(new ImageIcon("Deadwood Needed Image Files/board.jpg"));
-    //     // Dimension size = boardlabel.getPreferredSize();
-    //     // //label.setPreferredSize(new Dimension(175, 100));
-    //     // boardlabel.setBounds(0,0,size.width,size.height);
-    //     // frame.getContentPane().add(boardlabel, BorderLayout.CENTER);
-    //     // Button quitbtn = new Button("Quit");
-    //     // Button turnbtn = new Button("End turn");
-    //     // //btn.setBounds(50, 50, 150, 150);
-    //     // quitbtn.setPreferredSize(new Dimension(100,75));
-    //     // mainPanel.setLayout(new GridLayout(3,2));
-    //     // mainPanel.setBounds(5000,5000,5000,5000);
-    //     // mainPanel.setLocation(15000,11500);
-    //     // mainPanel.add(quitbtn);
-    //     // mainPanel.add(turnbtn);
-    //     // frame.add(mainPanel);
-    //     // frame.setSize(150, 150);
-    //     // frame.setTitle("DeadWood");
-    //     // frame.setLayout(new FlowLayout());
-    //     // frame.pack();
-    //     // frame.setVisible(true);
-    //
+        Deadwood game = new Deadwood();
+
         System.out.println("Welcome to Deadwood!\n");
         int numPlayers = 0;
         listener = new BoardLayersListener(game);
         listener.setVisible(true);
-
-        // if (args.length != 1) {
-        //     System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
-        //     return;
-        // }
-        //
-        // try {
-        //     numPlayers = Integer.parseInt(args[0]);
-        //     if (numPlayers < 2 || numPlayers > 8) {
-        //         Exception e = new Exception();
-        //         throw e;
-        //     }
-        //
-        // } catch (Exception e) {
-        //     System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
-        //     return;
-        //}
         String playerCount;
         while(true){
             playerCount = JOptionPane.showInputDialog(listener, "How many players? (2-8)");
-            if(playerCount.length()!=0&&game.isNumeric(playerCount)){
-              int in = Integer.parseInt(playerCount);
-              if(in>=2&&in<=8){
+            if(playerCount != null &&playerCount.length()!=0 && game.isNumeric(playerCount)){
+              numPlayers = Integer.parseInt(playerCount);
+              if(numPlayers>=2&&numPlayers<=8){
                 break;
               }
             }
@@ -129,7 +90,7 @@ public class Deadwood{
 
         for (int i = 1; i <= dayCount; i++) { // this it the main day loop
             String day = "Day " + i +"\n";
-            BoardLayersListener.addText(day);
+            listener.addText(day);
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
             board.resetTiles(); // prepare the tiles
@@ -234,7 +195,11 @@ public class Deadwood{
             int shotsRemaining = playerLocation.shotsRemaining(); // get the shots remaining for players' location
             System.out.println("\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "
                     + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
+
+            String turnline = "\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "+ currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName();
+            listener.addText(turnline);
             System.out.println(" Your rank is: " + currentPlayer.getRank()); // print out the players attributes
+            listener.addText("\n Your rank is: " + currentPlayer.getRank());
             int opt;
             // debugBoard(3);
             if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is
