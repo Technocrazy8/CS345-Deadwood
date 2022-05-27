@@ -53,6 +53,7 @@ public class Deadwood{
     private static JPanel mainPanel = new JPanel();
     private static JLabel boardlabel = new JLabel();
     private static BoardLayersListener listener;
+    private static BoardLayersListener.boardMouseListener mouse;
     //private static
 
     public static void main(String[] args) {
@@ -60,7 +61,10 @@ public class Deadwood{
 
         System.out.println("Welcome to Deadwood!\n");
         int numPlayers = 0;
+
         listener = new BoardLayersListener(game);
+        //mouse = new BoardMouseListener(listener);
+
         listener.setVisible(true);
         String playerCount;
         while(true){
@@ -739,6 +743,40 @@ public class Deadwood{
                 break;
         }
     }
+    // // This class implements Mouse Events
+    //
+    // class boardMouseListener implements MouseListener{
+    //
+    //     // Code for the different button clicks
+    //     public void mouseClicked(MouseEvent e) {
+    //
+    //        if (e.getSource()== bAct){
+    //           playerlabel.setVisible(true);
+    //           System.out.println("Acting is Selected\n");
+    //        }
+    //        else if (e.getSource()== bRehearse){
+    //           System.out.println("Rehearse is Selected\n");
+    //        }
+    //        else if (e.getSource()== bMove){
+    //           System.out.println("Move is Selected\n");
+    //        }
+    //        else if(e.getSource()==bTurn){
+    //          System.out.println("Turn is Selected\n");
+    //        }
+    //        else if(e.getSource() == bQuit){
+    //          System.out.println("Quit is Selected\n");
+    //          game.quitGame();
+    //        }
+    //     }
+    //     public void mousePressed(MouseEvent e) {
+    //     }
+    //     public void mouseReleased(MouseEvent e) {
+    //     }
+    //     public void mouseEntered(MouseEvent e) {
+    //     }
+    //     public void mouseExited(MouseEvent e) {
+    //     }
+    //  }
 }
 /**
  * Questions:

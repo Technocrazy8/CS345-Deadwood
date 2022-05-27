@@ -44,7 +44,7 @@ public class BoardLayersListener extends JFrame {
   JButton button;
 
   //Deadwood model
-  Deadwood game;
+  static Deadwood game;
 
   // Constructor
 
@@ -88,7 +88,7 @@ public class BoardLayersListener extends JFrame {
        // Add a dice to represent a player.
        // Role for Crusty the prospector. The x and y co-ordiantes are taken from Board.xml file
        playerlabel = new JLabel();
-       ImageIcon pIcon = new ImageIcon("r2.png");
+       ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/r2.png");
        playerlabel.setIcon(pIcon);
        //playerlabel.setBounds(114,227,pIcon.getIconWidth(),pIcon.getIconHeight());
        playerlabel.setBounds(114,227,46,46);
@@ -104,27 +104,32 @@ public class BoardLayersListener extends JFrame {
        bAct = new JButton("ACT");
        bAct.setBackground(Color.white);
        bAct.setBounds(icon.getIconWidth()+10, 30,200, 20);
-       bAct.addMouseListener(new boardMouseListener());
+       //bAct.addMouseListener(new boardMouseListener());
+       bAct.addMouseListener(mouseListener);
 
        bRehearse = new JButton("REHEARSE");
        bRehearse.setBackground(Color.white);
        bRehearse.setBounds(icon.getIconWidth()+10,60,200, 20);
-       bRehearse.addMouseListener(new boardMouseListener());
+       //bRehearse.addMouseListener(new boardMouseListener());
+       bRehearse.addMouseListener(mouseListener);
 
        bMove = new JButton("MOVE");
        bMove.setBackground(Color.white);
        bMove.setBounds(icon.getIconWidth()+10,90,200, 20);
-       bMove.addMouseListener(new boardMouseListener());
+       //bMove.addMouseListener(new boardMouseListener());
+       bMove.addMouseListener(mouseListener);
 
        bTurn = new JButton("END TURN");
        bTurn.setBackground(Color.white);
        bTurn.setBounds(icon.getIconWidth()+10,120,200, 20);
-       bTurn.addMouseListener(new boardMouseListener());
+       //bTurn.addMouseListener(new boardMouseListener());
+       bTurn.addMouseListener(mouseListener);
 
        bQuit = new JButton("END GAME");
        bQuit.setBackground(Color.white);
        bQuit.setBounds(icon.getIconWidth()+10,150,200, 20);
-       bQuit.addMouseListener(new boardMouseListener());
+       //bQuit.addMouseListener(new boardMouseListener());
+       bQuit.addMouseListener(mouseListener);
 
        // Place the action buttons in the top layer
        bPane.add(bAct, 2);
@@ -152,8 +157,8 @@ public class BoardLayersListener extends JFrame {
        //game = new Deadwood();
   }
 
-  // This class implements Mouse Events
-
+  // // This class implements Mouse Events
+  
   class boardMouseListener implements MouseListener{
 
       // Code for the different button clicks
