@@ -52,11 +52,11 @@ public class Deadwood{
     private static JFrame frame = new JFrame("Deadwood");
     private static JPanel mainPanel = new JPanel();
     private static JLabel boardlabel = new JLabel();
-    //private static BoardLayersListener listener = getlistener();
+    private static BoardLayersListener listener;
     //private static
 
-    // public static void main(String[] args) {
-    //     Deadwood game = new Deadwood();
+    public static void main(String[] args) {
+    Deadwood game = new Deadwood();
     //     // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     //     //
     //     // boardlabel.setIcon(new ImageIcon("Deadwood Needed Image Files/board.jpg"));
@@ -80,27 +80,39 @@ public class Deadwood{
     //     // frame.pack();
     //     // frame.setVisible(true);
     //
-    //     System.out.println("Welcome to Deadwood!\n");
-    //     int numPlayers = 0;
-    //
-    //     if (args.length != 1) {
-    //         System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
-    //         return;
-    //     }
-    //
-    //     try {
-    //         numPlayers = Integer.parseInt(args[0]);
-    //         if (numPlayers < 2 || numPlayers > 8) {
-    //             Exception e = new Exception();
-    //             throw e;
-    //         }
-    //
-    //     } catch (Exception e) {
-    //         System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
-    //         return;
-    //     }
-    //     game.run(numPlayers);
-    // }
+        System.out.println("Welcome to Deadwood!\n");
+        int numPlayers = 0;
+        listener = new BoardLayersListener(game);
+        listener.setVisible(true);
+
+        // if (args.length != 1) {
+        //     System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+        //     return;
+        // }
+        //
+        // try {
+        //     numPlayers = Integer.parseInt(args[0]);
+        //     if (numPlayers < 2 || numPlayers > 8) {
+        //         Exception e = new Exception();
+        //         throw e;
+        //     }
+        //
+        // } catch (Exception e) {
+        //     System.out.println("Invalid arguments:\njava Deadwood p\np = number of players: [2,8]");
+        //     return;
+        //}
+        String playerCount;
+        while(true){
+            playerCount = JOptionPane.showInputDialog(listener, "How many players? (2-8)");
+            if(playerCount.length()!=0&&game.isNumeric(playerCount)){
+              int in = Integer.parseInt(playerCount);
+              if(in>=2&&in<=8){
+                break;
+              }
+            }
+          }
+        game.run(numPlayers);
+    }
 
     public void run(int playerCount) {
         // BoardLayersListener viewer = new BoardLayersListener();

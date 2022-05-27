@@ -44,14 +44,16 @@ public class BoardLayersListener extends JFrame {
   JButton button;
 
   //Deadwood model
-  static Deadwood game;
+  Deadwood game;
 
   // Constructor
 
-  public BoardLayersListener() {
+  public BoardLayersListener(Deadwood game) {
+      super("Deadwood");
 
+      this.game = game;
        // Set the title of the JFrame
-       super("Deadwood");
+       //super("Deadwood");
        // Set the exit option for the JFrame
        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -147,7 +149,7 @@ public class BoardLayersListener extends JFrame {
        area.append("Welcome to Deadwood!\n");
        System.out.println("Text\n");
 
-       game = new Deadwood();
+       //game = new Deadwood();
   }
 
   // This class implements Mouse Events
@@ -172,7 +174,7 @@ public class BoardLayersListener extends JFrame {
          }
          else if(e.getSource() == bQuit){
            System.out.println("Quit is Selected\n");
-           game.quitGame();
+           //game.quitGame();
          }
       }
       public void mousePressed(MouseEvent e) {
@@ -194,28 +196,28 @@ public class BoardLayersListener extends JFrame {
    }
 
 
-  public static void main(String[] args) {
-
-    BoardLayersListener board = new BoardLayersListener();
-    board.setVisible(true);
-    //board.run();
-    game = new Deadwood();
-    //game.run();
-    String playerCount;
-      // Take input from the user about number of players
-    while(true){
-      playerCount = JOptionPane.showInputDialog(board, "How many players? (2-8)");
-      if(playerCount.length()!=0&&game.isNumeric(playerCount)){
-        int in = Integer.parseInt(playerCount);
-        if(in>=2&&in<=8){
-          break;
-        }
-      }
-    }
-
-    game.run(Integer.parseInt(playerCount));
-    System.exit(0);
-  }
+  // public static void main(String[] args) {
+  //
+  //   BoardLayersListener board = new BoardLayersListener();
+  //   board.setVisible(true);
+  //   //board.run();
+  //   game = new Deadwood();
+  //   //game.run();
+  //   String playerCount;
+  //     // Take input from the user about number of players
+  //   while(true){
+  //     playerCount = JOptionPane.showInputDialog(board, "How many players? (2-8)");
+  //     if(playerCount.length()!=0&&game.isNumeric(playerCount)){
+  //       int in = Integer.parseInt(playerCount);
+  //       if(in>=2&&in<=8){
+  //         break;
+  //       }
+  //     }
+  //   }
+  //
+  //   game.run(Integer.parseInt(playerCount));
+  //   System.exit(0);
+  // }
   // public void run(){
   //   Deadwood game = new Deadwood();
   //   String playerCount;
