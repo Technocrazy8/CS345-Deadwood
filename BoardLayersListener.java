@@ -15,6 +15,8 @@ import javax.imageio.ImageIO;
 import java.awt.event.*;
 import javax.swing.JOptionPane;
 
+//public static Deadwood game;
+
 public class BoardLayersListener extends JFrame {
 
   // JLabels
@@ -29,10 +31,19 @@ public class BoardLayersListener extends JFrame {
   JButton bMove;
   JButton bTurn;
   JButton bQuit;
+  JButton bWork;
+  JButton bUpgrade;
+
 
   // JLayered Pane
   JLayeredPane bPane;
 
+  //Text area
+  static JTextArea area;
+  JScrollPane scroll;
+  JButton button;
+
+  //Deadwood model
   static Deadwood game;
 
   // Constructor
@@ -49,7 +60,7 @@ public class BoardLayersListener extends JFrame {
 
        // Create the deadwood board
        boardlabel = new JLabel();
-       ImageIcon icon =  new ImageIcon("board.jpg");
+       ImageIcon icon =  new ImageIcon("Deadwood Needed Image Files/board.jpg");
        boardlabel.setIcon(icon);
        boardlabel.setBounds(0,0,icon.getIconWidth(),icon.getIconHeight());
 
@@ -57,7 +68,7 @@ public class BoardLayersListener extends JFrame {
        bPane.add(boardlabel, 0);
 
        // Set the size of the GUI
-       setSize(icon.getIconWidth()+200,icon.getIconHeight());
+       setSize(icon.getIconWidth()+500,icon.getIconHeight()+100);
 
        // Add a scene card to this room
        cardlabel = new JLabel();
@@ -84,33 +95,33 @@ public class BoardLayersListener extends JFrame {
 
        // Create the Menu for action buttons
        mLabel = new JLabel("MENU");
-       mLabel.setBounds(icon.getIconWidth()+40,0,100,20);
+       mLabel.setBounds(icon.getIconWidth()+90,0,200,20);
        bPane.add(mLabel,2);
 
        // Create Action buttons
        bAct = new JButton("ACT");
        bAct.setBackground(Color.white);
-       bAct.setBounds(icon.getIconWidth()+10, 30,120, 20);
+       bAct.setBounds(icon.getIconWidth()+10, 30,200, 20);
        bAct.addMouseListener(new boardMouseListener());
 
        bRehearse = new JButton("REHEARSE");
        bRehearse.setBackground(Color.white);
-       bRehearse.setBounds(icon.getIconWidth()+10,60,120, 20);
+       bRehearse.setBounds(icon.getIconWidth()+10,60,200, 20);
        bRehearse.addMouseListener(new boardMouseListener());
 
        bMove = new JButton("MOVE");
        bMove.setBackground(Color.white);
-       bMove.setBounds(icon.getIconWidth()+10,90,120, 20);
+       bMove.setBounds(icon.getIconWidth()+10,90,200, 20);
        bMove.addMouseListener(new boardMouseListener());
 
        bTurn = new JButton("END TURN");
        bTurn.setBackground(Color.white);
-       bTurn.setBounds(icon.getIconWidth()+10,120,120, 20);
+       bTurn.setBounds(icon.getIconWidth()+10,120,200, 20);
        bTurn.addMouseListener(new boardMouseListener());
 
        bQuit = new JButton("END GAME");
        bQuit.setBackground(Color.white);
-       bQuit.setBounds(icon.getIconWidth()+10,150,120, 20);
+       bQuit.setBounds(icon.getIconWidth()+10,150,200, 20);
        bQuit.addMouseListener(new boardMouseListener());
 
        // Place the action buttons in the top layer
@@ -119,6 +130,24 @@ public class BoardLayersListener extends JFrame {
        bPane.add(bMove,  2);
        bPane.add(bTurn,2);
        bPane.add(bQuit, 2);
+
+       area = new JTextArea();
+       area.setEditable(false);
+       area.setLineWrap(true);
+       area.setBackground(Color.white);
+       area.setVisible(true);
+       scroll = new JScrollPane(area);
+       scroll.setBounds(icon.getIconWidth()+10,icon.getIconHeight()/2,200,icon.getIconHeight()-450);
+       //area.setBounds(icon.getIconWidth()+10,icon.getIconHeight()/2,400,icon.getIconHeight()-450);
+       scroll.setBackground(Color.white);
+       scroll.setVisible(true);
+       //bPane.add(area,2);
+       bPane.add(scroll,3);
+       //bPane.add(area,3);
+       area.append("Welcome to Deadwood!\n");
+       System.out.println("Text\n");
+
+       game = new Deadwood();
   }
 
   // This class implements Mouse Events
@@ -155,18 +184,53 @@ public class BoardLayersListener extends JFrame {
       public void mouseExited(MouseEvent e) {
       }
    }
+   public static void addText(String text){
+     area.append(text);
+     area.setVisible(true);
+   }
+
+   public BoardLayersListener getlistener(){
+     return this;
+   }
 
 
   public static void main(String[] args) {
 
     BoardLayersListener board = new BoardLayersListener();
     board.setVisible(true);
+    //board.run();
     game = new Deadwood();
     //game.run();
     String playerCount;
       // Take input from the user about number of players
-    playerCount = JOptionPane.showInputDialog(board, "How many players?");
+    while(true){
+      playerCount = JOptionPane.showInputDialog(board, "How many players? (2-8)");
+      if(playerCount.length()!=0&&game.isNumeric(playerCount)){
+        int in = Integer.parseInt(playerCount);
+        if(in>=2&&in<=8){
+          break;
+        }
+      }
+    }
+
     game.run(Integer.parseInt(playerCount));
     System.exit(0);
   }
+  // public void run(){
+  //   Deadwood game = new Deadwood();
+  //   String playerCount;
+  //     // Take input from the user about number of players
+  //   while(true){
+  //     playerCount = JOptionPane.showInputDialog(board, "How many players? (2-8)");
+  //     if(playerCount.length()!=0&&game.isNumeric(playerCount)){
+  //       int in = Integer.parseInt(playerCount);
+  //       if(in>=2&&in<=8){
+  //         break;
+  //       }
+  //     }
+  //   }
+  //
+  //   game.run(Integer.parseInt(playerCount));
+  //   System.exit(0);
+  // }
 }

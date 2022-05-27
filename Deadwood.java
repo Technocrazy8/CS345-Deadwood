@@ -43,8 +43,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
-
-public class Deadwood extends BoardLayersListener{
+//public static final BoardLayersListener listener = getlistener();
+public class Deadwood{
     private static final String[] PLAYER_NAMES = { "Blue", "Cyan", "Green", "Orange", "Pink", "Red", "Violet",
             "Yellow" };
     private static Board board;
@@ -52,6 +52,8 @@ public class Deadwood extends BoardLayersListener{
     private static JFrame frame = new JFrame("Deadwood");
     private static JPanel mainPanel = new JPanel();
     private static JLabel boardlabel = new JLabel();
+    //private static BoardLayersListener listener = getlistener();
+    //private static
 
     // public static void main(String[] args) {
     //     Deadwood game = new Deadwood();
@@ -114,7 +116,8 @@ public class Deadwood extends BoardLayersListener{
         // System.out.println("Welcome to Deadwood!");
 
         for (int i = 1; i <= dayCount; i++) { // this it the main day loop
-
+            String day = "Day " + i +"\n";
+            BoardLayersListener.addText(day);
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
             board.resetTiles(); // prepare the tiles
