@@ -231,27 +231,12 @@ public class GUI extends JFrame {
    public void hidePlayer(int id){
      playerIcons.get(id).setVisible(false);
    }
-/*
-  public static void main(String[] args) {
-    System.out.println("main");
-    instance = getInstance();
-    instance.setVisible(true);
 
-    String playerCount;
-      // Take input from the user about number of players
-    while(true){
-      playerCount = JOptionPane.showInputDialog(instance, "How many players? (2-8)");
-      if(playerCount.length()!=0&&isNumber(playerCount)){
-        int in = Integer.parseInt(playerCount);
-        if(in>=2&&in<=8){
-          break;
-        }
-      }
-    }
+   public void changeLocation(int id, int x,int y,int h,int w){
+     JLabel curr = playerIcons.get(id);
+     curr.setBounds(x,y,h,w);
+   }
 
-    game.run(Integer.parseInt(playerCount));
-    System.exit(0);
-  }*/
 
 public void run(){
     System.out.println("main");

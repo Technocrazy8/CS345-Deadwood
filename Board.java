@@ -84,7 +84,7 @@ public class Board {
     public void distributeScenes(LinkedList<Scene> cards) {
         for (int i = 0; i < cards.size(); i++) {
             sets.get(i).setScene(cards.get(i));
-            Deadwood.modFrame();
+            //Deadwood.modFrame();
         }
     }
 
