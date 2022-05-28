@@ -1,7 +1,7 @@
 
 /**
  * Essentially the tiles of the game
- * 
+ *
  * Responsibilities:
  * Store Set status (model)
  */
@@ -20,6 +20,7 @@ public class Set {
     private int completedshots = 0;
     private boolean completed = false;
     private Scene scene;
+    private LinkedList<String> coords;
     private LinkedList<String[]> creditLegend;// Only initiated w/ office
     private LinkedList<String[]> moneyLegend;// Only initiated w/ office
 
@@ -115,6 +116,14 @@ public class Set {
             }
         }
         return taken;
+    }
+
+    public void setCoords(LinkedList<String> coords){
+      this.coords = coords;
+    }
+
+    public LinkedList<String> getCoords(){
+      return this.coords;
     }
 
     public void setScene(Scene scene) {

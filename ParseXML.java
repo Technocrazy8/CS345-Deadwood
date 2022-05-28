@@ -56,6 +56,7 @@ public class ParseXML {
          Node node = sets.item(i);
          NamedNodeMap setAttributes = node.getAttributes();
          String setname = setAttributes.getNamedItem("name").getNodeValue();
+         LinkedList<String> coordinates = new LinkedList<String>();
          // System.out.println("Set name= " + setname);
          set.setName(setname);
 
@@ -79,7 +80,15 @@ public class ParseXML {
                   }
                }
 
-            } else if ("parts".equals(sub.getNodeName())) {
+            }else if("area".equals(sub.getNodeName())){
+                //System.out.println(sub.getAttributes().getNamedItem("x").getTextContent());
+                coordinates.add(sub.getAttributes().getNamedItem("x").getTextContent());
+                coordinates.add(sub.getAttributes().getNamedItem("y").getTextContent());
+                coordinates.add(sub.getAttributes().getNamedItem("h").getTextContent());
+                coordinates.add(sub.getAttributes().getNamedItem("w").getTextContent());
+                //System.out.println(coordinates.size());
+                set.setCoords(coordinates);
+            }else if ("parts".equals(sub.getNodeName())) {
                NodeList parts = sub.getChildNodes();
                for (int k = 0; k < parts.getLength(); k++) {
                   Node part = parts.item(k);
@@ -264,6 +273,10 @@ public class ParseXML {
 
          String title = cardAttributes.getNamedItem("name").getNodeValue();
          String description = "";
+
+         String image = cardAttributes.getNamedItem("img").getNodeValue();
+         System.out.println(image);
+
          int budget = Integer.parseInt(cardAttributes.getNamedItem("budget").getNodeValue());
          LinkedList<Role> parts = new LinkedList<Role>();
          int actorCapacity;
@@ -291,7 +304,7 @@ public class ParseXML {
 
          actorCapacity = parts.size();
 
-         scenes.add(new Scene(title, description, budget, parts, actorCapacity));
+         scenes.add(new Scene(title, description, budget, parts, actorCapacity, image));
       }
 
       return scenes;

@@ -20,47 +20,53 @@ import java.util.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.BorderFactory;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.ImageIcon;
-import javax.swing.JTabbedPane;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
+// import javax.swing.*;
+// import java.awt.*;
+// import java.awt.event.*;
+// import javax.swing.BorderFactory;
+// import javax.swing.border.Border;
+// import javax.swing.border.TitledBorder;
+// import javax.swing.border.EtchedBorder;
+// import javax.swing.ImageIcon;
+// import javax.swing.JTabbedPane;
+// import javax.swing.JLabel;
+// import javax.swing.JPanel;
+// import javax.swing.JFrame;
+// import javax.swing.Box;
+// import javax.swing.BoxLayout;
+// import javax.swing.ImageIcon;
+// import javax.imageio.ImageIO;
+ import javax.swing.JOptionPane;
+ import javax.swing.JTextArea;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
+
 //public static final BoardLayersListener listener = getlistener();
 public class Deadwood{
     private static final String[] PLAYER_NAMES = { "Blue", "Cyan", "Green", "Orange", "Pink", "Red", "Violet",
             "Yellow" };
     private static Board board;
     private static int numPlayers;
-    private static JFrame frame = new JFrame("Deadwood");
-    private static JPanel mainPanel = new JPanel();
-    private static JLabel boardlabel = new JLabel();
+    private static GUI frame = null;
+    //private static JPanel mainPanel = new JPanel();
+    //private static JLabel boardlabel = new JLabel();
     private static GUI listener = null;
     private static GUI.boardMouseListener mouse;
+    private static JTextArea area = null;
     //private static JFrame frame = new JFrame();
     //private static
 
-    public Deadwood(GUI listener){
-      this.listener = listener;
+    public Deadwood(GUI frame){
+      this.frame = frame;
+      //this.area = area;
     }
-
+    // public static void modFrame(){
+    //   frame.test();
+    // }
     // public static void main(String[] args) {
     //     Deadwood game = new Deadwood();
     //
@@ -84,11 +90,8 @@ public class Deadwood{
     // }
 
     public void run(int playerCount) {
-        // BoardLayersListener viewer = new BoardLayersListener();
-        // viewer.setVisible(true);
-        // JOptionPane.showInputDialog(board, "How many players?");
-        //this.listener=listener;
-        listener.area.append("foo");
+        System.out.println("deadwood run");
+        System.out.println("deadwood run after text add");
         numPlayers = playerCount;
         Scanner scanner = new Scanner(System.in);
         LinkedList<Scene> cards = setupProcedure(numPlayers);
@@ -96,11 +99,11 @@ public class Deadwood{
         if (numPlayers == 2 || numPlayers == 3) {
             dayCount = 3;
         }
-        // System.out.println("Welcome to Deadwood!");
 
         for (int i = 1; i <= dayCount; i++) { // this it the main day loop
             String day = "Day " + i +"\n";
-            //listener.addText(day);
+            frame.addText(day);
+            //area.append(day);
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
             board.resetTiles(); // prepare the tiles
@@ -207,21 +210,27 @@ public class Deadwood{
                     + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
 
             String turnline = "\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "+ currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName();
-            listener.area.append(turnline);
+            //area.append(turnline);
+            frame.addText(turnline);
             System.out.println(" Your rank is: " + currentPlayer.getRank()); // print out the players attributes
-            //listener.addText("\n Your rank is: " + currentPlayer.getRank());
+            String playerRank = "\n Your rank is: " + currentPlayer.getRank();
+            //area.append("\n Your rank is: " + currentPlayer.getRank());
+            frame.addText(playerRank);
             int opt;
             // debugBoard(3);
             if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is
                                                                         // completed
                 System.out.println("Congrats! Your scene was completed!");
+                String congrats = "Congrats! Your scene was completed!";
+                area.append(congrats);
                 currentPlayer.setRole(null); // reset the players current role
                 currentPlayer.resetChips(); // reset their chip count
                 playerLocation.complete(); // say location is complete
             }
 
             else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is
-                                                                                     // completed -- may be redundant
+                String congrats = "Congrats! Your scene was completed!";
+                area.append(congrats);                                                                     // completed -- may be redundant
                 System.out.println("Congrats! Your scene was completed!");
                 currentPlayer.setRole(null);
                 currentPlayer.resetChips();
@@ -229,6 +238,8 @@ public class Deadwood{
 
             else if (playerLocation.isComplete()) { // if a player moves to a completed scene
                 System.out.println("\nThis scene has already been completed");
+                String alcomped = "\nThis scene has already been completed";
+                area.append(alcomped);
             }
 
             if (currentPlayer.checkInRole() && !playerLocation.isComplete()) { // check if player is in role and if

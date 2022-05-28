@@ -45,12 +45,14 @@ public class GUI extends JFrame {
   JScrollPane scroll;
   JButton button;
 
+
+
   //Deadwood model
   static Deadwood game;
 
   // Constructor
 
-  GUI() {
+  public GUI() {
 
       super("Deadwood");
 
@@ -77,10 +79,11 @@ public class GUI extends JFrame {
 
        // Add a scene card to this room
        cardlabel = new JLabel();
-       ImageIcon cIcon =  new ImageIcon("01.png");
+       ImageIcon cIcon =  new ImageIcon("Deadwood Needed Image Files/cards/01.png");
        cardlabel.setIcon(cIcon);
        cardlabel.setBounds(20,65,cIcon.getIconWidth()+2,cIcon.getIconHeight());
        cardlabel.setOpaque(true);
+       cardlabel.setVisible(true);
 
        // Add the card to the lower layer
        bPane.add(cardlabel, 1);
@@ -93,10 +96,10 @@ public class GUI extends JFrame {
        playerlabel = new JLabel();
        ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/r2.png");
        playerlabel.setIcon(pIcon);
-       //playerlabel.setBounds(114,227,pIcon.getIconWidth(),pIcon.getIconHeight());
-       playerlabel.setBounds(114,227,46,46);
-       playerlabel.setVisible(false);
-       bPane.add(playerlabel,3);
+       playerlabel.setBounds(114,227,pIcon.getIconWidth(),pIcon.getIconHeight());
+       //playerlabel.setBounds(114,227,46,46);
+       playerlabel.setVisible(true);
+       bPane.add(playerlabel,4);
 
        // Create the Menu for action buttons
        mLabel = new JLabel("MENU");
@@ -157,14 +160,22 @@ public class GUI extends JFrame {
        area.append("Welcome to Deadwood!\n");
        System.out.println("Text\n");
 
-       //game = new Deadwood();
   }
-  public static synchronized GUI getInstance() {
-    if (instance == null&&game==null) {
-      instance = new GUI();
-      game=new Deadwood(instance);
-    }
-    return instance;
+  //WAS BREAKING MY SHIT
+  // public static synchronized GUI getInstance() {
+  //   if (instance == null&&game==null) {
+  //     instance = new GUI();
+  //     game=new Deadwood(instance,area);
+  //   }
+  //   return instance;
+  // }
+
+  public void addText(String text){
+    area.append(text);
+  }
+
+  public void displayCard(Set tile){// take the coords from the tile, take the image from the scene and mix/display the two
+
   }
 
   // // This class implements Mouse Events
@@ -202,27 +213,22 @@ public class GUI extends JFrame {
       public void mouseExited(MouseEvent e) {
       }
    }
-   public static void addText(String text){
-     getInstance().area.append(text);
-   }
 
    public GUI getlistener(){
      return this;
    }
 
-
+/*
   public static void main(String[] args) {
-
+    System.out.println("main");
     instance = getInstance();
     instance.setVisible(true);
-    //board.run();
-    //game = new Deadwood(board);
-    //game.run();
+
     String playerCount;
       // Take input from the user about number of players
     while(true){
       playerCount = JOptionPane.showInputDialog(instance, "How many players? (2-8)");
-      if(playerCount.length()!=0&&isNumeric(playerCount)){
+      if(playerCount.length()!=0&&isNumber(playerCount)){
         int in = Integer.parseInt(playerCount);
         if(in>=2&&in<=8){
           break;
@@ -232,26 +238,29 @@ public class GUI extends JFrame {
 
     game.run(Integer.parseInt(playerCount));
     System.exit(0);
-  }
-  // public void run(){
-  //   //Deadwood game = new Deadwood();
-  //   String playerCount;
-  //     // Take input from the user about number of players
-  //   while(true){
-  //     playerCount = JOptionPane.showInputDialog(this, "How many players? (2-8)");
-  //     if(playerCount.length()!=0&&game.isNumeric(playerCount)){
-  //       int in = Integer.parseInt(playerCount);
-  //       if(in>=2&&in<=8){
-  //         break;
-  //       }
-  //     }
-  //   }
-  //
-  //   game.run(Integer.parseInt(playerCount));
-  //   System.exit(0);
-  // }
+  }*/
 
-  public static boolean isNumeric(String s) { // helper method for input handling
+public void run(){
+    System.out.println("main");
+    Deadwood game = new Deadwood(this);
+    this.game = game;
+    String playerCount;
+    // Take input from the user about number of players
+    while(true){
+      playerCount = JOptionPane.showInputDialog(instance, "How many players? (2-8)");
+      if(playerCount.length()!=0&&isNumber(playerCount)){
+        int in = Integer.parseInt(playerCount);
+        if(in>=2&&in<=8){
+          break;
+        }
+      }
+  }
+
+  game.run(Integer.parseInt(playerCount));
+  System.exit(0);
+  }
+
+  public static boolean isNumber(String s) { // helper method for input handling
       int i = 0;
       if (s.charAt(0) == '-') {
           i = 1;

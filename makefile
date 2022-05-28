@@ -5,7 +5,7 @@ default:
 run:
 	rm -f *.class
 	javac *.java
-	java BoardLayersListener.java
+	java Main.java
 	rm -f *.class
 
 clean:

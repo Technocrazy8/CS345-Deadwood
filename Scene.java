@@ -1,7 +1,7 @@
 
 /**
  * The cards on the tiles of the game
- * 
+ *
  * Responsibilities:
  * - Store scene status (model)
  */
@@ -12,6 +12,7 @@ public class Scene {
     // have the nonextras
     private String title;
     private String description;
+    private String image;
     private int budget;
     private LinkedList<Role> parts;
     private LinkedList<Player> actors;
@@ -19,13 +20,14 @@ public class Scene {
     // boolean isComplete = false;
     private int actorcapacity;
 
-    public Scene(String title, String description, int budgets, LinkedList<Role> parts, int actcap) {
+    public Scene(String title, String description, int budgets, LinkedList<Role> parts, int actcap, String image) {
         this.title = title;
         this.description = description;
         this.budget = budgets;
         this.parts = parts;
         this.actors = new LinkedList<Player>();
         this.actorcapacity = actcap;
+        this.image = image;
     }
 
     public String getTitle() {
@@ -54,6 +56,10 @@ public class Scene {
 
     public int getActorCapacity() {
         return actorcapacity;
+    }
+
+    public String getImage(){
+      return this.image;
     }
 
     public LinkedList<Role> getAvailableRoles() {
