@@ -159,7 +159,7 @@ public class Deadwood{
         // Populate players and change their attributes depending on player count
 
         for (int i = 0; i < numPlayers; i++) {
-            Player player = new Player(PLAYER_NAMES[i]);
+            Player player = new Player(PLAYER_NAMES[i],i);
             // player.addCredits(76);
             // player.addMoney(101);
             if (numPlayers == 5) {

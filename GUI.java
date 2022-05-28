@@ -20,12 +20,16 @@ public class GUI extends JFrame {
 
   private static GUI instance;
   //public static final Deadwood game;// = new Deadwood(this);
+  int numPlayers =0;
 
   // JLabels
   JLabel boardlabel;
   JLabel cardlabel;
   JLabel playerlabel;
   JLabel mLabel;
+
+  //PlayerLabels
+  LinkedList<JLabel> playerIcons = new LinkedList<JLabel>();
 
   //JButtons
   JButton bAct;
@@ -45,7 +49,8 @@ public class GUI extends JFrame {
   JScrollPane scroll;
   JButton button;
 
-
+  //Board image
+  ImageIcon icon;
 
   //Deadwood model
   static Deadwood game;
@@ -67,7 +72,7 @@ public class GUI extends JFrame {
 
        // Create the deadwood board
        boardlabel = new JLabel();
-       ImageIcon icon =  new ImageIcon("Deadwood Needed Image Files/board.jpg");
+       icon =  new ImageIcon("Deadwood Needed Image Files/board.jpg");
        boardlabel.setIcon(icon);
        boardlabel.setBounds(0,0,icon.getIconWidth(),icon.getIconHeight());
 
@@ -93,13 +98,14 @@ public class GUI extends JFrame {
 
        // Add a dice to represent a player.
        // Role for Crusty the prospector. The x and y co-ordiantes are taken from Board.xml file
-       playerlabel = new JLabel();
-       ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/r2.png");
-       playerlabel.setIcon(pIcon);
-       playerlabel.setBounds(114,227,pIcon.getIconWidth(),pIcon.getIconHeight());
-       //playerlabel.setBounds(114,227,46,46);
-       playerlabel.setVisible(true);
-       bPane.add(playerlabel,4);
+       // playerlabel = new JLabel();
+       // ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/dice/b1.png");
+       // playerlabel.setIcon(pIcon);
+       // playerlabel.setBounds(icon.getIconWidth()-53,250,pIcon.getIconWidth(),pIcon.getIconHeight());
+       // //playerlabel.setBounds(114,227,46,46);
+       // //playerlabel.setVisible(true);
+       // bPane.add(playerlabel,0);
+       // playerlabel.setVisible(true);
 
        // Create the Menu for action buttons
        mLabel = new JLabel("MENU");
@@ -218,6 +224,13 @@ public class GUI extends JFrame {
      return this;
    }
 
+   public void displayPlayer(int id){
+     playerIcons.get(id).setVisible(true);
+   }
+
+   public void hidePlayer(int id){
+     playerIcons.get(id).setVisible(false);
+   }
 /*
   public static void main(String[] args) {
     System.out.println("main");
@@ -251,13 +264,31 @@ public void run(){
       if(playerCount.length()!=0&&isNumber(playerCount)){
         int in = Integer.parseInt(playerCount);
         if(in>=2&&in<=8){
+          numPlayers=in;
           break;
         }
       }
   }
-
+  initPlayerIcons();
   game.run(Integer.parseInt(playerCount));
   System.exit(0);
+  }
+
+  public void initPlayerIcons(){
+    String[] colors = { "b", "c", "g", "o", "p", "r", "v",
+            "y" };
+    for(int i=0;i<numPlayers;i++){
+      JLabel playerlabel = new JLabel();
+      ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/dice/"+colors[i]+"1.png");
+      playerlabel.setIcon(pIcon);
+      playerlabel.setBounds(icon.getIconWidth()-53,250,pIcon.getIconWidth(),pIcon.getIconHeight());
+      playerIcons.add(playerlabel);
+      playerlabel.setVisible(false);
+      bPane.add(playerlabel,0);
+    }
+    for(int i = numPlayers-1;i>=0;i--){
+      playerIcons.get(i).setVisible(true);
+    }
   }
 
   public static boolean isNumber(String s) { // helper method for input handling

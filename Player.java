@@ -8,6 +8,7 @@ public class Player extends Model{
     private int credits;
     private int money;
     private int score;
+    private int id;
     private String name;
     private boolean hasMoved = false;
     private int rehearseChips = 0;
@@ -19,16 +20,18 @@ public class Player extends Model{
     public Getter<Integer> getCredits = () -> credits;
     public Getter<Integer> getMoney = () -> money;
     public Getter<Integer> getScore = () -> score;
+    public Getter<Integer> getId = () -> id;
     public Getter<String> getName = () -> name;
     public Getter<Boolean> getMoved = () -> hasMoved;
     public Getter<Integer> getChips = () -> rehearseChips;
     public Getter<Set> getLocation = () -> location;
     public Getter<Role> getRole = () -> currentRole;
 
-    public Player(String name) {
+    public Player(String name,int id) {
         this.credits = 0;
         this.money = 0;
         this.name = name;
+        this.id = id;
     }
 
     public int calculateScore() {
