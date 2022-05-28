@@ -52,12 +52,12 @@ public class Deadwood{
     private static JFrame frame = new JFrame("Deadwood");
     private static JPanel mainPanel = new JPanel();
     private static JLabel boardlabel = new JLabel();
-    private static BoardLayersListener listener = null;
-    private static BoardLayersListener.boardMouseListener mouse;
+    private static GUI listener = null;
+    private static GUI.boardMouseListener mouse;
     //private static JFrame frame = new JFrame();
     //private static
 
-    public Deadwood(BoardLayersListener listener){
+    public Deadwood(GUI listener){
       this.listener = listener;
     }
 
