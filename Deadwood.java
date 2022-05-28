@@ -52,37 +52,43 @@ public class Deadwood{
     private static JFrame frame = new JFrame("Deadwood");
     private static JPanel mainPanel = new JPanel();
     private static JLabel boardlabel = new JLabel();
-    private static BoardLayersListener listener;
+    private static BoardLayersListener listener = null;
     private static BoardLayersListener.boardMouseListener mouse;
+    //private static JFrame frame = new JFrame();
     //private static
 
-    public static void main(String[] args) {
-        Deadwood game = new Deadwood();
-
-        System.out.println("Welcome to Deadwood!\n");
-        int numPlayers = 0;
-
-        listener = new BoardLayersListener(game);
-        //mouse = new BoardMouseListener(listener);
-
-        listener.setVisible(true);
-        String playerCount;
-        while(true){
-            playerCount = JOptionPane.showInputDialog(listener, "How many players? (2-8)");
-            if(playerCount != null &&playerCount.length()!=0 && game.isNumeric(playerCount)){
-              numPlayers = Integer.parseInt(playerCount);
-              if(numPlayers>=2&&numPlayers<=8){
-                break;
-              }
-            }
-          }
-        game.run(numPlayers);
+    public Deadwood(BoardLayersListener listener){
+      this.listener = listener;
     }
+
+    // public static void main(String[] args) {
+    //     Deadwood game = new Deadwood();
+    //
+    //     System.out.println("Welcome to Deadwood!\n");
+    //     int numPlayers = 0;
+    //
+    //     listener = new BoardLayersListener(game);
+    //
+    //     listener.setVisible(true);
+    //     String playerCount;
+    //     while(true){
+    //         playerCount = JOptionPane.showInputDialog(listener, "How many players? (2-8)");
+    //         if(playerCount != null &&playerCount.length()!=0 && game.isNumeric(playerCount)){
+    //           numPlayers = Integer.parseInt(playerCount);
+    //           if(numPlayers>=2&&numPlayers<=8){
+    //             break;
+    //           }
+    //         }
+    //       }
+    //     game.run(numPlayers);
+    // }
 
     public void run(int playerCount) {
         // BoardLayersListener viewer = new BoardLayersListener();
         // viewer.setVisible(true);
         // JOptionPane.showInputDialog(board, "How many players?");
+        //this.listener=listener;
+        listener.area.append("foo");
         numPlayers = playerCount;
         Scanner scanner = new Scanner(System.in);
         LinkedList<Scene> cards = setupProcedure(numPlayers);
@@ -94,7 +100,7 @@ public class Deadwood{
 
         for (int i = 1; i <= dayCount; i++) { // this it the main day loop
             String day = "Day " + i +"\n";
-            listener.addText(day);
+            //listener.addText(day);
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
             board.resetTiles(); // prepare the tiles
@@ -201,9 +207,9 @@ public class Deadwood{
                     + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
 
             String turnline = "\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "+ currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName();
-            listener.addText(turnline);
+            listener.area.append(turnline);
             System.out.println(" Your rank is: " + currentPlayer.getRank()); // print out the players attributes
-            listener.addText("\n Your rank is: " + currentPlayer.getRank());
+            //listener.addText("\n Your rank is: " + currentPlayer.getRank());
             int opt;
             // debugBoard(3);
             if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is

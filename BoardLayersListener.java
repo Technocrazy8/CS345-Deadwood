@@ -15,9 +15,11 @@ import javax.imageio.ImageIO;
 import java.awt.event.*;
 import javax.swing.JOptionPane;
 
-//public static Deadwood game;
 
 public class BoardLayersListener extends JFrame {
+
+  private static BoardLayersListener instance;
+  //public static final Deadwood game;// = new Deadwood(this);
 
   // JLabels
   JLabel boardlabel;
@@ -48,10 +50,10 @@ public class BoardLayersListener extends JFrame {
 
   // Constructor
 
-  public BoardLayersListener(Deadwood game) {
+  private BoardLayersListener() {
       super("Deadwood");
 
-      this.game = game;
+        //this.game = new Deadwood(this);
        // Set the title of the JFrame
        //super("Deadwood");
        // Set the exit option for the JFrame
@@ -138,7 +140,7 @@ public class BoardLayersListener extends JFrame {
        bPane.add(bTurn,2);
        bPane.add(bQuit, 2);
 
-       area = new JTextArea();
+       this.area = new JTextArea();
        area.setEditable(false);
        area.setLineWrap(true);
        area.setBackground(Color.white);
@@ -156,9 +158,16 @@ public class BoardLayersListener extends JFrame {
 
        //game = new Deadwood();
   }
+  public static synchronized BoardLayersListener getInstance() {
+    if (instance == null&&game==null) {
+      instance = new BoardLayersListener();
+      game=new Deadwood(instance);
+    }
+    return instance;
+  }
 
   // // This class implements Mouse Events
-  
+
   class boardMouseListener implements MouseListener{
 
       // Code for the different button clicks
@@ -180,6 +189,7 @@ public class BoardLayersListener extends JFrame {
          else if(e.getSource() == bQuit){
            System.out.println("Quit is Selected\n");
            game.quitGame();
+           //return 6;
          }
       }
       public void mousePressed(MouseEvent e) {
@@ -192,8 +202,7 @@ public class BoardLayersListener extends JFrame {
       }
    }
    public static void addText(String text){
-     area.append(text);
-     area.setVisible(true);
+     getInstance().area.append(text);
    }
 
    public BoardLayersListener getlistener(){
@@ -201,34 +210,34 @@ public class BoardLayersListener extends JFrame {
    }
 
 
-  // public static void main(String[] args) {
-  //
-  //   BoardLayersListener board = new BoardLayersListener();
-  //   board.setVisible(true);
-  //   //board.run();
-  //   game = new Deadwood();
-  //   //game.run();
-  //   String playerCount;
-  //     // Take input from the user about number of players
-  //   while(true){
-  //     playerCount = JOptionPane.showInputDialog(board, "How many players? (2-8)");
-  //     if(playerCount.length()!=0&&game.isNumeric(playerCount)){
-  //       int in = Integer.parseInt(playerCount);
-  //       if(in>=2&&in<=8){
-  //         break;
-  //       }
-  //     }
-  //   }
-  //
-  //   game.run(Integer.parseInt(playerCount));
-  //   System.exit(0);
-  // }
+  public static void main(String[] args) {
+
+    instance = getInstance();
+    instance.setVisible(true);
+    //board.run();
+    //game = new Deadwood(board);
+    //game.run();
+    String playerCount;
+      // Take input from the user about number of players
+    while(true){
+      playerCount = JOptionPane.showInputDialog(instance, "How many players? (2-8)");
+      if(playerCount.length()!=0&&isNumeric(playerCount)){
+        int in = Integer.parseInt(playerCount);
+        if(in>=2&&in<=8){
+          break;
+        }
+      }
+    }
+
+    game.run(Integer.parseInt(playerCount));
+    System.exit(0);
+  }
   // public void run(){
-  //   Deadwood game = new Deadwood();
+  //   //Deadwood game = new Deadwood();
   //   String playerCount;
   //     // Take input from the user about number of players
   //   while(true){
-  //     playerCount = JOptionPane.showInputDialog(board, "How many players? (2-8)");
+  //     playerCount = JOptionPane.showInputDialog(this, "How many players? (2-8)");
   //     if(playerCount.length()!=0&&game.isNumeric(playerCount)){
   //       int in = Integer.parseInt(playerCount);
   //       if(in>=2&&in<=8){
@@ -240,4 +249,17 @@ public class BoardLayersListener extends JFrame {
   //   game.run(Integer.parseInt(playerCount));
   //   System.exit(0);
   // }
+
+  public static boolean isNumeric(String s) { // helper method for input handling
+      int i = 0;
+      if (s.charAt(0) == '-') {
+          i = 1;
+      }
+      for (; i < s.length(); i++) {
+          if (!(Character.isDigit(s.charAt(i)))) {
+              return false;
+          }
+      }
+      return true;
+  }
 }
