@@ -81,13 +81,41 @@ public class ParseXML {
                }
 
             }else if("area".equals(sub.getNodeName())){
-                //System.out.println(sub.getAttributes().getNamedItem("x").getTextContent());
-                coordinates.add(sub.getAttributes().getNamedItem("x").getTextContent());
-                coordinates.add(sub.getAttributes().getNamedItem("y").getTextContent());
-                coordinates.add(sub.getAttributes().getNamedItem("h").getTextContent());
-                coordinates.add(sub.getAttributes().getNamedItem("w").getTextContent());
+              int x;
+              int y;
+              int h;
+              int w;
+                // if(i==4||i==5){
+                //   x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
+                //   y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent())+25;
+                //   h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
+                //   w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent())-10;
+                // }else if(i==3){
+                //   x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
+                //   y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent());
+                //   h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
+                //   w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent())-10;
+                // }else if(i==6||i==9){
+                //   x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent())-30;
+                //   y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent())+20;
+                //   h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent())+40;
+                //   w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent())-20;
+                // }else if(i==7||i==8){
+                //   x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
+                //   y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent())+25;
+                //   h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
+                //   w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent())-40;
+                // }else{
+                  x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
+                  y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent());
+                  h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
+                  w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent());
+                
+                coordinates.add(""+x);
+                coordinates.add(""+y);
+                coordinates.add(""+h);
+                coordinates.add(""+w);
                 coordinates.add(setname);
-                //System.out.println(coordinates.size());
                 set.setCoords(coordinates);
             }else if ("parts".equals(sub.getNodeName())) {
                NodeList parts = sub.getChildNodes();
@@ -104,7 +132,6 @@ public class ParseXML {
                        if("area".equals(temp.getNodeName())){
                          //System.out.println("Extra");
                          cords.add(temp.getAttributes().getNamedItem("x").getTextContent());
-                         //System.out.println(temp.getAttributes().getNamedItem("x").getTextContent());
                          cords.add(temp.getAttributes().getNamedItem("y").getTextContent());
                          cords.add(temp.getAttributes().getNamedItem("h").getTextContent());
                          cords.add(temp.getAttributes().getNamedItem("w").getTextContent());
@@ -138,6 +165,7 @@ public class ParseXML {
       trailer.setShotCapacity(-1);
       trailer.setActCapacity(8);
       trailer.noRoles();
+      LinkedList<String> coordinates = new LinkedList<String>();
       for (int i = 0; i < forTrailer.getLength(); i++) {
          NodeList children = forTrailer.item(i).getChildNodes();
          for (int j = 0; j < children.getLength(); j++) {
@@ -156,6 +184,17 @@ public class ParseXML {
                      }
                   }
                }
+            }else if("area".equals(sub.getNodeName())){
+                int x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
+                int y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent())+50;
+                int h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent())-80;
+                int w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent())-15;
+                coordinates.add(""+x);
+                coordinates.add(""+y);
+                coordinates.add(""+h);
+                coordinates.add(""+w);
+                coordinates.add("trailer");
+                trailer.setCoords(coordinates);
             }
          }
       }
@@ -171,7 +210,7 @@ public class ParseXML {
       office.noRoles();
       office.createCreditLegend();
       office.createMoneyLegend();
-
+      LinkedList<String> ofCoords = new LinkedList<String>();
       for (int i = 0; i < forOffice.getLength(); i++) {
          NodeList children = forOffice.item(i).getChildNodes();
          for (int j = 0; j < children.getLength(); j++) {
@@ -205,6 +244,17 @@ public class ParseXML {
                      office.addToLegend(tuple);
                   }
                }
+            }else if("area".equals(sub.getNodeName())){
+                int x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
+                int y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent())+50;
+                int h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent())-80;
+                int w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent()) -30;
+                ofCoords.add(""+x);
+                ofCoords.add(""+y);
+                ofCoords.add(""+h);
+                ofCoords.add(""+w);
+                ofCoords.add("office");
+                office.setCoords(ofCoords);
             }
          }
       }
@@ -244,9 +294,6 @@ public class ParseXML {
                         }
                      }
                   }
-                  // NamedNodeMap atts = neighbor.getAttributes();
-                  // System.out.println(atts.getNamedItem("name").getNodeValue());
-                  // System.out.println("|"+neighbor.getNodeValue());
                }
             }
          }
@@ -339,4 +386,4 @@ public class ParseXML {
       return scenes;
    }
 
-}// class
+}

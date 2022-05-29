@@ -55,28 +55,33 @@ public class Deadwood{
     //private static JPanel mainPanel = new JPanel();
     //private static JLabel boardlabel = new JLabel();
     //private static GUI listener = null;
-    private static GUI.boardMouseListener mouse;
+    private static GUI.boardMouseListener listener;
     private static JTextArea area = null;
     //private static JFrame frame = new JFrame();
-    //private static
+    private static LinkedList<Scene> cards;
+    private static int dayCount=4;
 
-    public Deadwood(GUI frame){
+    public Deadwood(GUI frame, int playerCount){
       this.frame = frame;
-      //this.area = area;
+      this.listener = frame.mouseListener;
+      this.numPlayers = playerCount;
+      this.cards = setupProcedure(playerCount);
+      if (numPlayers == 2 || numPlayers == 3) {
+          this.dayCount = 3;
+      }
     }
-    // public static void modFrame(){
 
-
-    public void run(int playerCount) {
+    // method where the gui boots up the game logic
+    public void run() {
         System.out.println("deadwood run");
         System.out.println("deadwood run after text add");
-        numPlayers = playerCount;
+        //numPlayers = playerCount;
         Scanner scanner = new Scanner(System.in);
-        LinkedList<Scene> cards = setupProcedure(numPlayers);
-        int dayCount = 4;
-        if (numPlayers == 2 || numPlayers == 3) {
-            dayCount = 3;
-        }
+        //LinkedList<Scene> cards = setupProcedure(numPlayers);
+        //int dayCount = 4;
+        // if (numPlayers == 2 || numPlayers == 3) {
+        //     dayCount = 3;
+        // }
 
         for (int i = 1; i <= dayCount; i++) { // this it the main day loop
             String day = "Day " + i +"\n";
@@ -134,6 +139,7 @@ public class Deadwood{
         board.setTrailer(sets.get(sets.size() - 2)); // add the trailer tile to the board
         board.setOffice(sets.get(sets.size() - 1)); // add the office tile to the board
         frame.initBoardTiles(sets);
+        frame.initBoardButtons(sets);
         Collections.shuffle(cards); // shuffle so cards arent in order
 
         // Populate players and change their attributes depending on player count
@@ -183,6 +189,7 @@ public class Deadwood{
         while (true) {
 
             Player currentPlayer = board.getPlayer(currplayerindex); // get the current player
+            listener.setCurrPlayer(currentPlayer);
             String playerName = currentPlayer.getName(); // get players name
             Set playerLocation = currentPlayer.getLocation(); // get players location
             int shotsRemaining = playerLocation.shotsRemaining(); // get the shots remaining for players' location
@@ -382,6 +389,8 @@ public class Deadwood{
     public void move(Player player) { // show the locations a player can move to. prompt them to pick one
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nWhere would you like to move to?");
+        frame.addText("\nWhere would you like to move to?");
+        //frame.choseToMove();
         Set location = player.getLocation(); // get players current location
         LinkedList<Set> neighbors = location.getNeighbors(); // grab the neighbor sets
         int count = location.getNeighbors().size();
@@ -665,6 +674,10 @@ public class Deadwood{
         return false;
     }
 
+    public Board getBoard(){
+      return this.board;
+    }
+
     public boolean isNumeric(String s) { // helper method for input handling
         int i = 0;
         if (s.charAt(0) == '-') {
@@ -740,40 +753,6 @@ public class Deadwood{
                 break;
         }
     }
-    // // This class implements Mouse Events
-    //
-    // class boardMouseListener implements MouseListener{
-    //
-    //     // Code for the different button clicks
-    //     public void mouseClicked(MouseEvent e) {
-    //
-    //        if (e.getSource()== bAct){
-    //           playerlabel.setVisible(true);
-    //           System.out.println("Acting is Selected\n");
-    //        }
-    //        else if (e.getSource()== bRehearse){
-    //           System.out.println("Rehearse is Selected\n");
-    //        }
-    //        else if (e.getSource()== bMove){
-    //           System.out.println("Move is Selected\n");
-    //        }
-    //        else if(e.getSource()==bTurn){
-    //          System.out.println("Turn is Selected\n");
-    //        }
-    //        else if(e.getSource() == bQuit){
-    //          System.out.println("Quit is Selected\n");
-    //          game.quitGame();
-    //        }
-    //     }
-    //     public void mousePressed(MouseEvent e) {
-    //     }
-    //     public void mouseReleased(MouseEvent e) {
-    //     }
-    //     public void mouseEntered(MouseEvent e) {
-    //     }
-    //     public void mouseExited(MouseEvent e) {
-    //     }
-    //  }
 }
 /**
  * Questions:

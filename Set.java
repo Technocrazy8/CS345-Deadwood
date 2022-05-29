@@ -7,6 +7,7 @@
  */
 
 import java.util.LinkedList;
+//import javax.
 
 public class Set {
     // the tiles on the board
@@ -23,6 +24,7 @@ public class Set {
     private LinkedList<String> coords;
     private LinkedList<String[]> creditLegend;// Only initiated w/ office
     private LinkedList<String[]> moneyLegend;// Only initiated w/ office
+    //public JButton
 
     public int calculatePayout(Player player) {
         int payout = 0;

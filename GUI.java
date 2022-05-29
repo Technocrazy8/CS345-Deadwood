@@ -22,6 +22,8 @@ public class GUI extends JFrame {
   //public static final Deadwood game;// = new Deadwood(this);
   int numPlayers =0;
 
+  boardMouseListener mouseListener = new boardMouseListener();
+
   // JLabels
   JLabel boardlabel;
   JLabel cardlabel;
@@ -40,6 +42,7 @@ public class GUI extends JFrame {
   JButton bQuit;
   JButton bWork;
   JButton bUpgrade;
+  LinkedList<JButton> bButtons= new LinkedList<JButton>();
 
 
   // JLayered Pane
@@ -94,7 +97,7 @@ public class GUI extends JFrame {
        // Add the card to the lower layer
        bPane.add(cardlabel, 1);
 
-       boardMouseListener mouseListener = new boardMouseListener();
+       //boardMouseListener mouseListener = new boardMouseListener();
 
 
        // Add a dice to represent a player.
@@ -189,8 +192,18 @@ public class GUI extends JFrame {
 
   class boardMouseListener implements MouseListener{
 
+      Player currentPlayer;
+      LinkedList<Set> neighbors;
+      boolean choseToMove=false;
+
+      public void setCurrPlayer(Player curr){
+        this.currentPlayer = curr;
+      }
+
       // Code for the different button clicks
       public void mouseClicked(MouseEvent e) {
+
+        //if(!choseToMove){
 
          if (e.getSource()== bAct){
             playerlabel.setVisible(true);
@@ -199,8 +212,10 @@ public class GUI extends JFrame {
          else if (e.getSource()== bRehearse){
             System.out.println("Rehearse is Selected\n");
          }
-         else if (e.getSource()== bMove){
+         else if (e.getSource()== bMove && !currentPlayer.checkInRole() && currentPlayer.canMove()){
             System.out.println("Move is Selected\n");
+            choseToMove = true;
+            game.move(currentPlayer);
          }
          else if(e.getSource()==bTurn){
            System.out.println("Turn is Selected\n");
@@ -210,7 +225,14 @@ public class GUI extends JFrame {
            game.quitGame();
            //return 6;
          }
+      //}else{
+        for(int i=0;i<bButtons.size();i++){
+          if(e.getSource() == bButtons.get(i)){
+            System.out.print("tile: "+i+" was hit ");
+          }
+        //}
       }
+    }
       public void mousePressed(MouseEvent e) {
       }
       public void mouseReleased(MouseEvent e) {
@@ -218,6 +240,10 @@ public class GUI extends JFrame {
       public void mouseEntered(MouseEvent e) {
       }
       public void mouseExited(MouseEvent e) {
+      }
+
+      public void movePlayer(){
+
       }
    }
 
@@ -238,11 +264,16 @@ public class GUI extends JFrame {
      curr.setBounds(x,y,h,w);
    }
 
+   public void presentLocations(LinkedList<Set> neighbors){
+
+
+
+   }
+
 
 public void run(){
     System.out.println("main");
-    Deadwood game = new Deadwood(this);
-    this.game = game;
+    //initBoardTiles(game.getBoard().getSets());
     String playerCount;
     // Take input from the user about number of players
     while(true){
@@ -255,8 +286,12 @@ public void run(){
         }
       }
   }
+  Deadwood game = new Deadwood(this,numPlayers);
+  this.game = game;
   initPlayerIcons();
-  game.run(Integer.parseInt(playerCount));
+  //initBoardTiles(game.getBoard().getSets());
+  game.run();
+  //game.run(Integer.parseInt(playerCount));
   System.exit(0);
   }
 
@@ -291,6 +326,52 @@ public void run(){
         bPane.add(setLabel,0);
         boardTiles.add(setLabel);
       }
+  }
+
+  public void initBoardButtons(LinkedList<Set> sets){
+    for(int i=0;i<sets.size();i++){
+      JButton setButton = new JButton("");
+      setButton.addMouseListener(mouseListener);
+      Set currSet = sets.get(i);
+      LinkedList<String> coords = currSet.getCoords();
+      int x;
+      int y;
+      int h;
+      int w;
+      // if(i==4||i==5){
+      //   x = Integer.parseInt(coords.get(0));
+      //   y = Integer.parseInt(coords.get(1));
+      //   //y = Integer.parseInt(coords.get(1))+25;
+      //   h = Integer.parseInt(coords.get(2));
+      //   w = Integer.parseInt(coords.get(3));
+      //   //w = Integer.parseInt(coords.get(3))-10;
+      // }else if(i==3){
+      //   x = Integer.parseInt(coords.get(0));
+      //   y = Integer.parseInt(coords.get(1));
+      //   h = Integer.parseInt(coords.get(2))+90;
+      //   w = Integer.parseInt(coords.get(3))-50;
+      //   //w = Integer.parseInt(coords.get(3))-10;
+      // }else if(i==6||i==9){
+      //   x = Integer.parseInt(coords.get(0))-30;
+      //   y = Integer.parseInt(coords.get(1))+20;
+      //   h = Integer.parseInt(coords.get(2))+40;
+      //   w = Integer.parseInt(coords.get(3))-20;
+      // }else if(i==7||i==8){
+      //   x = Integer.parseInt(coords.get(0));
+      //   y = Integer.parseInt(coords.get(1))+25;
+      //   h = Integer.parseInt(coords.get(2));
+      //   w = Integer.parseInt(coords.get(3))-40;
+      // }else{
+        x = Integer.parseInt(coords.get(0));
+        y = Integer.parseInt(coords.get(1));
+        h = Integer.parseInt(coords.get(2))+90;
+        w = Integer.parseInt(coords.get(3))-50;
+      //}
+      setButton.setBounds(x,y,h,w);
+      //setButton.setVisible(false);
+      bPane.add(setButton,2);
+      bButtons.add(setButton);
+    }
   }
 
   public void setBoardTile(Set set, int index){
