@@ -54,7 +54,7 @@ public class Deadwood{
     private static GUI frame = null;
     //private static JPanel mainPanel = new JPanel();
     //private static JLabel boardlabel = new JLabel();
-    private static GUI listener = null;
+    //private static GUI listener = null;
     private static GUI.boardMouseListener mouse;
     private static JTextArea area = null;
     //private static JFrame frame = new JFrame();
@@ -65,29 +65,7 @@ public class Deadwood{
       //this.area = area;
     }
     // public static void modFrame(){
-    //   frame.test();
-    // }
-    // public static void main(String[] args) {
-    //     Deadwood game = new Deadwood();
-    //
-    //     System.out.println("Welcome to Deadwood!\n");
-    //     int numPlayers = 0;
-    //
-    //     listener = new BoardLayersListener(game);
-    //
-    //     listener.setVisible(true);
-    //     String playerCount;
-    //     while(true){
-    //         playerCount = JOptionPane.showInputDialog(listener, "How many players? (2-8)");
-    //         if(playerCount != null &&playerCount.length()!=0 && game.isNumeric(playerCount)){
-    //           numPlayers = Integer.parseInt(playerCount);
-    //           if(numPlayers>=2&&numPlayers<=8){
-    //             break;
-    //           }
-    //         }
-    //       }
-    //     game.run(numPlayers);
-    // }
+
 
     public void run(int playerCount) {
         System.out.println("deadwood run");
@@ -105,7 +83,8 @@ public class Deadwood{
             frame.addText(day);
             //area.append(day);
             System.out.println("Day " + i);
-            board.distributeScenes(retrieveDailyCards(cards)); // Assigns a scene to each set (10 a day)
+
+            board.distributeScenes(retrieveDailyCards(cards),frame); // Assigns a scene to each set (10 a day)
             board.resetTiles(); // prepare the tiles
 
             for (int j = 0; j < numPlayers; j++) { // assert players start in trailer at beginning of each day
@@ -154,6 +133,7 @@ public class Deadwood{
         board.addSets(sets); // add all the sets to the board
         board.setTrailer(sets.get(sets.size() - 2)); // add the trailer tile to the board
         board.setOffice(sets.get(sets.size() - 1)); // add the office tile to the board
+        frame.initBoardTiles(sets);
         Collections.shuffle(cards); // shuffle so cards arent in order
 
         // Populate players and change their attributes depending on player count
@@ -348,8 +328,8 @@ public class Deadwood{
                         System.out.println("\nPlease move to the office to upgrade...\n");
                         break;
                     }
-                    // case "DAY": // DELETE THIS IN FINAL PRODUCT
-                    // return 2;
+                     case "DAY": // DELETE THIS IN FINAL PRODUCT
+                     return 2;
                 default:
                     System.out.println("Please enter a valid option\n");
                     break;

@@ -94,15 +94,28 @@ public class ParseXML {
                   Node part = parts.item(k);
 
                   if (part.getNodeName().equals("part")) {
-
+                    LinkedList<String> cords = new LinkedList<String>();
                      NamedNodeMap partattributes = part.getAttributes();
                      NodeList subs = part.getChildNodes();
+
+                     for(int p=0;p<subs.getLength();p++){
+                       Node temp = subs.item(p);
+                       if("area".equals(temp.getNodeName())){
+                         //System.out.println("Extra");
+                         cords.add(temp.getAttributes().getNamedItem("x").getTextContent());
+                         //System.out.println(temp.getAttributes().getNamedItem("x").getTextContent());
+                         cords.add(temp.getAttributes().getNamedItem("y").getTextContent());
+                         cords.add(temp.getAttributes().getNamedItem("h").getTextContent());
+                         cords.add(temp.getAttributes().getNamedItem("w").getTextContent());
+                       }
+                     }
 
                      String name = "" + partattributes.getNamedItem("name").getTextContent();
                      String minrank = "" + partattributes.getNamedItem("level").getTextContent();
                      String desc = subs.item(3).getTextContent();
 
                      Role role = new Role();
+                     role.setCoords(cords);
                      role.setDesc(desc);
                      role.setTitle(name);
                      role.setRank(Integer.parseInt(minrank));
@@ -281,6 +294,7 @@ public class ParseXML {
          LinkedList<Role> parts = new LinkedList<Role>();
          int actorCapacity;
 
+
          for (int j = 0; j < cardChildren.getLength(); j++) {
 
             Node cardChild = cardChildren.item(j);
@@ -298,6 +312,19 @@ public class ParseXML {
                newRole.setRank(Integer.parseInt(roleAttributes.getNamedItem("level").getNodeValue()));
                newRole.setDesc(rolechildren.item(3).getTextContent());
                //System.out.println("Card desc: "+ newRole.getDescription());
+               for(int k=0;k<rolechildren.getLength();k++){
+                 Node kid = rolechildren.item(k);
+                 if("area".equals(kid.getNodeName())){
+                   LinkedList<String> coordinates = new LinkedList<String>();
+                   System.out.println("foo");
+                   coordinates.add(kid.getAttributes().getNamedItem("x").getTextContent());
+                   coordinates.add(kid.getAttributes().getNamedItem("y").getTextContent());
+                   coordinates.add(kid.getAttributes().getNamedItem("h").getTextContent());
+                   coordinates.add(kid.getAttributes().getNamedItem("w").getTextContent());
+                   newRole.setCoords(coordinates);
+                 }
+               }
+
                parts.add(newRole);
             }
          }

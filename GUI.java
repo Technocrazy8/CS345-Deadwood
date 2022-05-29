@@ -30,6 +30,7 @@ public class GUI extends JFrame {
 
   //PlayerLabels
   LinkedList<JLabel> playerIcons = new LinkedList<JLabel>();
+  LinkedList<JLabel> boardTiles = new LinkedList<JLabel>();
 
   //JButtons
   JButton bAct;
@@ -274,6 +275,35 @@ public void run(){
     for(int i = numPlayers-1;i>=0;i--){
       playerIcons.get(i).setVisible(true);
     }
+  }
+
+  public void initBoardTiles(LinkedList<Set> sets){
+      for(int i=0;i<10;i++){
+        JLabel setLabel = new JLabel();
+        Set currSet = sets.get(i);
+        LinkedList<String> coords = currSet.getCoords();
+        int x = Integer.parseInt(coords.get(0));
+        int y = Integer.parseInt(coords.get(1))-45;
+        int h = Integer.parseInt(coords.get(2))+90;
+        int w = Integer.parseInt(coords.get(3));
+        setLabel.setBounds(x,y,h,w);
+        bPane.add(setLabel,0);
+        boardTiles.add(setLabel);
+      }
+  }
+
+  public void setBoardTile(Set set, int index){
+    JLabel currlabel = boardTiles.get(index);
+    Scene currScene = set.getScene();
+    String image = "Deadwood Needed Image Files/cards/"+currScene.getImage();
+    ImageIcon tIcon = new ImageIcon(image);
+    LinkedList<String> coordinates = set.getCoords();
+    currlabel.setIcon(tIcon);
+    currlabel.setVisible(true);
+    //int x = Integer.parseInt(coordinates.get(0));
+    //int y = Integer.parseInt(coordinates.get(1));
+    //int h = Integer.parseInt(coordinates.get(2));
+    //int w = Integer.parseInt(coordinates.get(3));
   }
 
   public static boolean isNumber(String s) { // helper method for input handling
