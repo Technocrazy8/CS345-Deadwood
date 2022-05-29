@@ -369,6 +369,9 @@ public void run(){
       //}
       setButton.setBounds(x,y,h,w);
       //setButton.setVisible(false);
+      setButton.setOpaque(false);
+      setButton.setContentAreaFilled(false);
+      setButton.setBorderPainted(false);
       bPane.add(setButton,2);
       bButtons.add(setButton);
     }
