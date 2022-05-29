@@ -49,6 +49,7 @@ public class ParseXML {
       for (int i = 0; i < sets.getLength(); i++) {
 
          Set set = new Set();
+         set.setTileID(i);
 
          // System.out.println("Printing information for set "+(i+1));
 
@@ -110,7 +111,7 @@ public class ParseXML {
                   y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent());
                   h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
                   w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent());
-                
+
                 coordinates.add(""+x);
                 coordinates.add(""+y);
                 coordinates.add(""+h);
@@ -165,6 +166,7 @@ public class ParseXML {
       trailer.setShotCapacity(-1);
       trailer.setActCapacity(8);
       trailer.noRoles();
+      trailer.setTileID(10);
       LinkedList<String> coordinates = new LinkedList<String>();
       for (int i = 0; i < forTrailer.getLength(); i++) {
          NodeList children = forTrailer.item(i).getChildNodes();
@@ -210,6 +212,7 @@ public class ParseXML {
       office.noRoles();
       office.createCreditLegend();
       office.createMoneyLegend();
+      office.setTileID(11);
       LinkedList<String> ofCoords = new LinkedList<String>();
       for (int i = 0; i < forOffice.getLength(); i++) {
          NodeList children = forOffice.item(i).getChildNodes();

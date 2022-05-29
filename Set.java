@@ -24,11 +24,16 @@ public class Set {
     private LinkedList<String> coords;
     private LinkedList<String[]> creditLegend;// Only initiated w/ office
     private LinkedList<String[]> moneyLegend;// Only initiated w/ office
+    private int tileID;
     //public JButton
 
     public int calculatePayout(Player player) {
         int payout = 0;
         return payout;
+    }
+
+    public void setTileID(int i){
+      this.tileID = i;
     }
 
     public void setName(String name) {
