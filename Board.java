@@ -79,6 +79,16 @@ public class Board {
         return null;
     }
 
+    public int getSetIndex(String name) {
+        for (int i = 0; i < sets.size(); i++) {
+            Set currSet = sets.get(i);
+            if (currSet.getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     // Takes 1 scene card for every set and assigns these cards accordingly
     // cards should contain 10 scenes
     public void distributeScenes(LinkedList<Scene> cards, GUI pane) {
@@ -112,9 +122,9 @@ public class Board {
         return this.sets;
     }
 
-    public void completeAll() { // USED FOR TESTING
+    public void completeAll(GUI frame) { // USED FOR TESTING
         for (int i = 0; i < 9; i++) {
-            board.sets.get(i).completeSet();
+            board.sets.get(i).completeSet(frame,i);
         }
         for (int i = 0; i < playerCount(); i++) {
             Player currPlayer = board.players.get(i);

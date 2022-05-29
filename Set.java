@@ -157,7 +157,8 @@ public class Set {
         return this.completed;
     }
 
-    public void complete() {
+    public void complete(GUI frame, int index) {
+        frame.flipCard(index);
         this.completed = true;
     }
 
@@ -191,7 +192,8 @@ public class Set {
         return this.creditLegend;
     }
 
-    public void completeSet() {
+    public void completeSet(GUI frame, int index) {
+        frame.flipCard(index);
         this.completedshots = this.shotstocompletion;
         this.completed = true;
     }

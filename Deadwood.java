@@ -205,7 +205,7 @@ public class Deadwood{
                 area.append(congrats);
                 currentPlayer.setRole(null); // reset the players current role
                 currentPlayer.resetChips(); // reset their chip count
-                playerLocation.complete(); // say location is complete
+                playerLocation.complete(frame,board.getSetIndex(playerLocation.getName())); // say location is complete
             }
 
             else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is
@@ -234,7 +234,7 @@ public class Deadwood{
                     currplayerindex++;
                 }
                 if (opt == 2) { // for testing purposes
-                    board.completeAll();
+                    board.completeAll(frame);
                 }
             }
 
@@ -658,7 +658,7 @@ public class Deadwood{
             Role currRole = occupiedRoles.get(i);
             if (!currRole.isExtra()) {
                 //System.out.println("non extra detected");
-                set.complete();
+                set.complete(frame,-1);
                 return true;
             }
         }

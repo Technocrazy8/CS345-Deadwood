@@ -286,6 +286,7 @@ public void run(){
         int y = Integer.parseInt(coords.get(1))-45;
         int h = Integer.parseInt(coords.get(2))+90;
         int w = Integer.parseInt(coords.get(3));
+        System.out.println(coords.get(4));
         setLabel.setBounds(x,y,h,w);
         bPane.add(setLabel,0);
         boardTiles.add(setLabel);
@@ -304,6 +305,16 @@ public void run(){
     //int y = Integer.parseInt(coordinates.get(1));
     //int h = Integer.parseInt(coordinates.get(2));
     //int w = Integer.parseInt(coordinates.get(3));
+  }
+
+  public void flipCard(int index){
+    JLabel currlabel = boardTiles.get(index);
+    //Scene currScene = set.getScene();
+    String image = "Deadwood Needed Image Files/CardBack-small.jpg";
+    ImageIcon tIcon = new ImageIcon(image);
+    //LinkedList<String> coordinates = set.getCoords();
+    currlabel.setIcon(tIcon);
+    currlabel.setVisible(true);
   }
 
   public static boolean isNumber(String s) { // helper method for input handling

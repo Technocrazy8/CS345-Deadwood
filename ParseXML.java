@@ -86,6 +86,7 @@ public class ParseXML {
                 coordinates.add(sub.getAttributes().getNamedItem("y").getTextContent());
                 coordinates.add(sub.getAttributes().getNamedItem("h").getTextContent());
                 coordinates.add(sub.getAttributes().getNamedItem("w").getTextContent());
+                coordinates.add(setname);
                 //System.out.println(coordinates.size());
                 set.setCoords(coordinates);
             }else if ("parts".equals(sub.getNodeName())) {
@@ -107,6 +108,7 @@ public class ParseXML {
                          cords.add(temp.getAttributes().getNamedItem("y").getTextContent());
                          cords.add(temp.getAttributes().getNamedItem("h").getTextContent());
                          cords.add(temp.getAttributes().getNamedItem("w").getTextContent());
+                         //cords.add(setname);
                        }
                      }
 
