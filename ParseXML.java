@@ -86,27 +86,7 @@ public class ParseXML {
               int y;
               int h;
               int w;
-                // if(i==4||i==5){
-                //   x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
-                //   y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent())+25;
-                //   h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
-                //   w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent())-10;
-                // }else if(i==3){
-                //   x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
-                //   y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent());
-                //   h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
-                //   w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent())-10;
-                // }else if(i==6||i==9){
-                //   x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent())-30;
-                //   y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent())+20;
-                //   h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent())+40;
-                //   w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent())-20;
-                // }else if(i==7||i==8){
-                //   x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
-                //   y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent())+25;
-                //   h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
-                //   w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent())-40;
-                // }else{
+
                   x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
                   y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent());
                   h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
@@ -131,12 +111,10 @@ public class ParseXML {
                      for(int p=0;p<subs.getLength();p++){
                        Node temp = subs.item(p);
                        if("area".equals(temp.getNodeName())){
-                         //System.out.println("Extra");
                          cords.add(temp.getAttributes().getNamedItem("x").getTextContent());
                          cords.add(temp.getAttributes().getNamedItem("y").getTextContent());
                          cords.add(temp.getAttributes().getNamedItem("h").getTextContent());
                          cords.add(temp.getAttributes().getNamedItem("w").getTextContent());
-                         //cords.add(setname);
                        }
                      }
 
@@ -224,7 +202,6 @@ public class ParseXML {
                   Node neighbor = nlist.item(k);
                   if (neighbor.getNodeName().equals("neighbor")) {
                      NamedNodeMap atts = neighbor.getAttributes();
-                     // System.out.println(atts.getNamedItem("name").getTextContent());
                      for (int p = 0; p < boardSets.size(); p++) {
                         if (boardSets.get(p).getName().equals(atts.getNamedItem("name").getTextContent())) {
                            office.addNeighbor(boardSets.get(p));
@@ -242,7 +219,6 @@ public class ParseXML {
                      String type = atts.getNamedItem("currency").getTextContent();
                      String amount = atts.getNamedItem("amt").getTextContent();
                      String level = atts.getNamedItem("level").getTextContent();
-                     // System.out.println(type + " " + amount + " " + level);
                      String[] tuple = { type, level, amount };
                      office.addToLegend(tuple);
                   }
@@ -268,10 +244,8 @@ public class ParseXML {
       for (int i = 0; i < sets.getLength(); i++) {
          Node node = sets.item(i);
          NodeList children = node.getChildNodes();
-         // Node node = sets.item(i);
          NamedNodeMap setAttributes = node.getAttributes();
          String setname = setAttributes.getNamedItem("name").getNodeValue();
-         // System.out.println("Set name= " + setname);
          Set parentSet = null;
          for (int j = 0; j < boardSets.size(); j++) {
             if (boardSets.get(j).getName().equals(setname)) {
@@ -289,8 +263,6 @@ public class ParseXML {
                   Node neighbor = nlist.item(k);
                   if (neighbor.getNodeName().equals("neighbor")) {
                      NamedNodeMap atts = neighbor.getAttributes();
-                     // System.out.println(atts.getNamedItem("name").getTextContent());
-                     // Set parentSet;
                      for (int p = 0; p < boardSets.size(); p++) {
                         if (boardSets.get(p).getName().equals(atts.getNamedItem("name").getTextContent())) {
                            parentSet.addNeighbor(boardSets.get(p));
@@ -340,7 +312,6 @@ public class ParseXML {
          String description = "";
 
          String image = cardAttributes.getNamedItem("img").getNodeValue();
-         System.out.println(image);
 
          int budget = Integer.parseInt(cardAttributes.getNamedItem("budget").getNodeValue());
          LinkedList<Role> parts = new LinkedList<Role>();
@@ -363,12 +334,10 @@ public class ParseXML {
 
                newRole.setRank(Integer.parseInt(roleAttributes.getNamedItem("level").getNodeValue()));
                newRole.setDesc(rolechildren.item(3).getTextContent());
-               //System.out.println("Card desc: "+ newRole.getDescription());
                for(int k=0;k<rolechildren.getLength();k++){
                  Node kid = rolechildren.item(k);
                  if("area".equals(kid.getNodeName())){
                    LinkedList<String> coordinates = new LinkedList<String>();
-                   System.out.println("foo");
                    coordinates.add(kid.getAttributes().getNamedItem("x").getTextContent());
                    coordinates.add(kid.getAttributes().getNamedItem("y").getTextContent());
                    coordinates.add(kid.getAttributes().getNamedItem("h").getTextContent());

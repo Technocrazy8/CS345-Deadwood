@@ -75,18 +75,13 @@ public class Deadwood{
 
     // method where the gui boots up the game logic
     public void run() {
-        System.out.println("deadwood run");
-        System.out.println("deadwood run after text add");
-        //numPlayers = playerCount;
+        //System.out.println("deadwood run");
+        //System.out.println("deadwood run after text add");
         Scanner scanner = new Scanner(System.in);
-        //LinkedList<Scene> cards = setupProcedure(numPlayers);
-        //int dayCount = 4;
-        // if (numPlayers == 2 || numPlayers == 3) {
-        //     dayCount = 3;
-        // }
+
 
         for (int i = 1; i <= dayCount; i++) { // this it the main day loop
-            String day = "Day " + i +"\n";
+            String day = "Day " + i;
             frame.addText(day);
             //area.append(day);
             System.out.println("Day " + i);
@@ -315,7 +310,7 @@ public class Deadwood{
                 scanner.close();
                 System.out.println();
                 try{
-                  TimeUnit.SECONDS.sleep(3);
+                  TimeUnit.SECONDS.sleep(2);
                 }catch(InterruptedException e){}finally{
                   System.exit(0);
                 }

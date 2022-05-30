@@ -119,44 +119,37 @@ public class GUI extends JFrame {
        bTake = new JButton("TAKE JOB");
        bTake.setBackground(Color.white);
        bTake.setBounds(icon.getIconWidth()+10, 30,200, 20);
-       //bAct.addMouseListener(new boardMouseListener());
        bTake.addMouseListener(mouseListener);
 
        // Create Action buttons
        bAct = new JButton("ACT");
        bAct.setBackground(Color.white);
        bAct.setBounds(icon.getIconWidth()+10, 60,200, 20);
-       //bAct.addMouseListener(new boardMouseListener());
        bAct.addMouseListener(mouseListener);
 
        bRehearse = new JButton("REHEARSE");
        bRehearse.setBackground(Color.white);
        bRehearse.setBounds(icon.getIconWidth()+10,90,200, 20);
-       //bRehearse.addMouseListener(new boardMouseListener());
        bRehearse.addMouseListener(mouseListener);
 
        bMove = new JButton("MOVE");
        bMove.setBackground(Color.white);
        bMove.setBounds(icon.getIconWidth()+10,120,200, 20);
-       //bMove.addMouseListener(new boardMouseListener());
        bMove.addMouseListener(mouseListener);
 
        bUpgrade = new JButton("UPGRADE");
        bUpgrade.setBackground(Color.white);
        bUpgrade.setBounds(icon.getIconWidth()+10, 150,200, 20);
-       //bAct.addMouseListener(new boardMouseListener());
        bUpgrade.addMouseListener(mouseListener);
 
        bTurn = new JButton("END TURN");
        bTurn.setBackground(Color.white);
        bTurn.setBounds(icon.getIconWidth()+10,180,200, 20);
-       //bTurn.addMouseListener(new boardMouseListener());
        bTurn.addMouseListener(mouseListener);
 
        bQuit = new JButton("END GAME");
        bQuit.setBackground(Color.white);
        bQuit.setBounds(icon.getIconWidth()+10,240,200, 40);
-       //bQuit.addMouseListener(new boardMouseListener());
        bQuit.addMouseListener(mouseListener);
 
        // Place the action buttons in the top layer
@@ -173,19 +166,14 @@ public class GUI extends JFrame {
        area.setLineWrap(true);
        area.setBackground(Color.white);
        area.setVisible(true);
-       // DefaultCaret caret = (DefaultCaret)area.getCaret();
-       // caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
        scroll = new JScrollPane(area);
        scroll.setBounds(icon.getIconWidth()+10,icon.getIconHeight()/2,200,icon.getIconHeight()-450);
-       //area.setBounds(icon.getIconWidth()+10,icon.getIconHeight()/2,400,icon.getIconHeight()-450);
        scroll.setBackground(Color.white);
        scroll.setVisible(true);
-       //bPane.add(area,2);
        bPane.add(scroll,3);
-       //bPane.add(area,3);
        area.append("Welcome to Deadwood!\n");
-       System.out.println("Text\n");
-
+       //System.out.println("Text\n");
   }
   //WAS BREAKING MY SHIT
   // public static synchronized GUI getInstance() {
@@ -369,7 +357,7 @@ public void run(){
         int y = Integer.parseInt(coords.get(1))-45;
         int h = Integer.parseInt(coords.get(2))+90;
         int w = Integer.parseInt(coords.get(3));
-        System.out.println(coords.get(4));
+        //System.out.println(coords.get(4));
         setLabel.setBounds(x,y,h,w);
         bPane.add(setLabel,0);
         boardTiles.add(setLabel);
