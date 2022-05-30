@@ -58,6 +58,7 @@ public class GUI extends JFrame {
 
   //Deadwood model
   static Deadwood game;
+  Board board;
 
   // Constructor
 
@@ -201,23 +202,44 @@ public class GUI extends JFrame {
       int id;
       LinkedList<Set> neighbors = new LinkedList<Set>();
       boolean choseToMove=false;
+      Set currlocation;
 
       public void setCurrPlayer(Player curr){
         this.currentPlayer = curr;
         this.id = currentPlayer.getId();
+        this.currlocation = curr.getLocation();
       }
 
       // Code for the different button clicks
       public void mouseClicked(MouseEvent e) {
 
         //if(!choseToMove){
-
-         if (e.getSource()== bAct){
-            //playerlabel.setVisible(true);
-            System.out.println("Acting is Selected\n");
+         if(e.getSource() ==bTake && !currentPlayer.checkInRole()){
+           LinkedList<Role> totalRoles = board.getAvailableRoles(currentPlayer);
+           if(currlocation.getName().equals("trailer") || currlocation.getName().equals("office")){
+             addText("\nNo roles are offered at: " + currlocation.getName());
+           }else if(totalRoles.size() == 0){
+             addText("All roles are taken");
+           }else{
+           System.out.println("Take is selected");
+           }
          }
-         else if (e.getSource()== bRehearse){
+         else if (e.getSource()== bAct && currentPlayer.checkInRole()){
+            System.out.println("Acting is Selected\n");
+            game.actingChoices(currentPlayer);
+
+         }
+         else if (e.getSource()== bRehearse && currentPlayer.checkInRole()){
             System.out.println("Rehearse is Selected\n");
+            int budget = currlocation.getScene().getBudget();
+            if(currentPlayer.getChips() == budget-1){
+              addText("\nYou cannot rehearse anymore. Please act");
+            }else{
+              addText("\nYou chose to rehearse");
+              currentPlayer.addChip();
+              game.changePlayer();
+              game.dailyRoutine();
+            }
          }
          else if (e.getSource()== bMove && !currentPlayer.checkInRole() && currentPlayer.canMove()){
             System.out.println("Move is Selected\n");
@@ -252,6 +274,7 @@ public class GUI extends JFrame {
                System.out.println(curr.getName() +" was hit");
                addText("\nYou moved to: "+ curr.getName());
                game.move(currentPlayer,curr);
+               this.currlocation = curr;
                choseToMove=false;
                int x = Integer.parseInt(curr.getCoords().get(0));
                int y = Integer.parseInt(curr.getCoords().get(1))+30;
@@ -324,6 +347,7 @@ public void run(){
   }
   Deadwood game = new Deadwood(this,numPlayers);
   this.game = game;
+  this.board = game.getBoard();
   initPlayerIcons();
   //initBoardTiles(game.getBoard().getSets());
   game.run();
@@ -357,7 +381,6 @@ public void run(){
         int y = Integer.parseInt(coords.get(1))-45;
         int h = Integer.parseInt(coords.get(2))+90;
         int w = Integer.parseInt(coords.get(3));
-        //System.out.println(coords.get(4));
         setLabel.setBounds(x,y,h,w);
         bPane.add(setLabel,0);
         boardTiles.add(setLabel);
@@ -374,30 +397,6 @@ public void run(){
       int y;
       int h;
       int w;
-      // if(i==4||i==5){
-      //   x = Integer.parseInt(coords.get(0));
-      //   y = Integer.parseInt(coords.get(1));
-      //   //y = Integer.parseInt(coords.get(1))+25;
-      //   h = Integer.parseInt(coords.get(2));
-      //   w = Integer.parseInt(coords.get(3));
-      //   //w = Integer.parseInt(coords.get(3))-10;
-      // }else if(i==3){
-      //   x = Integer.parseInt(coords.get(0));
-      //   y = Integer.parseInt(coords.get(1));
-      //   h = Integer.parseInt(coords.get(2))+90;
-      //   w = Integer.parseInt(coords.get(3))-50;
-      //   //w = Integer.parseInt(coords.get(3))-10;
-      // }else if(i==6||i==9){
-      //   x = Integer.parseInt(coords.get(0))-30;
-      //   y = Integer.parseInt(coords.get(1))+20;
-      //   h = Integer.parseInt(coords.get(2))+40;
-      //   w = Integer.parseInt(coords.get(3))-20;
-      // }else if(i==7||i==8){
-      //   x = Integer.parseInt(coords.get(0));
-      //   y = Integer.parseInt(coords.get(1))+25;
-      //   h = Integer.parseInt(coords.get(2));
-      //   w = Integer.parseInt(coords.get(3))-40;
-      // }else{
         x = Integer.parseInt(coords.get(0));
         y = Integer.parseInt(coords.get(1));
         h = Integer.parseInt(coords.get(2))+90;
@@ -422,18 +421,12 @@ public void run(){
     LinkedList<String> coordinates = set.getCoords();
     currlabel.setIcon(tIcon);
     currlabel.setVisible(true);
-    //int x = Integer.parseInt(coordinates.get(0));
-    //int y = Integer.parseInt(coordinates.get(1));
-    //int h = Integer.parseInt(coordinates.get(2));
-    //int w = Integer.parseInt(coordinates.get(3));
   }
 
   public void flipCard(int index){
     JLabel currlabel = boardTiles.get(index);
-    //Scene currScene = set.getScene();
     String image = "Deadwood Needed Image Files/CardBack-small.jpg";
     ImageIcon tIcon = new ImageIcon(image);
-    //LinkedList<String> coordinates = set.getCoords();
     currlabel.setIcon(tIcon);
     currlabel.setVisible(true);
   }

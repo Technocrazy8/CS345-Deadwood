@@ -35,6 +35,22 @@ public class Board {
         // TODO
     }
 
+    public LinkedList<Role> getAvailableRoles(Player player){
+      LinkedList<Role> totalRoles = new LinkedList<Role>();
+      Set playerLocation = player.getLocation();
+      Scene scene = playerLocation.getScene();
+      if (playerLocation.getName().equals("trailer") || playerLocation.getName().equals("office")) {
+          System.out.println("\nNo roles are offered at: " + playerLocation.getName());
+          //Deadwood.frame.addText("No roles are offered at: " + playerLocation.getName());
+          return null;
+      }
+      LinkedList<Role> sceneRoles = playerLocation.getAvailableRoles(); // grab the nontaken scene roles
+      LinkedList<Role> setRoles = scene.getAvailableRoles(); // grab the nontaken set roles
+      totalRoles.addAll(sceneRoles);
+      totalRoles.addAll(setRoles);
+      return totalRoles;
+    }
+
     public Player getPlayer(String name) {
         int size = players.size();
         for (int i = 0; i < size; i++) {
