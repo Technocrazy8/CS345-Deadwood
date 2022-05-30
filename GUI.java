@@ -21,6 +21,8 @@ public class GUI extends JFrame {
   private static GUI instance;
   //public static final Deadwood game;// = new Deadwood(this);
   int numPlayers =0;
+  String[] colors = { "b", "c", "g", "o", "p", "r", "v",
+          "y" };
 
   boardMouseListener mouseListener = new boardMouseListener();
 
@@ -259,6 +261,20 @@ public class GUI extends JFrame {
            game.quitGame();
            //return 6;
          }
+         else if(e.getSource()== bUpgrade && currlocation.getName().equals("office")){
+           System.out.println("Upgrade selected");
+           int rank = currentPlayer.getRank();
+           //int ret = game.upgrade(currentPlayer);
+           if(rank!=6){
+             int ret = game.upgrade(currentPlayer);
+             if(ret == 1){
+               updatePlayerIcon(currentPlayer);
+             }
+             //updatePlayerIcon(currentPlayer);
+           }else{
+             addText("\nYou are already max rank");
+           }
+         }
          else if(choseToMove == true){
            if(!neighbors.isEmpty()){
              neighbors.clear();
@@ -313,6 +329,13 @@ public class GUI extends JFrame {
    public void displayPlayer(int id){
      playerIcons.get(id).setVisible(true);
    }
+   public void updatePlayerIcon(Player p){
+     int pid = p.getId();
+     int rank = p.getRank();
+     ImageIcon nIcon = new ImageIcon("Deadwood Needed Image Files/dice/"+colors[pid]+rank+".png");
+     JLabel curLabel = playerIcons.get(pid);
+     curLabel.setIcon(nIcon);
+   }
 
    public void hidePlayer(int id){
      playerIcons.get(id).setVisible(false);
@@ -324,8 +347,6 @@ public class GUI extends JFrame {
    }
 
    public void presentLocations(LinkedList<Set> neighbors){
-
-
 
    }
 
@@ -356,8 +377,6 @@ public void run(){
   }
 
   public void initPlayerIcons(){
-    String[] colors = { "b", "c", "g", "o", "p", "r", "v",
-            "y" };
     for(int i=0;i<numPlayers;i++){
       JLabel playerlabel = new JLabel();
       ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/dice/"+colors[i]+"1.png");

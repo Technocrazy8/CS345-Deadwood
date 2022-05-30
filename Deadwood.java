@@ -146,7 +146,7 @@ public class Deadwood{
         for (int i = 0; i < numPlayers; i++) {
             Player player = new Player(PLAYER_NAMES[i],i);
             // player.addCredits(76);
-            // player.addMoney(101);
+             player.addMoney(101);
             if (numPlayers == 5) {
                 player.addCredits(2);
             } else if (numPlayers == 6) {
@@ -550,7 +550,7 @@ public class Deadwood{
         }
     }
 
-    public void upgrade(Player player) {
+    public int upgrade(Player player) {
         int rank = player.getRank();
         Scanner scanner = new Scanner(System.in);
         // grab the players resources
@@ -578,30 +578,33 @@ public class Deadwood{
                         System.out.println("Rank increased");
                         player.subMoney(mCost);
                         player.increaseRank();
-                        return;
+                        return 1;
                     case "C": // spend their credits and increase their rank
                         System.out.println("Rank increased");
                         player.subCredits(cCost);
                         player.increaseRank();
-                        return;
+                        return 1;
                     default: // enter valid option
                         System.out.println("\nPlease enter a valid option (M or C)\n");
                         break;
                 }
             }
         } else if (playerMoney >= mCost) { // player only has enough money to upgrade rank
-            System.out.println("You spent money to increase your rank");
+            System.out.println("You spent money to \nincrease your rank");
+            frame.addText("\nYou spent money to \nincrease your rank");
             player.subMoney(mCost);
             player.increaseRank();
-            return;
+            return 1;
         } else if (playerCredit >= cCost) { // player only has enough credits to upgrade rank
-            System.out.println("You spent credits to increase your rank");
+            System.out.println("You spent credits to \nincrease your rank");
+            frame.addText("\nYou spent credits to increase your rank");
             player.subCredits(cCost);
             player.increaseRank();
-            return;
+            return 1;
         } else { // player doesnt have the means to increase their rank
-            System.out.println("\nYou dont have the resources to increase your rank. Try again later.");
-            return;
+            System.out.println("\nYou dont have the resources \nto increase your rank. Try again later.");
+            frame.addText("\nYou dont have the resources \nto increase your rank.\n Try again later.");
+            return 0;
         }
     }
 
