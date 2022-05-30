@@ -7,7 +7,7 @@
  */
 
 import java.util.LinkedList;
-//import javax.
+import javax.swing.JButton;
 
 public class Set {
     // the tiles on the board
@@ -25,7 +25,7 @@ public class Set {
     private LinkedList<String[]> creditLegend;// Only initiated w/ office
     private LinkedList<String[]> moneyLegend;// Only initiated w/ office
     private int tileID;
-    //public JButton
+    private JButton setButton;
 
     public int calculatePayout(Player player) {
         int payout = 0;
@@ -34,6 +34,14 @@ public class Set {
 
     public void setTileID(int i){
       this.tileID = i;
+    }
+
+    public void setButton(JButton b){
+      this.setButton=b;
+    }
+
+    public JButton getButton(){
+      return this.setButton;
     }
 
     public void setName(String name) {

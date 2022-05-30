@@ -44,6 +44,10 @@ public class Player extends Model{
         return this.name;
     }
 
+    public int getId(){
+      return this.id;
+    }
+
     public void addMoney(int m) {
         this.money += m;
         notify(getMoney);

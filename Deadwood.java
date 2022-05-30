@@ -60,6 +60,7 @@ public class Deadwood{
     //private static JFrame frame = new JFrame();
     private static LinkedList<Scene> cards;
     private static int dayCount=4;
+    private static int currplayerindex =0;
 
     public Deadwood(GUI frame, int playerCount){
       this.frame = frame;
@@ -96,7 +97,9 @@ public class Deadwood{
                 Player temp = board.getPlayer(j);
                 temp.setLocation(board.getTrailer()); // change back to trailer after testing upgrade
             }
-            dailyRoutine(scanner); // run main game loop for the player
+            //dailyRoutine(scanner);
+            dailyRoutine(); // run main game loop for the player
+            loopStop();
         }
         scanner.close();
         wrapUp(); // modified quit game that doesnt prompt for input
@@ -180,13 +183,13 @@ public class Deadwood{
     }
 
     // main turn loop for each player
-    private void dailyRoutine(Scanner scanner) {
+    public void dailyRoutine(Scanner scanner) {
         String input;
         // boolean toggle = true;
-        int currplayerindex = 0;
+        //int currplayerindex = 0;
         // int
 
-        while (true) {
+      while (currplayerindex != numPlayers-1) {
 
             Player currentPlayer = board.getPlayer(currplayerindex); // get the current player
             listener.setCurrPlayer(currentPlayer);
@@ -196,14 +199,15 @@ public class Deadwood{
             System.out.println("\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "
                     + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
 
-            String turnline = "\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "+ currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName();
+            String turnline = "\n"+ playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "+ currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName()+ "\n Your rank is: " + currentPlayer.getRank();
             //area.append(turnline);
             frame.addText(turnline);
-            System.out.println(" Your rank is: " + currentPlayer.getRank()); // print out the players attributes
-            String playerRank = "\n Your rank is: " + currentPlayer.getRank();
+            //System.out.println(" Your rank is: " + currentPlayer.getRank()); // print out the players attributes
+            //String playerRank = " Your rank is: " + currentPlayer.getRank();
             //area.append("\n Your rank is: " + currentPlayer.getRank());
-            frame.addText(playerRank);
+            //frame.addText(playerRank);
             int opt;
+            //loopStop(scanner);
             // debugBoard(3);
             if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is
                                                                         // completed
@@ -262,6 +266,37 @@ public class Deadwood{
         }
     }
 
+    public void dailyRoutine(){
+        //while(currplayerindex!= numPlayers){
+          Player currentPlayer = board.getPlayer(currplayerindex); // get the current player
+          listener.setCurrPlayer(currentPlayer);
+          String playerName = currentPlayer.getName(); // get players name
+          Set playerLocation = currentPlayer.getLocation(); // get players location
+          int shotsRemaining = playerLocation.shotsRemaining(); // get the shots remaining for players' location
+          System.out.println("\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "
+                  + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
+
+          String turnline = "\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "+ currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName() + "\n Your rank is: " + currentPlayer.getRank();
+          //area.append(turnline);
+          frame.addText(turnline);
+          //System.out.println(" Your rank is: " + currentPlayer.getRank()); // print out the players attributes
+          //String playerRank = "\n Your rank is: " + currentPlayer.getRank();
+          //area.append("\n Your rank is: " + currentPlayer.getRank());
+          //frame.addText(playerRank);
+          //loopStop();
+          if (currplayerindex == numPlayers) { // loop back around to starting player
+              currplayerindex = 0;
+              for (int i = 0; i < numPlayers; i++) { // assert players can move again after their turn has completed
+                  Player temp = board.getPlayer(i); // doesnt matter if player is already in a role. Current set up
+                                                    // doesnt allow them to move if they already did in the turn
+                  if (!temp.canMove()) {
+                      temp.allowMove();
+                  }
+              }
+          }
+
+    }
+
     public void quitGame() { // exit method that prompts user if they want to quit
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -283,6 +318,19 @@ public class Deadwood{
                 System.out.println("Please enter Y or N"); // invalid input was given
             }
         }
+    }
+
+    public void loopStop(){
+      Scanner scanner = new Scanner(System.in);
+      while(true){
+        String answer = scanner.nextLine();
+        answer=answer.toUpperCase();
+        if(answer.equals("QUIT")){
+          quitGame();
+        }else if(answer.equals("DAY")){
+          board.completeAll(frame);
+        }
+      }
     }
 
     public void wrapUp() { // end game method that doesnt take input
@@ -318,7 +366,7 @@ public class Deadwood{
                     }
                 case "MOVE":
                     if (p.canMove()) { // if a player hasnt moved in their turn already
-                        move(p); // allow them to move
+                        move(p,playerLocation); // allow them to move
                     } else {
                         System.out.println("\nYou have already moved this turn\n");
                     }
@@ -386,43 +434,61 @@ public class Deadwood{
         }
     }
 
-    public void move(Player player) { // show the locations a player can move to. prompt them to pick one
+    public void move(Player player,Set location) { // show the locations a player can move to. prompt them to pick one
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nWhere would you like to move to?");
-        frame.addText("\nWhere would you like to move to?");
+        //frame.addText("\nWhere would you like \nto move to?");
+        player.setLocation(location);
+        player.moved();
+        player.resetChips();
         //frame.choseToMove();
-        Set location = player.getLocation(); // get players current location
-        LinkedList<Set> neighbors = location.getNeighbors(); // grab the neighbor sets
-        int count = location.getNeighbors().size();
-        for (int i = 0; i < count; i++) { // print neighboring locations
-            Set currSet = neighbors.get(i);
-            Scene currScene = currSet.getScene();
-            if (currScene == null) { // if the neighbor is office or trailer
-                System.out.println(" " + i + " - Location: " + currSet.getName());
-            } else { // print attributes of neighboring tile
-                System.out
-                        .println(" " + i + " - Location: " + currSet.getName() + " -Budget: $" + currScene.getBudget());
-            }
-        }
-        System.out.println(" " + count + " - GO BACK"); // give them a go back option
-        while (true) { // prompt for input
-            String input = scanner.nextLine();
-            if (isNumeric(input)) {
-                int pick = Integer.parseInt(input);
-                if (pick > count || pick < 0) { // make sure player entered a valid choice
-                    System.out.println("\nPlease enter a valid option (0-" + count + ")");
-                } else if (pick == count) { // go back choice
-                    return;
-                } else {// move player to the tile
-                    player.setLocation(neighbors.get(pick));
-                    player.moved();
-                    player.resetChips();
-                    return;
-                }
-            } else {
-                System.out.println("\nPlease enter a valid option");
-            }
-        }
+        //Set location = player.getLocation(); // get players current location
+        // LinkedList<Set> neighbors = location.getNeighbors(); // grab the neighbor sets
+        // int count = location.getNeighbors().size();
+        // for (int i = 0; i < count; i++) { // print neighboring locations
+        //     Set currSet = neighbors.get(i);
+        //     Scene currScene = currSet.getScene();
+        //     if (currScene == null) { // if the neighbor is office or trailer
+        //         System.out.println(" " + i + " - Location: " + currSet.getName());
+        //     } else { // print attributes of neighboring tile
+        //         System.out
+        //                 .println(" " + i + " - Location: " + currSet.getName() + " -Budget: $" + currScene.getBudget());
+        //     }
+        // }
+        // System.out.println(" " + count + " - GO BACK"); // give them a go back option
+        // while (true) { // prompt for input
+        //     String input = scanner.nextLine();
+        //     if (isNumeric(input)) {
+        //         int pick = Integer.parseInt(input);
+        //         if (pick > count || pick < 0) { // make sure player entered a valid choice
+        //             System.out.println("\nPlease enter a valid option (0-" + count + ")");
+        //         } else if (pick == count) { // go back choice
+        //             return;
+        //         } else {// move player to the tile
+        //             player.setLocation(neighbors.get(pick));
+        //             player.moved();
+        //             player.resetChips();
+        //             return;
+        //         }
+        //     } else {
+        //         System.out.println("\nPlease enter a valid option");
+        //     }
+        // }
+    }
+
+    public void changePlayer(){
+      currplayerindex++;
+      if (currplayerindex == numPlayers) { // loop back around to starting player
+          currplayerindex = 0;
+          for (int i = 0; i < numPlayers; i++) { // assert players can move again after their turn has completed
+              Player temp = board.getPlayer(i); // doesnt matter if player is already in a role. Current set up
+                                                // doesnt allow them to move if they already did in the turn
+              if (!temp.canMove()) {
+                  temp.allowMove();
+              }
+          }
+      }
+      //dailyRoutine(null);
     }
 
     public int takeRole(Player player) { // return 1 for successful role fill, 0 for no roles offered or back

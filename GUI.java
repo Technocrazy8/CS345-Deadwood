@@ -159,6 +159,8 @@ public class GUI extends JFrame {
        area.setLineWrap(true);
        area.setBackground(Color.white);
        area.setVisible(true);
+       // DefaultCaret caret = (DefaultCaret)area.getCaret();
+       // caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
        scroll = new JScrollPane(area);
        scroll.setBounds(icon.getIconWidth()+10,icon.getIconHeight()/2,200,icon.getIconHeight()-450);
        //area.setBounds(icon.getIconWidth()+10,icon.getIconHeight()/2,400,icon.getIconHeight()-450);
@@ -181,7 +183,8 @@ public class GUI extends JFrame {
   // }
 
   public void addText(String text){
-    area.append(text);
+    area.append("\n"+text);
+    area.setCaretPosition(area.getDocument().getLength());
   }
 
   public void displayCard(Set tile){// take the coords from the tile, take the image from the scene and mix/display the two
@@ -193,11 +196,13 @@ public class GUI extends JFrame {
   class boardMouseListener implements MouseListener{
 
       Player currentPlayer;
-      LinkedList<Set> neighbors;
+      int id;
+      LinkedList<Set> neighbors = new LinkedList<Set>();
       boolean choseToMove=false;
 
       public void setCurrPlayer(Player curr){
         this.currentPlayer = curr;
+        this.id = currentPlayer.getId();
       }
 
       // Code for the different button clicks
@@ -206,7 +211,7 @@ public class GUI extends JFrame {
         //if(!choseToMove){
 
          if (e.getSource()== bAct){
-            playerlabel.setVisible(true);
+            //playerlabel.setVisible(true);
             System.out.println("Acting is Selected\n");
          }
          else if (e.getSource()== bRehearse){
@@ -215,24 +220,54 @@ public class GUI extends JFrame {
          else if (e.getSource()== bMove && !currentPlayer.checkInRole() && currentPlayer.canMove()){
             System.out.println("Move is Selected\n");
             choseToMove = true;
-            game.move(currentPlayer);
+            addText("Where would you like \nto move to?");
+         }
+         else if(e.getSource()== bMove && !currentPlayer.canMove()){
+           addText("You already moved this turn");
          }
          else if(e.getSource()==bTurn){
            System.out.println("Turn is Selected\n");
+           game.changePlayer();
+           game.dailyRoutine();
          }
          else if(e.getSource() == bQuit){
            System.out.println("Quit is Selected\n");
            game.quitGame();
            //return 6;
          }
+         else if(choseToMove == true){
+           if(!neighbors.isEmpty()){
+             neighbors.clear();
+           }
+           neighbors.add(currentPlayer.getLocation());
+           neighbors.addAll(currentPlayer.getLocation().getNeighbors());
+
+           for(int i=0;i<neighbors.size();i++){
+             System.out.println("In for loop");
+             Set curr = neighbors.get(i);
+             JButton currbutton = curr.getButton();
+             if(e.getSource()==currbutton){
+               System.out.println(curr.getName() +" was hit");
+               addText("You moved to: "+ curr.getName());
+               game.move(currentPlayer,curr);
+               //currentPlayer.resetChips();
+               choseToMove=false;
+               int x = Integer.parseInt(curr.getCoords().get(0));
+               int y = Integer.parseInt(curr.getCoords().get(1));
+               int h = Integer.parseInt(curr.getCoords().get(2));
+               int w = Integer.parseInt(curr.getCoords().get(3));
+               changeLocation(id,x,y,h,w);
+             }
+           }
+         }
       //}else{
-        for(int i=0;i<bButtons.size();i++){
-          if(e.getSource() == bButtons.get(i)){
-            System.out.print("tile: "+i+" was hit ");
-          }
-        //}
-      }
-    }
+        // for(int i=0;i<bButtons.size();i++){
+        //   if(e.getSource() == bButtons.get(i)){
+        //     System.out.print("tile: "+i+" was hit ");
+        //   }
+        }
+
+
       public void mousePressed(MouseEvent e) {
       }
       public void mouseReleased(MouseEvent e) {
@@ -374,6 +409,7 @@ public void run(){
       setButton.setBorderPainted(false);
       bPane.add(setButton,2);
       bButtons.add(setButton);
+      currSet.setButton(setButton);
     }
   }
 
