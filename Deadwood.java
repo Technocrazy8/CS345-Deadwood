@@ -330,6 +330,9 @@ public class Deadwood{
         }else if(answer.equals("DAY")){
           board.completeAll(frame);
         }
+        if(board.dayEnd()){
+          break;
+        }
       }
     }
 
