@@ -20,6 +20,7 @@ import java.util.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
+import java.util.concurrent.TimeUnit;
 // import javax.swing.*;
 // import java.awt.*;
 // import java.awt.event.*;
@@ -304,14 +305,20 @@ public class Deadwood{
             String answer = JOptionPane.showInputDialog("Are You Sure? (Y) or (N)");
             answer = answer.toUpperCase();
             if (answer.equals("Y")) {
+                frame.addText("GAME OVER\n");
                 System.out.println("\nGAME OVER\n");
                 for (int i = 0; i < numPlayers; i++) { // print out each players end game score
                     System.out.println(
                             " " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
+                    frame.addText(" " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
                 }
                 scanner.close();
                 System.out.println();
-                System.exit(0);
+                try{
+                  TimeUnit.SECONDS.sleep(3);
+                }catch(InterruptedException e){}finally{
+                  System.exit(0);
+                }
             } else if (answer.equals("N")) { // return back to game loop
                 return;
             } else {

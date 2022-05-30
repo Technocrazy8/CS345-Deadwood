@@ -40,7 +40,7 @@ public class GUI extends JFrame {
   JButton bMove;
   JButton bTurn;
   JButton bQuit;
-  JButton bWork;
+  JButton bTake;
   JButton bUpgrade;
   LinkedList<JButton> bButtons= new LinkedList<JButton>();
 
@@ -113,37 +113,49 @@ public class GUI extends JFrame {
 
        // Create the Menu for action buttons
        mLabel = new JLabel("MENU");
-       mLabel.setBounds(icon.getIconWidth()+90,0,200,20);
+       mLabel.setBounds(icon.getIconWidth()+90,0,200,30);
        bPane.add(mLabel,2);
+
+       bTake = new JButton("TAKE JOB");
+       bTake.setBackground(Color.white);
+       bTake.setBounds(icon.getIconWidth()+10, 30,200, 20);
+       //bAct.addMouseListener(new boardMouseListener());
+       bTake.addMouseListener(mouseListener);
 
        // Create Action buttons
        bAct = new JButton("ACT");
        bAct.setBackground(Color.white);
-       bAct.setBounds(icon.getIconWidth()+10, 30,200, 20);
+       bAct.setBounds(icon.getIconWidth()+10, 60,200, 20);
        //bAct.addMouseListener(new boardMouseListener());
        bAct.addMouseListener(mouseListener);
 
        bRehearse = new JButton("REHEARSE");
        bRehearse.setBackground(Color.white);
-       bRehearse.setBounds(icon.getIconWidth()+10,60,200, 20);
+       bRehearse.setBounds(icon.getIconWidth()+10,90,200, 20);
        //bRehearse.addMouseListener(new boardMouseListener());
        bRehearse.addMouseListener(mouseListener);
 
        bMove = new JButton("MOVE");
        bMove.setBackground(Color.white);
-       bMove.setBounds(icon.getIconWidth()+10,90,200, 20);
+       bMove.setBounds(icon.getIconWidth()+10,120,200, 20);
        //bMove.addMouseListener(new boardMouseListener());
        bMove.addMouseListener(mouseListener);
 
+       bUpgrade = new JButton("UPGRADE");
+       bUpgrade.setBackground(Color.white);
+       bUpgrade.setBounds(icon.getIconWidth()+10, 150,200, 20);
+       //bAct.addMouseListener(new boardMouseListener());
+       bUpgrade.addMouseListener(mouseListener);
+
        bTurn = new JButton("END TURN");
        bTurn.setBackground(Color.white);
-       bTurn.setBounds(icon.getIconWidth()+10,120,200, 20);
+       bTurn.setBounds(icon.getIconWidth()+10,180,200, 20);
        //bTurn.addMouseListener(new boardMouseListener());
        bTurn.addMouseListener(mouseListener);
 
        bQuit = new JButton("END GAME");
        bQuit.setBackground(Color.white);
-       bQuit.setBounds(icon.getIconWidth()+10,150,200, 20);
+       bQuit.setBounds(icon.getIconWidth()+10,240,200, 40);
        //bQuit.addMouseListener(new boardMouseListener());
        bQuit.addMouseListener(mouseListener);
 
@@ -153,6 +165,8 @@ public class GUI extends JFrame {
        bPane.add(bMove,  2);
        bPane.add(bTurn,2);
        bPane.add(bQuit, 2);
+       bPane.add(bTake,2);
+       bPane.add(bUpgrade,2);
 
        this.area = new JTextArea();
        area.setEditable(false);
@@ -220,7 +234,7 @@ public class GUI extends JFrame {
          else if (e.getSource()== bMove && !currentPlayer.checkInRole() && currentPlayer.canMove()){
             System.out.println("Move is Selected\n");
             choseToMove = true;
-            addText("Where would you like \nto move to?");
+            addText("\nWhere would you like \nto move to?");
          }
          else if(e.getSource()== bMove && !currentPlayer.canMove()){
            addText("You already moved this turn");
@@ -248,12 +262,11 @@ public class GUI extends JFrame {
              JButton currbutton = curr.getButton();
              if(e.getSource()==currbutton){
                System.out.println(curr.getName() +" was hit");
-               addText("You moved to: "+ curr.getName());
+               addText("\nYou moved to: "+ curr.getName());
                game.move(currentPlayer,curr);
-               //currentPlayer.resetChips();
                choseToMove=false;
                int x = Integer.parseInt(curr.getCoords().get(0));
-               int y = Integer.parseInt(curr.getCoords().get(1));
+               int y = Integer.parseInt(curr.getCoords().get(1))+30;
                int h = Integer.parseInt(curr.getCoords().get(2));
                int w = Integer.parseInt(curr.getCoords().get(3));
                changeLocation(id,x,y,h,w);
