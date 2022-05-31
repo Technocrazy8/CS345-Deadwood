@@ -20,12 +20,15 @@ public class Set {
     private int shotstocompletion = -1;
     private int completedshots = 0;
     private boolean completed = false;
+    private boolean discovered = false;
     private Scene scene;
     private LinkedList<String> coords;
+    private LinkedList<String[]> takecoords;
     private LinkedList<String[]> creditLegend;// Only initiated w/ office
     private LinkedList<String[]> moneyLegend;// Only initiated w/ office
     private int tileID;
     private JButton setButton;
+
 
     public int calculatePayout(Player player) {
         int payout = 0;
@@ -34,6 +37,10 @@ public class Set {
 
     public void setTileID(int i){
       this.tileID = i;
+    }
+
+    public int getId(){
+      return this.tileID;
     }
 
     public void setButton(JButton b){
@@ -137,6 +144,17 @@ public class Set {
       this.coords = coords;
     }
 
+    public void addTakecoords(String[] coordset){
+      if(this.takecoords==null){
+        this.takecoords = new LinkedList<String[]>();
+      }
+      this.takecoords.add(coordset);
+    }
+
+    public LinkedList<String[]> getTakeCoords(){
+      return this.takecoords;
+    }
+
     public LinkedList<String> getCoords(){
       return this.coords;
     }
@@ -173,12 +191,24 @@ public class Set {
     }
 
     public void complete(GUI frame, int index) {
-        frame.flipCard(index);
+        frame.flipCardBack(index);
         this.completed = true;
     }
 
     public void imcomplete() {
         this.completed = false;
+    }
+
+    public void discover(){
+      this.discovered = true;
+    }
+
+    public void hide(){
+      this.discovered = false;
+    }
+
+    public boolean isDiscovered(){
+      return this.discovered;
     }
 
     public void createMoneyLegend() {
@@ -208,7 +238,7 @@ public class Set {
     }
 
     public void completeSet(GUI frame, int index) {
-        frame.flipCard(index);
+        frame.flipCardBack(index);
         this.completedshots = this.shotstocompletion;
         this.completed = true;
     }

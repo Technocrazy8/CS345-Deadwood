@@ -95,6 +95,10 @@ public class Board {
         return null;
     }
 
+    public Set grabSet(int Id) {
+        return sets.get(Id);
+    }
+
     public int getSetIndex(String name) {
         for (int i = 0; i < sets.size(); i++) {
             Set currSet = sets.get(i);
@@ -156,6 +160,7 @@ public class Board {
             currSet.resetRoles();
             currSet.resetShots();
             currSet.imcomplete();
+            currSet.hide();
         }
     }
 

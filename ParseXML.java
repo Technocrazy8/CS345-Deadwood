@@ -39,7 +39,7 @@ public class ParseXML {
 
    }
 
-   public LinkedList<Set> readBoard(Document d) {
+   public LinkedList<Set> readBoard(Document d) { //inits the board tiles
       Element root = d.getDocumentElement();
 
       LinkedList<Set> boardSets = new LinkedList<Set>();
@@ -76,7 +76,23 @@ public class ParseXML {
                NodeList takers = sub.getChildNodes();
                for (int k = 0; k < takers.getLength(); k++) {
                   if ("take".equals(takers.item(k).getNodeName())) {
+                     LinkedList<String> takecoords = new LinkedList<String>();
                      String number = takers.item(k).getAttributes().item(0).getNodeValue();
+                     NodeList tcord = takers.item(k).getChildNodes();
+                     Node area = tcord.item(0);
+                     NamedNodeMap aCs = area.getAttributes();
+                     String c = tcord.item(0).getNodeName();
+                     //System.out.println(c);
+                     String x = aCs.getNamedItem("x").getTextContent();
+                     String y = aCs.getNamedItem("y").getTextContent();
+                     String h = aCs.getNamedItem("h").getTextContent();
+                     String w = aCs.getNamedItem("w").getTextContent();
+                     String[] coordset = {x,y,h,w,"take"+number};
+                     set.addTakecoords(coordset);
+                     // for(int q=0;q<aCs.getLength();q++){
+                     //  String cp = tcord.item(q).getNodeName();
+                     //System.out.println(x);
+                     // }
                      set.setShotCapacity(Integer.parseInt(number));
                   }
                }

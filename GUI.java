@@ -297,6 +297,10 @@ public class GUI extends JFrame {
                int h = Integer.parseInt(curr.getCoords().get(2));
                int w = Integer.parseInt(curr.getCoords().get(3));
                changeLocation(id,x,y,h,w);
+               if(!this.currlocation.isDiscovered() && !currlocation.getName().equals("office")&& !currlocation.getName().equals("trailer")){
+                 this.currlocation.discover();
+                 flipCard(this.currlocation);
+               }
              }
            }
          }
@@ -376,12 +380,22 @@ public void run(){
   System.exit(0);
   }
 
+  public void resetPlayerIcons(){
+    for(int i=0;i<playerIcons.size();i++){
+      JLabel curr = playerIcons.get(i);
+      curr.setBounds(1147,250,40,40);
+    }
+  }
+
   public void initPlayerIcons(){
     for(int i=0;i<numPlayers;i++){
       JLabel playerlabel = new JLabel();
       ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/dice/"+colors[i]+"1.png");
       playerlabel.setIcon(pIcon);
       playerlabel.setBounds(icon.getIconWidth()-53,250,pIcon.getIconWidth(),pIcon.getIconHeight());
+      System.out.println("x: "+(icon.getIconWidth()-53));
+      System.out.println("w: "+pIcon.getIconWidth());
+      System.out.println("h: "+pIcon.getIconHeight());
       playerIcons.add(playerlabel);
       playerlabel.setVisible(false);
       bPane.add(playerlabel,0);
@@ -435,7 +449,7 @@ public void run(){
   public void setBoardTile(Set set, int index){
     JLabel currlabel = boardTiles.get(index);
     Scene currScene = set.getScene();
-    String image = "Deadwood Needed Image Files/cards/"+currScene.getImage();
+    String image = "Deadwood Needed Image Files/CardBack-small.jpg";
     ImageIcon tIcon = new ImageIcon(image);
     LinkedList<String> coordinates = set.getCoords();
     currlabel.setIcon(tIcon);
@@ -444,7 +458,29 @@ public void run(){
 
   public void flipCard(int index){
     JLabel currlabel = boardTiles.get(index);
-    String image = "Deadwood Needed Image Files/CardBack-small.jpg";
+    Set currSet = board.grabSet(index);
+    Scene currScene = currSet.getScene();
+    String image = "Deadwood Needed Image Files/cards/"+currScene.getImage();
+    ImageIcon tIcon = new ImageIcon(image);
+    currlabel.setIcon(tIcon);
+    currlabel.setVisible(true);
+  }
+
+  public void flipCard(Set currSet){
+    //JLabel currlabel = boardTiles.get(index);
+    JLabel currlabel = boardTiles.get(currSet.getId());
+    Scene currScene = currSet.getScene();
+    String image = "Deadwood Needed Image Files/cards/"+currScene.getImage();
+    ImageIcon tIcon = new ImageIcon(image);
+    currlabel.setIcon(tIcon);
+    currlabel.setVisible(true);
+  }
+
+  public void flipCardBack(int index){
+    JLabel currlabel = boardTiles.get(index);
+    //Set currSet = board.grabSet(index);
+    //Scene currScene = currSet.getScene();
+    String image = "Deadwood Needed Image Files/ardBack-small.jpg";
     ImageIcon tIcon = new ImageIcon(image);
     currlabel.setIcon(tIcon);
     currlabel.setVisible(true);

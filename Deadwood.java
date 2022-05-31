@@ -88,6 +88,8 @@ public class Deadwood{
 
             board.distributeScenes(retrieveDailyCards(cards),frame); // Assigns a scene to each set (10 a day)
             board.resetTiles(); // prepare the tiles
+            frame.resetPlayerIcons();
+            currplayerindex = 0;
 
             for (int j = 0; j < numPlayers; j++) { // assert players start in trailer at beginning of each day
                 Player temp = board.getPlayer(j);
