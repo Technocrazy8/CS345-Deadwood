@@ -204,8 +204,10 @@ public class GUI extends JFrame {
 
       Player currentPlayer;
       int id;
+      int newJob =0;
       LinkedList<Set> neighbors = new LinkedList<Set>();
       boolean choseToMove=false;
+      boolean choseToTake = false;
       Set currlocation;
 
       public void setCurrPlayer(Player curr){
@@ -224,16 +226,19 @@ public class GUI extends JFrame {
              addText("\nNo roles are offered at: " + currlocation.getName());
            }else if(totalRoles.size() == 0){
              addText("All roles are taken");
+           }else if(this.currlocation.isComplete()){
+             addText("This scene has wrapped");
            }else{
-           System.out.println("Take is selected");
+             System.out.println("Take is selected");
+             choseToTake = true;
            }
          }
-         else if (e.getSource()== bAct && currentPlayer.checkInRole()){
+         else if (e.getSource()== bAct && currentPlayer.checkInRole()&& newJob==0){
             System.out.println("Acting is Selected\n");
             game.actingChoices(currentPlayer);
 
          }
-         else if (e.getSource()== bRehearse && currentPlayer.checkInRole()){
+         else if (e.getSource()== bRehearse && currentPlayer.checkInRole()&& newJob==0){
             System.out.println("Rehearse is Selected\n");
             int budget = currlocation.getScene().getBudget();
             if(currentPlayer.getChips() == budget-1){
@@ -255,6 +260,9 @@ public class GUI extends JFrame {
          }
          else if(e.getSource()==bTurn){
            System.out.println("Turn is Selected\n");
+           if(newJob==1){
+             newJob =0;
+           }
            game.changePlayer();
            game.dailyRoutine();
          }
@@ -303,6 +311,40 @@ public class GUI extends JFrame {
                  this.currlocation.discover();
                  flipCard(this.currlocation);
                }
+             }
+           }
+         }
+         else if(choseToTake == true){
+           addText("What job would you like to take?");
+           Scene currScene = currlocation.getScene();
+
+           LinkedList<Role> setRoles = currlocation.getAvailableRoles();
+           LinkedList<Role> sceneRoles = currScene.getAvailableRoles();
+           LinkedList<Role> allOptions = new LinkedList<Role>();
+           allOptions.addAll(setRoles);
+           allOptions.addAll(sceneRoles);
+           int sceneX = Integer.parseInt(currlocation.getCoords().get(0));
+           int sceneY = Integer.parseInt(currlocation.getCoords().get(1));
+           //Scene currScene = currlocation.getScene();
+           for(int i=0;i<allOptions.size();i++){
+             System.out.println("in take loop");
+             Role currRole = allOptions.get(i);
+             JButton currbutton = currRole.getButton();
+             if(e.getSource() == currbutton && currRole.isAvailable()&&currentPlayer.getRank()>=currRole.getRank()){
+               System.out.println(currRole.getTitle() + " was hit");
+               int x = Integer.parseInt(currRole.getCoords().get(0));
+               int y = Integer.parseInt(currRole.getCoords().get(1));
+               if(!currRole.isExtra()){
+                 x += sceneX;
+                 y += sceneY;
+               }
+               int h = 40;
+               int w = 40;
+               changeLocation(this.id,x,y,h,w);
+               currentPlayer.setRole(currRole);
+               currRole.fillRole();
+               choseToTake = false;
+               newJob++;
              }
            }
          }
@@ -395,9 +437,7 @@ public void run(){
       ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/dice/"+colors[i]+"1.png");
       playerlabel.setIcon(pIcon);
       playerlabel.setBounds(icon.getIconWidth()-53,250,pIcon.getIconWidth(),pIcon.getIconHeight());
-      //System.out.println("x: "+(icon.getIconWidth()-53));
-      //System.out.println("w: "+pIcon.getIconWidth());
-      //System.out.println("h: "+pIcon.getIconHeight());
+
       playerIcons.add(playerlabel);
       playerlabel.setVisible(false);
       bPane.add(playerlabel,0);
@@ -428,15 +468,11 @@ public void run(){
       setButton.addMouseListener(mouseListener);
       Set currSet = sets.get(i);
       LinkedList<String> coords = currSet.getCoords();
-      int x;
-      int y;
-      int h;
-      int w;
-        x = Integer.parseInt(coords.get(0));
-        y = Integer.parseInt(coords.get(1));
-        h = Integer.parseInt(coords.get(2))+90;
-        w = Integer.parseInt(coords.get(3))-50;
-      //}
+      int x = Integer.parseInt(coords.get(0));
+      int y = Integer.parseInt(coords.get(1));
+      int h = Integer.parseInt(coords.get(2))+90;
+      int w = Integer.parseInt(coords.get(3))-50;
+
       setButton.setBounds(x,y,h,w);
       //setButton.setVisible(false);
       setButton.setOpaque(false);
@@ -458,6 +494,9 @@ public void run(){
       int h = Integer.parseInt(coords.get(2));
       int w = Integer.parseInt(coords.get(3));
       roleButton.setBounds(x,y,h,w);
+      roleButton.setOpaque(false);
+      roleButton.setContentAreaFilled(false);
+      roleButton.setBorderPainted(false);
       bPane.add(roleButton,2);
       bRoleButtons.add(roleButton);
       roles.get(i).setButton(roleButton);
@@ -481,8 +520,6 @@ public void run(){
       LinkedList<String> setCoords = currSet.getCoords();
       int sceneX =  Integer.parseInt(setCoords.get(0));
       int sceneY =  Integer.parseInt(setCoords.get(1));
-      //int sceneX =  Integer.parseInt(setCoords.get(0));
-      //int sceneX =  Integer.parseInt(setCoords.get(0));
 
     for(int i=0;i<roles.size();i++){
       JButton roleButton = new JButton("");

@@ -75,4 +75,8 @@ public class Role {
     public void setButton(JButton b){
       this.button = b;
     }
+
+    public JButton getButton(){
+      return this.button;
+    }
 }

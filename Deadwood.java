@@ -21,24 +21,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.concurrent.TimeUnit;
-// import javax.swing.*;
-// import java.awt.*;
-// import java.awt.event.*;
-// import javax.swing.BorderFactory;
-// import javax.swing.border.Border;
-// import javax.swing.border.TitledBorder;
-// import javax.swing.border.EtchedBorder;
-// import javax.swing.ImageIcon;
-// import javax.swing.JTabbedPane;
-// import javax.swing.JLabel;
-// import javax.swing.JPanel;
-// import javax.swing.JFrame;
-// import javax.swing.Box;
-// import javax.swing.BoxLayout;
-// import javax.swing.ImageIcon;
-// import javax.imageio.ImageIO;
- import javax.swing.JOptionPane;
- import javax.swing.JTextArea;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -46,19 +31,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 
-//public static final BoardLayersListener listener = getlistener();
 public class Deadwood{
     private static final String[] PLAYER_NAMES = { "Blue", "Cyan", "Green", "Orange", "Pink", "Red", "Violet",
             "Yellow" };
     private static Board board;
     private static int numPlayers;
     private static GUI frame = null;
-    //private static JPanel mainPanel = new JPanel();
-    //private static JLabel boardlabel = new JLabel();
-    //private static GUI listener = null;
+
     private static GUI.boardMouseListener listener;
     private static JTextArea area = null;
-    //private static JFrame frame = new JFrame();
     private static LinkedList<Scene> cards;
     private static int dayCount=4;
     private static int currplayerindex =0;
@@ -286,6 +267,24 @@ public class Deadwood{
           //area.append("\n Your rank is: " + currentPlayer.getRank());
           //frame.addText(playerRank);
           //loopStop();
+          if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is
+                                                                      // completed
+              System.out.println("Congrats! Your scene was completed!");
+              String congrats = "Congrats! Your scene was completed!";
+              area.append(congrats);
+              currentPlayer.setRole(null); // reset the players current role
+              currentPlayer.resetChips(); // reset their chip count
+              playerLocation.complete(frame,board.getSetIndex(playerLocation.getName())); // say location is complete
+          }
+
+          else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is
+              String congrats = "Congrats! Your scene was completed!";
+              area.append(congrats);                                                                     // completed -- may be redundant
+              System.out.println(congrats);
+              currentPlayer.setRole(null);
+              currentPlayer.resetChips();
+          }
+
           if (currplayerindex == numPlayers) { // loop back around to starting player
               currplayerindex = 0;
               for (int i = 0; i < numPlayers; i++) { // assert players can move again after their turn has completed
