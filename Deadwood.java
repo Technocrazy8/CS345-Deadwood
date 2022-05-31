@@ -94,6 +94,7 @@ public class Deadwood{
             for (int j = 0; j < numPlayers; j++) { // assert players start in trailer at beginning of each day
                 Player temp = board.getPlayer(j);
                 temp.setLocation(board.getTrailer()); // change back to trailer after testing upgrade
+                temp.allowMove();
             }
             //dailyRoutine(scanner);
             dailyRoutine(); // run main game loop for the player
