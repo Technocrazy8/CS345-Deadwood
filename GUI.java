@@ -45,6 +45,7 @@ public class GUI extends JFrame {
   JButton bTake;
   JButton bUpgrade;
   LinkedList<JButton> bButtons= new LinkedList<JButton>();
+  LinkedList<JButton> bRoleButtons = new LinkedList<JButton>();
 
 
   // JLayered Pane
@@ -444,6 +445,25 @@ public void run(){
       bButtons.add(setButton);
       currSet.setButton(setButton);
     }
+  }
+
+  public void initSetButtons(LinkedList<Role> roles){
+    for(int i=0;i<roles.size();i++){
+      JButton roleButton = new JButton("");
+      roleButton.addMouseListener(mouseListener);
+      LinkedList<String> coords = roles.get(i).getCoords();
+      int x = Integer.parseInt(coords.get(0));
+      int y = Integer.parseInt(coords.get(1));
+      int h = Integer.parseInt(coords.get(2));
+      int w = Integer.parseInt(coords.get(3));
+      roleButton.setBounds(x,y,h,w);
+      bPane.add(roleButton,2);
+      bRoleButtons.add(roleButton);
+    }
+  }
+
+  public void initSceneButtons(LinkedList<Role> roles){
+    
   }
 
   public void setBoardTile(Set set, int index){

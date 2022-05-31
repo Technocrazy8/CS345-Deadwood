@@ -350,6 +350,8 @@ public class ParseXML {
 
                newRole.setRank(Integer.parseInt(roleAttributes.getNamedItem("level").getNodeValue()));
                newRole.setDesc(rolechildren.item(3).getTextContent());
+
+
                for(int k=0;k<rolechildren.getLength();k++){
                  Node kid = rolechildren.item(k);
                  if("area".equals(kid.getNodeName())){

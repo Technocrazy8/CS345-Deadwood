@@ -142,6 +142,7 @@ public class Deadwood{
         board.setOffice(sets.get(sets.size() - 1)); // add the office tile to the board
         frame.initBoardTiles(sets);
         frame.initBoardButtons(sets);
+        frame.initSetButtons(board.getSetRoles());
         Collections.shuffle(cards); // shuffle so cards arent in order
 
         // Populate players and change their attributes depending on player count
