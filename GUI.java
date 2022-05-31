@@ -530,6 +530,9 @@ public void run(){
       int h = Integer.parseInt(coords.get(2));
       int w = Integer.parseInt(coords.get(3));
       roleButton.setBounds(x,y,h,w);
+      roleButton.setOpaque(false);
+      roleButton.setContentAreaFilled(false);
+      roleButton.setBorderPainted(false);
       bPane.add(roleButton,2);
       bSceneButtons.add(roleButton);
       roles.get(i).setButton(roleButton);
