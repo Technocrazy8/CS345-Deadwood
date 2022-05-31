@@ -464,19 +464,32 @@ public void run(){
     }
   }
 
-  public void initSceneButtons(LinkedList<Role> roles){
+  public void initSceneButtons(LinkedList<Set> sets){
     int index = bSceneButtons.size()-1;
-    while(bSceneButtons.size()!=0){
-      JButton curr = bSceneButtons.get(index);
-      bPane.remove(curr);
-      index--;
-    }bSceneButtons.clear();
+    if(index != -1){
+      while(index!=0){
+        JButton curr = bSceneButtons.get(index);
+        bPane.remove(curr);
+        index--;
+      }bSceneButtons.clear();
+    }
+
+    for(int j =0;j<10;j++){
+      Set currSet = sets.get(j);
+      Scene currScene = currSet.getScene();
+      LinkedList<Role> roles= currScene.getParts();
+      LinkedList<String> setCoords = currSet.getCoords();
+      int sceneX =  Integer.parseInt(setCoords.get(0));
+      int sceneY =  Integer.parseInt(setCoords.get(1));
+      //int sceneX =  Integer.parseInt(setCoords.get(0));
+      //int sceneX =  Integer.parseInt(setCoords.get(0));
+
     for(int i=0;i<roles.size();i++){
       JButton roleButton = new JButton("");
       roleButton.addMouseListener(mouseListener);
       LinkedList<String> coords = roles.get(i).getCoords();
-      int x = Integer.parseInt(coords.get(0));
-      int y = Integer.parseInt(coords.get(1));
+      int x = Integer.parseInt(coords.get(0))+sceneX;
+      int y = Integer.parseInt(coords.get(1))+sceneY;
       int h = Integer.parseInt(coords.get(2));
       int w = Integer.parseInt(coords.get(3));
       roleButton.setBounds(x,y,h,w);
@@ -484,6 +497,7 @@ public void run(){
       bSceneButtons.add(roleButton);
       roles.get(i).setButton(roleButton);
     }
+  }
   }
 
   public void setBoardTile(Set set, int index){

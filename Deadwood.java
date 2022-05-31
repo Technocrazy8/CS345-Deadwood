@@ -89,7 +89,7 @@ public class Deadwood{
 
             board.distributeScenes(retrieveDailyCards(cards),frame); // Assigns a scene to each set (10 a day)
             board.resetTiles(); // prepare the tiles
-            frame.initSceneButtons(board.getSceneRoles());
+            frame.initSceneButtons(board.getSets());
             frame.resetPlayerIcons();
             currplayerindex = 0;
 
