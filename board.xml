@@ -79,7 +79,7 @@
         <line>....</line>
       </part>
       <part name="Crying Woman" level="2">
-        <area x="858" y="809" h="46" w="46" />
+        <area x="858" y="809" h="47" w="46" />
         <line>Oh, the humanity!</line>
       </part>
     </parts>
@@ -110,7 +110,7 @@
         <line>Arrrgghh!</line>
       </part>
       <part name="Australian Bartender" level="3">
-        <area x="1046" y="596" h="46" w="46" />
+        <area x="1045" y="596" h="46" w="46" />
         <line>What'll it be, mate?</line>
       </part>
     </parts>
@@ -208,11 +208,11 @@
         <line>Ow! Me Leg!</line>
       </part>
       <part name="Saucy Fred" level="2">
-        <area x="488" y="608" h="46" w="46" />
+        <area x="487" y="608" h="46" w="46" />
         <line>That's what she said.</line>
       </part>
       <part name="Man Under Horse" level="3">
-        <area x="488" y="525" h="46" w="46" />
+        <area x="487" y="525" h="46" w="46" />
         <line>A little help here!</line>
       </part>
     </parts>
