@@ -2,7 +2,9 @@
  * Responsibilities:
  * - Hold role's info (model)
  */
- import java.util.LinkedList;
+import java.util.LinkedList;
+import javax.swing.JButton;
+
 public class Role {
     private String title;
     private String description;
@@ -10,6 +12,7 @@ public class Role {
     private boolean isExtra = false;
     private int minRank;
     private LinkedList<String> coordinates;
+    private JButton button;
     // private int rehearseBonus = -1; // may be trivial
     private int actor = -1; // player id
 
@@ -67,5 +70,9 @@ public class Role {
 
     public LinkedList<String> getCoords(){
       return this.coordinates;
+    }
+
+    public void setButton(JButton b){
+      this.button = b;
     }
 }

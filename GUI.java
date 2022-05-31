@@ -46,6 +46,7 @@ public class GUI extends JFrame {
   JButton bUpgrade;
   LinkedList<JButton> bButtons= new LinkedList<JButton>();
   LinkedList<JButton> bRoleButtons = new LinkedList<JButton>();
+  LinkedList<JButton> bSceneButtons = new LinkedList<JButton>();
 
 
   // JLayered Pane
@@ -394,9 +395,9 @@ public void run(){
       ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/dice/"+colors[i]+"1.png");
       playerlabel.setIcon(pIcon);
       playerlabel.setBounds(icon.getIconWidth()-53,250,pIcon.getIconWidth(),pIcon.getIconHeight());
-      System.out.println("x: "+(icon.getIconWidth()-53));
-      System.out.println("w: "+pIcon.getIconWidth());
-      System.out.println("h: "+pIcon.getIconHeight());
+      //System.out.println("x: "+(icon.getIconWidth()-53));
+      //System.out.println("w: "+pIcon.getIconWidth());
+      //System.out.println("h: "+pIcon.getIconHeight());
       playerIcons.add(playerlabel);
       playerlabel.setVisible(false);
       bPane.add(playerlabel,0);
@@ -459,11 +460,30 @@ public void run(){
       roleButton.setBounds(x,y,h,w);
       bPane.add(roleButton,2);
       bRoleButtons.add(roleButton);
+      roles.get(i).setButton(roleButton);
     }
   }
 
   public void initSceneButtons(LinkedList<Role> roles){
-    
+    int index = bSceneButtons.size()-1;
+    while(bSceneButtons.size()!=0){
+      JButton curr = bSceneButtons.get(index);
+      bPane.remove(curr);
+      index--;
+    }bSceneButtons.clear();
+    for(int i=0;i<roles.size();i++){
+      JButton roleButton = new JButton("");
+      roleButton.addMouseListener(mouseListener);
+      LinkedList<String> coords = roles.get(i).getCoords();
+      int x = Integer.parseInt(coords.get(0));
+      int y = Integer.parseInt(coords.get(1));
+      int h = Integer.parseInt(coords.get(2));
+      int w = Integer.parseInt(coords.get(3));
+      roleButton.setBounds(x,y,h,w);
+      bPane.add(roleButton,2);
+      bSceneButtons.add(roleButton);
+      roles.get(i).setButton(roleButton);
+    }
   }
 
   public void setBoardTile(Set set, int index){

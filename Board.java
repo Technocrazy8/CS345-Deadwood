@@ -172,6 +172,15 @@ public class Board {
         return allRoles;
     }
 
+    public LinkedList<Role> getSceneRoles(){
+      LinkedList<Role> allRoles = new LinkedList<Role>();
+      for(int i=0;i<10;i++){
+        Scene currScene = sets.get(i).getScene();
+        allRoles.addAll(currScene.getParts());
+      }
+      return allRoles;
+    }
+
     public boolean dayEnd() { // Checker for end of day
         int count = 10;
         int notComplete = 0;

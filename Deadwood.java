@@ -81,6 +81,7 @@ public class Deadwood{
 
 
         for (int i = 1; i <= dayCount; i++) { // this it the main day loop
+
             String day = "Day " + i;
             frame.addText(day);
             //area.append(day);
@@ -88,6 +89,7 @@ public class Deadwood{
 
             board.distributeScenes(retrieveDailyCards(cards),frame); // Assigns a scene to each set (10 a day)
             board.resetTiles(); // prepare the tiles
+            frame.initSceneButtons(board.getSceneRoles());
             frame.resetPlayerIcons();
             currplayerindex = 0;
 
@@ -314,7 +316,7 @@ public class Deadwood{
                 scanner.close();
                 System.out.println();
                 try{
-                  TimeUnit.SECONDS.sleep(2);
+                  TimeUnit.SECONDS.sleep(1);
                 }catch(InterruptedException e){}finally{
                   System.exit(0);
                 }
