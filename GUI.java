@@ -163,7 +163,7 @@ public class GUI extends JFrame {
        scroll.setVisible(true);
        bPane.add(scroll,3);
        area.append("Welcome to Deadwood!\n");
-
+       
        this.rulebox = new JTextArea();
        rulebox.setEditable(false);
        rulebox.setLineWrap(true);
