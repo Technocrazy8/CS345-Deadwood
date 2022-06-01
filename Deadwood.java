@@ -199,18 +199,18 @@ public class Deadwood{
             }
             answer = answer.toUpperCase();
             if (answer.equals("Y")) {
+                StringBuilder endgame = new StringBuilder();
+                endgame.append("GAME OVER\nFinal scores:\n");
                 frame.addText("GAME OVER\n");
                 System.out.println("\nGAME OVER\n");
                 for (int i = 0; i < numPlayers; i++) { // print out each players end game score
                     System.out.println(" " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
                     frame.addText(" " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
+                    endgame.append(" " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore()+"\n");
                 }
                 System.out.println();
-                try{
-                  TimeUnit.SECONDS.sleep(1);
-                }catch(InterruptedException e){}finally{
-                  System.exit(0);
-                }
+                JOptionPane.showMessageDialog(null,endgame.toString());
+                System.exit(0);
             } else if (answer.equals("N")) { // return back to game loop
                 return;
             } else {
@@ -238,10 +238,14 @@ public class Deadwood{
     public void wrapUp() { // end game method that doesnt take input
         System.out.println("\nGAME OVER\n");
         System.out.println("Final scores:");
+        StringBuilder endgame = new StringBuilder();
+        String[] endscores = new String[numPlayers];
+        endgame.append("GAME OVER\nFinal scores:\n");
         for (int i = 0; i < numPlayers; i++) { // print players end game score
-            System.out.println(" " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore());
+            endgame.append(" "+board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore()+"\n");
         }
         System.out.println();
+        JOptionPane.showMessageDialog(null,endgame.toString());
         System.exit(0);
     }
 
