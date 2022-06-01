@@ -54,6 +54,7 @@ public class GUI extends JFrame {
 
   //Text area
   static JTextArea area;
+  JTextArea rulebox;
   JScrollPane scroll;
   JButton button;
 
@@ -155,12 +156,23 @@ public class GUI extends JFrame {
        area.setBackground(Color.white);
        area.setVisible(true);
 
+
        scroll = new JScrollPane(area);
        scroll.setBounds(icon.getIconWidth()+10,icon.getIconHeight()/2,275,icon.getIconHeight()-450);
        scroll.setBackground(Color.white);
        scroll.setVisible(true);
        bPane.add(scroll,3);
        area.append("Welcome to Deadwood!\n");
+
+       this.rulebox = new JTextArea();
+       rulebox.setEditable(false);
+       rulebox.setLineWrap(true);
+       rulebox.setBackground(Color.white);
+       rulebox.setVisible(true);
+       rulebox.setBounds(icon.getIconWidth()+10,300,200,100);
+       bPane.add(rulebox,2);
+       rulebox.append("After clicking move, click the\nlocations name to move there");
+       rulebox.append("\n\nIf you didn't mean to \nclick take or move, \nsimply click it again to undo");
   }
 
   public void addText(String text){
@@ -189,37 +201,7 @@ public class GUI extends JFrame {
       // Code for the different button clicks
       public void mouseClicked(MouseEvent e) {
 
-        if(choseToMove == true){
-          if(!neighbors.isEmpty()){
-            neighbors.clear();
-          }
-          neighbors.add(currentPlayer.getLocation());
-          neighbors.addAll(currentPlayer.getLocation().getNeighbors());
-
-          for(int i=0;i<neighbors.size();i++){
-            System.out.println("In for loop");
-            Set curr = neighbors.get(i);
-            JButton currbutton = curr.getButton();
-            if(e.getSource()==currbutton){
-              System.out.println(curr.getName() +" was hit");
-              addText("\nYou moved to: "+ curr.getName());
-              game.move(currentPlayer,curr);
-              this.currlocation = curr;
-              choseToMove=false;
-              int x = Integer.parseInt(curr.getCoords().get(0));
-              int y = Integer.parseInt(curr.getCoords().get(1))+30;
-              int h = Integer.parseInt(curr.getCoords().get(2));
-              int w = Integer.parseInt(curr.getCoords().get(3));
-              changeLocation(id,x,y,h,w);
-              if(!this.currlocation.isDiscovered() && !currlocation.getName().equals("office")&& !currlocation.getName().equals("trailer")){
-                this.currlocation.discover();
-                flipCard(this.currlocation);
-              }
-            }
-          }
-        }
-
-         else if(e.getSource() ==bTake && !currentPlayer.checkInRole()){
+         if(e.getSource() ==bTake && !currentPlayer.checkInRole()){
            LinkedList<Role> totalRoles = board.getAvailableRoles(currentPlayer);
            if(currlocation.getName().equals("trailer") || currlocation.getName().equals("office")){
              addText("\nNo roles are offered at: " + currlocation.getName());
@@ -289,6 +271,36 @@ public class GUI extends JFrame {
              }
            }else{
              addText("\nYou are already max rank");
+           }
+         }
+
+         else if(choseToMove == true){
+           if(!neighbors.isEmpty()){
+             neighbors.clear();
+           }
+           neighbors.add(currentPlayer.getLocation());
+           neighbors.addAll(currentPlayer.getLocation().getNeighbors());
+
+           for(int i=0;i<neighbors.size();i++){
+             System.out.println("In for loop");
+             Set curr = neighbors.get(i);
+             JButton currbutton = curr.getButton();
+             if(e.getSource()==currbutton){
+               System.out.println(curr.getName() +" was hit");
+               addText("\nYou moved to: "+ curr.getName());
+               game.move(currentPlayer,curr);
+               this.currlocation = curr;
+               choseToMove=false;
+               int x = Integer.parseInt(curr.getCoords().get(0));
+               int y = Integer.parseInt(curr.getCoords().get(1))+30;
+               int h = Integer.parseInt(curr.getCoords().get(2));
+               int w = Integer.parseInt(curr.getCoords().get(3));
+               changeLocation(id,x,y,h,w);
+               if(!this.currlocation.isDiscovered() && !currlocation.getName().equals("office")&& !currlocation.getName().equals("trailer")){
+                 this.currlocation.discover();
+                 flipCard(this.currlocation);
+               }
+             }
            }
          }
          else if(choseToTake == true && choseToMove == false){
@@ -424,10 +436,31 @@ public void run(){
       setButton.addMouseListener(mouseListener);
       Set currSet = sets.get(i);
       LinkedList<String> coords = currSet.getCoords();
-      int x = Integer.parseInt(coords.get(0));
-      int y = Integer.parseInt(coords.get(1));
-      int h = Integer.parseInt(coords.get(2))+90;
-      int w = Integer.parseInt(coords.get(3))-50;
+      int x;
+      int y;
+      int h;
+      int w;
+      if(i==10||i==11){
+        x = Integer.parseInt(coords.get(0));
+        y = Integer.parseInt(coords.get(1))-40;
+        h = Integer.parseInt(coords.get(2))+90;
+        w = Integer.parseInt(coords.get(3))-20;
+      }else if(i==7){
+        x = Integer.parseInt(coords.get(0));
+        y = Integer.parseInt(coords.get(1))+120;
+        h = Integer.parseInt(coords.get(2))+40;
+        w = Integer.parseInt(coords.get(3))-150;
+      }else if(i==0){
+        x = Integer.parseInt(coords.get(0));
+        y = Integer.parseInt(coords.get(1))+120;
+        h = Integer.parseInt(coords.get(2))+90;
+        w = Integer.parseInt(coords.get(3))-168;
+      }else{
+      x = Integer.parseInt(coords.get(0));
+      y = Integer.parseInt(coords.get(1))+120;
+      h = Integer.parseInt(coords.get(2))+90;
+      w = Integer.parseInt(coords.get(3))-150;
+      }
       setButton.setBounds(x,y,h,w);
       setButton.setOpaque(false);
       setButton.setContentAreaFilled(false);

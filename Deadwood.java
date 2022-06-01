@@ -167,13 +167,13 @@ public class Deadwood{
           if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is
                                                                       // completed
               System.out.println("1Congrats! Your scene was completed!");
-              String congrats = "1Congrats! Your scene was completed!";
+              String congrats = "Congrats! Your scene was completed!";
               frame.addText(congrats);
               currentPlayer.setRole(null); // reset the players current role
               currentPlayer.resetChips(); // reset their chip count
               playerLocation.complete(frame,board.getSetIndex(playerLocation.getName())); // say location is complete
           }else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is
-              String congrats = "2Congrats! Your scene was completed!";
+              String congrats = "Congrats! Your scene was completed!";
               frame.addText(congrats);                                                                     // completed -- may be redundant
               System.out.println(congrats);
               currentPlayer.setRole(null);
