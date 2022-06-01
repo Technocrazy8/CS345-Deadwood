@@ -8,6 +8,7 @@
 
 import java.util.LinkedList;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class Set {
     // the tiles on the board
@@ -26,6 +27,7 @@ public class Set {
     private LinkedList<String[]> takecoords;
     private LinkedList<String[]> creditLegend;// Only initiated w/ office
     private LinkedList<String[]> moneyLegend;// Only initiated w/ office
+    private LinkedList<JLabel> shotLabels;
     private int tileID;
     private JButton setButton;
 
@@ -75,6 +77,10 @@ public class Set {
 
     public int getShotCapacity() {
         return this.shotstocompletion;
+    }
+
+    public int getCurrShot(){
+      return this.completedshots;
     }
 
     public int shotsRemaining() {
@@ -159,6 +165,17 @@ public class Set {
       return this.coords;
     }
 
+    public void addShotLabel(JLabel l){
+      if(this.shotLabels == null){
+        this.shotLabels = new LinkedList<JLabel>();
+      }
+      this.shotLabels.add(l);
+    }
+
+    public LinkedList<JLabel> getShotLabels(){
+      return this.shotLabels;
+    }
+
     public void setScene(Scene scene) {
         this.scene = scene;
     }
@@ -191,7 +208,7 @@ public class Set {
     }
 
     public void complete(GUI frame, int index) {
-        frame.flipCardBack(index);
+        frame.hideCard(index);
         this.completed = true;
     }
 
@@ -238,7 +255,7 @@ public class Set {
     }
 
     public void completeSet(GUI frame, int index) {
-        frame.flipCardBack(index);
+        frame.hideCard(index);
         this.completedshots = this.shotstocompletion;
         this.completed = true;
     }

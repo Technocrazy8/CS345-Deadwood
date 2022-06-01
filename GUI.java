@@ -34,6 +34,7 @@ public class GUI extends JFrame {
   //PlayerLabels
   LinkedList<JLabel> playerIcons = new LinkedList<JLabel>();
   LinkedList<JLabel> boardTiles = new LinkedList<JLabel>();
+  //LinkedList<JLabel> shotTiles = new LinkedList<JLabel>();
 
   //JButtons
   JButton bAct;
@@ -277,7 +278,6 @@ public class GUI extends JFrame {
          else if(e.getSource() == bQuit){
            System.out.println("Quit is Selected\n");
            game.quitGame();
-           //return 6;
          }
          else if(e.getSource()== bUpgrade && currlocation.getName().equals("office")){
            System.out.println("Upgrade selected");
@@ -291,11 +291,9 @@ public class GUI extends JFrame {
              addText("\nYou are already max rank");
            }
          }
-
          else if(choseToTake == true && choseToMove == false){
            addText("What job would you like to take?");
            Scene currScene = currlocation.getScene();
-
            LinkedList<Role> setRoles = currlocation.getAvailableRoles();
            LinkedList<Role> sceneRoles = currScene.getAvailableRoles();
            LinkedList<Role> allOptions = new LinkedList<Role>();
@@ -303,7 +301,6 @@ public class GUI extends JFrame {
            allOptions.addAll(sceneRoles);
            int sceneX = Integer.parseInt(currlocation.getCoords().get(0));
            int sceneY = Integer.parseInt(currlocation.getCoords().get(1));
-
            for(int i=0;i<allOptions.size();i++){
              System.out.println("in take loop");
              Role currRole = allOptions.get(i);
@@ -328,7 +325,6 @@ public class GUI extends JFrame {
            }
          }
         }
-
       public void mousePressed(MouseEvent e) {
       }
       public void mouseReleased(MouseEvent e) {
@@ -398,7 +394,6 @@ public void run(){
       ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/dice/"+colors[i]+"1.png");
       playerlabel.setIcon(pIcon);
       playerlabel.setBounds(icon.getIconWidth()-53,250,pIcon.getIconWidth(),pIcon.getIconHeight());
-
       playerIcons.add(playerlabel);
       playerlabel.setVisible(false);
       bPane.add(playerlabel,0);
@@ -433,7 +428,6 @@ public void run(){
       int y = Integer.parseInt(coords.get(1));
       int h = Integer.parseInt(coords.get(2))+90;
       int w = Integer.parseInt(coords.get(3))-50;
-
       setButton.setBounds(x,y,h,w);
       setButton.setOpaque(false);
       setButton.setContentAreaFilled(false);
@@ -462,7 +456,6 @@ public void run(){
       roles.get(i).setButton(roleButton);
     }
   }
-
   public void initSceneButtons(LinkedList<Set> sets){
     int index = bSceneButtons.size()-1;
     if(index != -1){
@@ -472,7 +465,6 @@ public void run(){
         index--;
       }bSceneButtons.clear();
     }
-
     for(int j =0;j<10;j++){
       Set currSet = sets.get(j);
       Scene currScene = currSet.getScene();
@@ -499,7 +491,40 @@ public void run(){
       }
     }
   }
-
+  public void initTakeMarkers(LinkedList<Set> sets){
+    for(int i=0;i<10;i++){
+      Set currSet = sets.get(i);
+      LinkedList<String[]> takecoords = currSet.getTakeCoords();
+      for(int j=0;j<takecoords.size();j++){
+        String[] coords = takecoords.get(j);
+        JLabel shotTile = new JLabel("");
+        String image = "Deadwood Needed Image Files/shot.png";
+        ImageIcon sIcon = new ImageIcon(image);
+        int x =Integer.parseInt(coords[0]);
+        int y =Integer.parseInt(coords[1]);
+        int h =Integer.parseInt(coords[2]);
+        int w =Integer.parseInt(coords[3]);
+        shotTile.setBounds(x,y,h,w);
+        shotTile.setIcon(sIcon);
+        shotTile.setVisible(true);
+        bPane.add(shotTile,3);
+        currSet.addShotLabel(shotTile);
+      }
+    }
+  }
+  public void resetTakeMarkers(LinkedList<Set> sets){
+    for(int i=0;i<10;i++){
+      Set currSet = sets.get(i);
+      LinkedList<JLabel> shotmarks = currSet.getShotLabels();
+      for(int j=0;j<shotmarks.size();j++){
+        shotmarks.get(j).setVisible(true);
+      }
+    }
+  }
+  public void hideTakeMarker(Set set,int take){
+    LinkedList<JLabel> shotmarks = set.getShotLabels();
+    shotmarks.get(take).setVisible(false);
+  }
   public void setBoardTile(Set set, int index){
     JLabel currlabel = boardTiles.get(index);
     Scene currScene = set.getScene();
@@ -509,7 +534,6 @@ public void run(){
     currlabel.setIcon(tIcon);
     currlabel.setVisible(true);
   }
-
   public void flipCard(int index){
     JLabel currlabel = boardTiles.get(index);
     Set currSet = board.grabSet(index);
@@ -519,7 +543,6 @@ public void run(){
     currlabel.setIcon(tIcon);
     currlabel.setVisible(true);
   }
-
   public void flipCard(Set currSet){
     JLabel currlabel = boardTiles.get(currSet.getId());
     Scene currScene = currSet.getScene();
@@ -528,15 +551,10 @@ public void run(){
     currlabel.setIcon(tIcon);
     currlabel.setVisible(true);
   }
-
-  public void flipCardBack(int index){
+  public void hideCard(int index){
     JLabel currlabel = boardTiles.get(index);
-    String image = "Deadwood Needed Image Files/CardBack-small.jpg";
-    ImageIcon tIcon = new ImageIcon(image);
-    currlabel.setIcon(tIcon);
-    currlabel.setVisible(true);
+    currlabel.setVisible(false);
   }
-
   public static boolean isNumber(String s) { // helper method for input handling
       int i = 0;
       if (s.charAt(0) == '-') {

@@ -47,18 +47,13 @@ public class ParseXML {
       NodeList sets = root.getElementsByTagName("set");
 
       for (int i = 0; i < sets.getLength(); i++) {
-
          Set set = new Set();
          set.setTileID(i);
-
-         // System.out.println("Printing information for set "+(i+1));
-
          // reads data from the nodes
          Node node = sets.item(i);
          NamedNodeMap setAttributes = node.getAttributes();
          String setname = setAttributes.getNamedItem("name").getNodeValue();
          LinkedList<String> coordinates = new LinkedList<String>();
-         // System.out.println("Set name= " + setname);
          set.setName(setname);
 
          // reads data
@@ -66,13 +61,8 @@ public class ParseXML {
          NodeList children = node.getChildNodes();
 
          for (int j = 0; j < children.getLength(); j++) {
-
             Node sub = children.item(j);
-            // Nodelist parts = sub.getElementsByTagName("part");
-
             if ("takes".equals(sub.getNodeName())) {
-               // System.out.println(sub.getNodeName());
-
                NodeList takers = sub.getChildNodes();
                for (int k = 0; k < takers.getLength(); k++) {
                   if ("take".equals(takers.item(k).getNodeName())) {
@@ -82,32 +72,21 @@ public class ParseXML {
                      Node area = tcord.item(0);
                      NamedNodeMap aCs = area.getAttributes();
                      String c = tcord.item(0).getNodeName();
-                     //System.out.println(c);
                      String x = aCs.getNamedItem("x").getTextContent();
                      String y = aCs.getNamedItem("y").getTextContent();
                      String h = aCs.getNamedItem("h").getTextContent();
                      String w = aCs.getNamedItem("w").getTextContent();
-                     String[] coordset = {x,y,h,w,"take"+number};
+                     String[] coordset = {x,y,h,w};
                      set.addTakecoords(coordset);
-                     // for(int q=0;q<aCs.getLength();q++){
-                     //  String cp = tcord.item(q).getNodeName();
-                     //System.out.println(x);
-                     // }
                      set.setShotCapacity(Integer.parseInt(number));
                   }
                }
 
             }else if("area".equals(sub.getNodeName())){
-              int x;
-              int y;
-              int h;
-              int w;
-
-                  x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
-                  y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent());
-                  h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
-                  w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent());
-
+              int x= Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
+              int y= Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent());
+              int h= Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
+              int w= Integer.parseInt(sub.getAttributes().getNamedItem("w").getTextContent());
                 coordinates.add(""+x);
                 coordinates.add(""+y);
                 coordinates.add(""+h);
@@ -118,12 +97,10 @@ public class ParseXML {
                NodeList parts = sub.getChildNodes();
                for (int k = 0; k < parts.getLength(); k++) {
                   Node part = parts.item(k);
-
                   if (part.getNodeName().equals("part")) {
                     LinkedList<String> cords = new LinkedList<String>();
                      NamedNodeMap partattributes = part.getAttributes();
                      NodeList subs = part.getChildNodes();
-
                      for(int p=0;p<subs.getLength();p++){
                        Node temp = subs.item(p);
                        if("area".equals(temp.getNodeName())){
@@ -133,11 +110,9 @@ public class ParseXML {
                          cords.add(temp.getAttributes().getNamedItem("w").getTextContent());
                        }
                      }
-
                      String name = "" + partattributes.getNamedItem("name").getTextContent();
                      String minrank = "" + partattributes.getNamedItem("level").getTextContent();
                      String desc = subs.item(3).getTextContent();
-
                      Role role = new Role();
                      role.setCoords(cords);
                      role.setDesc(desc);
@@ -172,7 +147,6 @@ public class ParseXML {
                   Node neighbor = nlist.item(k);
                   if (neighbor.getNodeName().equals("neighbor")) {
                      NamedNodeMap atts = neighbor.getAttributes();
-                     // System.out.println(atts.getNamedItem("name").getTextContent());
                      for (int p = 0; p < boardSets.size(); p++) {
                         if (boardSets.get(p).getName().equals(atts.getNamedItem("name").getTextContent())) {
                            trailer.addNeighbor(boardSets.get(p));
