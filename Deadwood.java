@@ -305,6 +305,9 @@ public class Deadwood{
         while (true) {
             //System.out.print("Are you sure? (Y) or (N): ");
             String answer = JOptionPane.showInputDialog("Are You Sure? (Y) or (N)");
+            if(answer==null){
+              return;
+            }
             answer = answer.toUpperCase();
             if (answer.equals("Y")) {
                 frame.addText("GAME OVER\n");
@@ -547,7 +550,6 @@ public class Deadwood{
                         System.out.println(" Line: " + chosen.getDescription());
                         player.setRole(chosen);
                         chosen.fillRole();
-                        // scanner.close();
                         return 1; // end the turn
                     }
                 } else {
@@ -691,11 +693,8 @@ public class Deadwood{
         }
         return count;
     }
-
-    public ArrayList<Player> getSpots(LinkedList<Role> roleList, ArrayList<Player> playersInRole) { // returns an
-                                                                                                    // arraylist of
-                                                                                                    // people in their
-                                                                                                    // role spots.
+    // returns an arraylist of people in their role spots.
+    public ArrayList<Player> getSpots(LinkedList<Role> roleList, ArrayList<Player> playersInRole) {
         // similar to how it would look like on the board
         for (int i = 0; i < numPlayers; i++) {
             Player currPlayer = board.getPlayer(i);
@@ -725,7 +724,6 @@ public class Deadwood{
     // method that pays players who are in lead rolls
     public void payLeads(LinkedList<Role> roleList, int budget) {
         ArrayList<Integer> diceRolls = new ArrayList<Integer>();
-        // ArrayList<Player> leadPlayers = new ArrayList<Player>();
         ArrayList<Player> playersInRole = new ArrayList<Player>();
         int rolecount = roleList.size();
         for (int i = 0; i < roleList.size(); i++) {
@@ -733,14 +731,11 @@ public class Deadwood{
         }
         getSpots(roleList, playersInRole);
 
-        //System.out.println(playersInRole.toString());
-
         for (int i = 0; i < budget; i++) {
             int roll = (int) (Math.random() * (6 - 1 + 1) + 1);
             diceRolls.add(roll);
         }
         Collections.sort(diceRolls, Collections.reverseOrder());
-        // System.out.println()
         for (int i = 0; i < diceRolls.size(); i++) {
             System.out.println("dice roll: " + diceRolls.get(i));
         }
@@ -764,7 +759,6 @@ public class Deadwood{
         for (int i = 0; i < size; i++) {
             Role currRole = occupiedRoles.get(i);
             if (!currRole.isExtra()) {
-                //System.out.println("non extra detected");
                 set.complete(frame,-1);
                 return true;
             }
@@ -790,8 +784,6 @@ public class Deadwood{
     }
 
     public void debugBoard(int opt) { // method that helps with debugging the board
-        // Board board = Board.getBoard();
-
         switch (opt) {
             case 5:
                 for (int i = 0; i < board.numSets(); i++) {
@@ -832,11 +824,6 @@ public class Deadwood{
                     System.out.println("Set: " + currset.getName());
                     int numNbrs = currset.getNeighbors().size();
                     int nroles = currset.getRoleCount();
-                    // LinkedList<Role> roles = currset.getRoles();
-                    // System.out.println(" Roles:");
-                    // for (int j = 0; j < nroles; j++) {
-                    // System.out.println(" -" + roles.get(j).getTitle());
-                    // }
                     System.out.println(" Neighbors:");
                     for (int j = 0; j < numNbrs; j++) {
                         Set nbr = currset.getNeighbors().get(j);

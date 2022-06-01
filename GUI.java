@@ -19,7 +19,6 @@ import javax.swing.JOptionPane;
 public class GUI extends JFrame {
 
   private static GUI instance;
-  //public static final Deadwood game;// = new Deadwood(this);
   int numPlayers =0;
   String[] colors = { "b", "c", "g", "o", "p", "r", "v",
           "y" };
@@ -70,9 +69,6 @@ public class GUI extends JFrame {
 
       super("Deadwood");
 
-        //this.game = new Deadwood(this);
-       // Set the title of the JFrame
-       //super("Deadwood");
        // Set the exit option for the JFrame
        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -101,20 +97,6 @@ public class GUI extends JFrame {
 
        // Add the card to the lower layer
        bPane.add(cardlabel, 1);
-
-       //boardMouseListener mouseListener = new boardMouseListener();
-
-
-       // Add a dice to represent a player.
-       // Role for Crusty the prospector. The x and y co-ordiantes are taken from Board.xml file
-       // playerlabel = new JLabel();
-       // ImageIcon pIcon = new ImageIcon("Deadwood Needed Image Files/dice/b1.png");
-       // playerlabel.setIcon(pIcon);
-       // playerlabel.setBounds(icon.getIconWidth()-53,250,pIcon.getIconWidth(),pIcon.getIconHeight());
-       // //playerlabel.setBounds(114,227,46,46);
-       // //playerlabel.setVisible(true);
-       // bPane.add(playerlabel,0);
-       // playerlabel.setVisible(true);
 
        // Create the Menu for action buttons
        mLabel = new JLabel("MENU");
@@ -178,24 +160,11 @@ public class GUI extends JFrame {
        scroll.setVisible(true);
        bPane.add(scroll,3);
        area.append("Welcome to Deadwood!\n");
-       //System.out.println("Text\n");
   }
-  //WAS BREAKING MY SHIT
-  // public static synchronized GUI getInstance() {
-  //   if (instance == null&&game==null) {
-  //     instance = new GUI();
-  //     game=new Deadwood(instance,area);
-  //   }
-  //   return instance;
-  // }
 
   public void addText(String text){
     area.append(text+"\n");
     area.setCaretPosition(area.getDocument().getLength());
-  }
-
-  public void displayCard(Set tile){// take the coords from the tile, take the image from the scene and mix/display the two
-
   }
 
   // // This class implements Mouse Events
@@ -313,46 +282,16 @@ public class GUI extends JFrame {
          else if(e.getSource()== bUpgrade && currlocation.getName().equals("office")){
            System.out.println("Upgrade selected");
            int rank = currentPlayer.getRank();
-           //int ret = game.upgrade(currentPlayer);
            if(rank!=6){
              int ret = game.upgrade(currentPlayer);
              if(ret == 1){
                updatePlayerIcon(currentPlayer);
              }
-             //updatePlayerIcon(currentPlayer);
            }else{
              addText("\nYou are already max rank");
            }
          }
-         // else if(choseToMove == true){
-         //   if(!neighbors.isEmpty()){
-         //     neighbors.clear();
-         //   }
-         //   neighbors.add(currentPlayer.getLocation());
-         //   neighbors.addAll(currentPlayer.getLocation().getNeighbors());
-         //
-         //   for(int i=0;i<neighbors.size();i++){
-         //     System.out.println("In for loop");
-         //     Set curr = neighbors.get(i);
-         //     JButton currbutton = curr.getButton();
-         //     if(e.getSource()==currbutton){
-         //       System.out.println(curr.getName() +" was hit");
-         //       addText("\nYou moved to: "+ curr.getName());
-         //       game.move(currentPlayer,curr);
-         //       this.currlocation = curr;
-         //       choseToMove=false;
-         //       int x = Integer.parseInt(curr.getCoords().get(0));
-         //       int y = Integer.parseInt(curr.getCoords().get(1))+30;
-         //       int h = Integer.parseInt(curr.getCoords().get(2));
-         //       int w = Integer.parseInt(curr.getCoords().get(3));
-         //       changeLocation(id,x,y,h,w);
-         //       if(!this.currlocation.isDiscovered() && !currlocation.getName().equals("office")&& !currlocation.getName().equals("trailer")){
-         //         this.currlocation.discover();
-         //         flipCard(this.currlocation);
-         //       }
-         //     }
-         //   }
-         // }
+
          else if(choseToTake == true && choseToMove == false){
            addText("What job would you like to take?");
            Scene currScene = currlocation.getScene();
@@ -364,7 +303,6 @@ public class GUI extends JFrame {
            allOptions.addAll(sceneRoles);
            int sceneX = Integer.parseInt(currlocation.getCoords().get(0));
            int sceneY = Integer.parseInt(currlocation.getCoords().get(1));
-           //Scene currScene = currlocation.getScene();
 
            for(int i=0;i<allOptions.size();i++){
              System.out.println("in take loop");
@@ -389,13 +327,7 @@ public class GUI extends JFrame {
              }
            }
          }
-      //}else{
-        // for(int i=0;i<bButtons.size();i++){
-        //   if(e.getSource() == bButtons.get(i)){
-        //     System.out.print("tile: "+i+" was hit ");
-        //   }
         }
-
 
       public void mousePressed(MouseEvent e) {
       }
@@ -404,10 +336,6 @@ public class GUI extends JFrame {
       public void mouseEntered(MouseEvent e) {
       }
       public void mouseExited(MouseEvent e) {
-      }
-
-      public void movePlayer(){
-
       }
    }
 
@@ -435,14 +363,8 @@ public class GUI extends JFrame {
      curr.setBounds(x,y,h,w);
    }
 
-   public void presentLocations(LinkedList<Set> neighbors){
-
-   }
-
-
 public void run(){
     System.out.println("main");
-    //initBoardTiles(game.getBoard().getSets());
     String playerCount;
     // Take input from the user about number of players
     while(true){
@@ -454,15 +376,13 @@ public void run(){
           break;
         }
       }
-  }
-  Deadwood game = new Deadwood(this,numPlayers);
-  this.game = game;
-  this.board = game.getBoard();
-  initPlayerIcons();
-  //initBoardTiles(game.getBoard().getSets());
-  game.run();
-  //game.run(Integer.parseInt(playerCount));
-  System.exit(0);
+    }
+    Deadwood game = new Deadwood(this,numPlayers);
+    this.game = game;
+    this.board = game.getBoard();
+    initPlayerIcons();
+    game.run();
+    System.exit(0);
   }
 
   public void resetPlayerIcons(){
@@ -515,7 +435,6 @@ public void run(){
       int w = Integer.parseInt(coords.get(3))-50;
 
       setButton.setBounds(x,y,h,w);
-      //setButton.setVisible(false);
       setButton.setOpaque(false);
       setButton.setContentAreaFilled(false);
       setButton.setBorderPainted(false);
@@ -562,23 +481,23 @@ public void run(){
       int sceneX =  Integer.parseInt(setCoords.get(0));
       int sceneY =  Integer.parseInt(setCoords.get(1));
 
-    for(int i=0;i<roles.size();i++){
-      JButton roleButton = new JButton("");
-      roleButton.addMouseListener(mouseListener);
-      LinkedList<String> coords = roles.get(i).getCoords();
-      int x = Integer.parseInt(coords.get(0))+sceneX;
-      int y = Integer.parseInt(coords.get(1))+sceneY;
-      int h = Integer.parseInt(coords.get(2));
-      int w = Integer.parseInt(coords.get(3));
-      roleButton.setBounds(x,y,h,w);
-      roleButton.setOpaque(false);
-      roleButton.setContentAreaFilled(false);
-      roleButton.setBorderPainted(false);
-      bPane.add(roleButton,2);
-      bSceneButtons.add(roleButton);
-      roles.get(i).setButton(roleButton);
+      for(int i=0;i<roles.size();i++){
+        JButton roleButton = new JButton("");
+        roleButton.addMouseListener(mouseListener);
+        LinkedList<String> coords = roles.get(i).getCoords();
+        int x = Integer.parseInt(coords.get(0))+sceneX;
+        int y = Integer.parseInt(coords.get(1))+sceneY;
+        int h = Integer.parseInt(coords.get(2));
+        int w = Integer.parseInt(coords.get(3));
+        roleButton.setBounds(x,y,h,w);
+        roleButton.setOpaque(false);
+        roleButton.setContentAreaFilled(false);
+        roleButton.setBorderPainted(false);
+        bPane.add(roleButton,2);
+        bSceneButtons.add(roleButton);
+        roles.get(i).setButton(roleButton);
+      }
     }
-  }
   }
 
   public void setBoardTile(Set set, int index){
@@ -602,7 +521,6 @@ public void run(){
   }
 
   public void flipCard(Set currSet){
-    //JLabel currlabel = boardTiles.get(index);
     JLabel currlabel = boardTiles.get(currSet.getId());
     Scene currScene = currSet.getScene();
     String image = "Deadwood Needed Image Files/cards/"+currScene.getImage();
@@ -613,8 +531,6 @@ public void run(){
 
   public void flipCardBack(int index){
     JLabel currlabel = boardTiles.get(index);
-    //Set currSet = board.grabSet(index);
-    //Scene currScene = currSet.getScene();
     String image = "Deadwood Needed Image Files/CardBack-small.jpg";
     ImageIcon tIcon = new ImageIcon(image);
     currlabel.setIcon(tIcon);
