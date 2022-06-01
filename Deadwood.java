@@ -63,7 +63,7 @@ public class Deadwood{
 
         for (int i = 1; i <= dayCount; i++) { // this it the main day loop
 
-            String day = "Day " + i;
+            String day = "\nDay " + i;
             frame.addText(day);
             //area.append(day);
             System.out.println("Day " + i);
@@ -182,7 +182,7 @@ public class Deadwood{
             System.out.println("\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "
                     + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
 
-            String turnline = "\n"+ playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "+ currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName()+ "\n Your rank is: " + currentPlayer.getRank();
+            String turnline = "\n"+ playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "+ currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName()+ "\n Your rank is: " + currentPlayer.getRank()+"\n Your chip count: " +currentPlayer.getChips();
             //area.append(turnline);
             frame.addText(turnline);
             //System.out.println(" Your rank is: " + currentPlayer.getRank()); // print out the players attributes
@@ -199,7 +199,9 @@ public class Deadwood{
                 area.append(congrats);
                 currentPlayer.setRole(null); // reset the players current role
                 currentPlayer.resetChips(); // reset their chip count
-                playerLocation.complete(frame,board.getSetIndex(playerLocation.getName())); // say location is complete
+                if(!playerLocation.isComplete()){
+                  playerLocation.complete(frame,board.getSetIndex(playerLocation.getName())); // say location is complete
+                }
             }
 
             else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is
@@ -259,7 +261,7 @@ public class Deadwood{
           System.out.println("\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "
                   + currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName());
 
-          String turnline = "\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "+ currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName() + "\n Your rank is: " + currentPlayer.getRank();
+          String turnline = "\n" + playerName + "'s turn! \n You have: ($" + currentPlayer.getMoney() + ", "+ currentPlayer.getCredits() + " cr)\n Your location is: " + currentPlayer.getLocName() + "\n Your rank is: " + currentPlayer.getRank()+"\n Your chip count: " +currentPlayer.getChips();
           //area.append(turnline);
           frame.addText(turnline);
           //System.out.println(" Your rank is: " + currentPlayer.getRank()); // print out the players attributes
@@ -269,17 +271,17 @@ public class Deadwood{
           //loopStop();
           if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is
                                                                       // completed
-              System.out.println("Congrats! Your scene was completed!");
-              String congrats = "Congrats! Your scene was completed!";
-              area.append(congrats);
+              System.out.println("1Congrats! Your scene was completed!");
+              String congrats = "1Congrats! Your scene was completed!";
+              frame.addText(congrats);
               currentPlayer.setRole(null); // reset the players current role
               currentPlayer.resetChips(); // reset their chip count
               playerLocation.complete(frame,board.getSetIndex(playerLocation.getName())); // say location is complete
           }
 
           else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is
-              String congrats = "Congrats! Your scene was completed!";
-              area.append(congrats);                                                                     // completed -- may be redundant
+              String congrats = "2Congrats! Your scene was completed!";
+              frame.addText(congrats);                                                                     // completed -- may be redundant
               System.out.println(congrats);
               currentPlayer.setRole(null);
               currentPlayer.resetChips();
@@ -330,11 +332,11 @@ public class Deadwood{
     public void loopStop(){
       Scanner scanner = new Scanner(System.in);
       while(true){
-        String answer = scanner.nextLine();
-        answer=answer.toUpperCase();
-        if(answer.equals("QUIT")){
+        String answer=null;// = scanner.nextLine();
+        //answer=answer.toUpperCase();
+        if("QUIT".equals(answer)){
           quitGame();
-        }else if(answer.equals("DAY")){
+        }else if("DAY".equals(answer)){
           board.completeAll(frame);
         }
         if(board.dayEnd()){
@@ -576,15 +578,17 @@ public class Deadwood{
             while (true) { // give player the choice of what they want to spend
                 System.out.println("\nYou have $" + playerMoney + " and " + playerCredit + " credits");
                 System.out.print(" What would you like to spend (M or C)? ");
-                choice = scanner.nextLine();
+                String[] options = {"Money","Credits"};
+                choice = ""+JOptionPane.showOptionDialog(null, "You have the choice of spending money or credits","Pick method of payment",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
                 choice = choice.toUpperCase();
                 switch (choice) {
-                    case "M": // spend their money and increase rank
+                    case "0": // spend their money and increase rank
                         System.out.println("Rank increased");
                         player.subMoney(mCost);
                         player.increaseRank();
                         return 1;
-                    case "C": // spend their credits and increase their rank
+                    case "1": // spend their credits and increase their rank
                         System.out.println("Rank increased");
                         player.subCredits(cCost);
                         player.increaseRank();
@@ -595,20 +599,20 @@ public class Deadwood{
                 }
             }
         } else if (playerMoney >= mCost) { // player only has enough money to upgrade rank
-            System.out.println("You spent money to \nincrease your rank");
-            frame.addText("\nYou spent money to \nincrease your rank");
+            System.out.println("You spent money to increase \nyour rank");
+            frame.addText("\nYou spent money to increase \nyour rank");
             player.subMoney(mCost);
             player.increaseRank();
             return 1;
         } else if (playerCredit >= cCost) { // player only has enough credits to upgrade rank
-            System.out.println("You spent credits to \nincrease your rank");
-            frame.addText("\nYou spent credits to increase your rank");
+            System.out.println("You spent credits to increase your rank");
+            frame.addText("\nYou spent credits to increase \nyour rank");
             player.subCredits(cCost);
             player.increaseRank();
             return 1;
         } else { // player doesnt have the means to increase their rank
-            System.out.println("\nYou dont have the resources \nto increase your rank. Try again later.");
-            frame.addText("\nYou dont have the resources \nto increase your rank.\n Try again later.");
+            System.out.println("\nYou dont have the resources to increase your rank. Try again later.");
+            frame.addText("\nYou dont have the resources to increase your rank.\n Try again later.");
             return 0;
         }
     }
@@ -620,27 +624,42 @@ public class Deadwood{
         System.out.println("You rolled a: " + roll);
         int total = roll + player.getChips(); // get their total roll
         if (total >= budget) { // if the roll is successful
-            System.out.println("Act success! Your total was: " + total);
+            System.out.println("\nAct success! Your total was: " + total);
+            frame.addText("\nAct success!\n Your total was: " + total);
             currSet.completeShot(); // increase amount of shots completed
             if (currSet.shotsRemaining() == 0) { // if tile is done, determine if their is a bonus to pay out
                 payout(currSet);
+                //if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is
+                                                                            // completed
+                    //System.out.println("1Congrats! Your scene was completed!");
+                    String congrats = "Congrats! Your scene was completed!";
+                    frame.addText(congrats);
+                    player.setRole(null); // reset the players current role
+                    player.resetChips(); // reset their chip count
+                    currSet.complete(frame,board.getSetIndex(currSet.getName())); // say location is complete
+                //}
             }
             if (currRole.isExtra()) { // pay the player the amount determined by role
-                System.out.println(" Payout: 1 dollar and 1 credit");
+                System.out.println("Payout: 1 dollar and 1 credit");
+                frame.addText(" Payout: 1 dollar and 1 credit");
                 player.addCredits(1);
                 player.addMoney(1);
             } else {
                 System.out.println(" Payout: 2 credits");
+                frame.addText(" Payout: 2 credits");
                 player.addCredits(2);
             }
             return;
         } else {
             System.out.println("Act failure! Your total was: " + total);
+            frame.addText("Act failure! Your total was: " + total);
             if (currRole.isExtra()) { // if the player was an extra, they still get paid
                 System.out.println(" You're an extra though, you still get a dollar");
+                frame.addText(" You're an extra though, you still get a dollar");
                 player.addMoney(1);
             } else {
                 System.out.println(" Sucks to not be an extra. You get nothing");
+                frame.addText(" Sucks to not be an extra. You get nothing");
             }
             return;
         }
@@ -655,7 +674,7 @@ public class Deadwood{
             payExtras(extras);
             payLeads(leads, budget);
         } else {
-            System.out.println("No lead actors were present\n No bonuses will be awarded");
+            System.out.println("No lead actors were present.\n No bonuses will be awarded");
         }
     }
 

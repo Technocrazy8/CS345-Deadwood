@@ -173,7 +173,7 @@ public class GUI extends JFrame {
        area.setVisible(true);
 
        scroll = new JScrollPane(area);
-       scroll.setBounds(icon.getIconWidth()+10,icon.getIconHeight()/2,200,icon.getIconHeight()-450);
+       scroll.setBounds(icon.getIconWidth()+10,icon.getIconHeight()/2,275,icon.getIconHeight()-450);
        scroll.setBackground(Color.white);
        scroll.setVisible(true);
        bPane.add(scroll,3);
@@ -190,7 +190,7 @@ public class GUI extends JFrame {
   // }
 
   public void addText(String text){
-    area.append("\n"+text);
+    area.append(text+"\n");
     area.setCaretPosition(area.getDocument().getLength());
   }
 
@@ -219,8 +219,37 @@ public class GUI extends JFrame {
       // Code for the different button clicks
       public void mouseClicked(MouseEvent e) {
 
-        //if(!choseToMove){
-         if(e.getSource() ==bTake && !currentPlayer.checkInRole()){
+        if(choseToMove == true){
+          if(!neighbors.isEmpty()){
+            neighbors.clear();
+          }
+          neighbors.add(currentPlayer.getLocation());
+          neighbors.addAll(currentPlayer.getLocation().getNeighbors());
+
+          for(int i=0;i<neighbors.size();i++){
+            System.out.println("In for loop");
+            Set curr = neighbors.get(i);
+            JButton currbutton = curr.getButton();
+            if(e.getSource()==currbutton){
+              System.out.println(curr.getName() +" was hit");
+              addText("\nYou moved to: "+ curr.getName());
+              game.move(currentPlayer,curr);
+              this.currlocation = curr;
+              choseToMove=false;
+              int x = Integer.parseInt(curr.getCoords().get(0));
+              int y = Integer.parseInt(curr.getCoords().get(1))+30;
+              int h = Integer.parseInt(curr.getCoords().get(2));
+              int w = Integer.parseInt(curr.getCoords().get(3));
+              changeLocation(id,x,y,h,w);
+              if(!this.currlocation.isDiscovered() && !currlocation.getName().equals("office")&& !currlocation.getName().equals("trailer")){
+                this.currlocation.discover();
+                flipCard(this.currlocation);
+              }
+            }
+          }
+        }
+
+         else if(e.getSource() ==bTake && !currentPlayer.checkInRole()){
            LinkedList<Role> totalRoles = board.getAvailableRoles(currentPlayer);
            if(currlocation.getName().equals("trailer") || currlocation.getName().equals("office")){
              addText("\nNo roles are offered at: " + currlocation.getName());
@@ -228,6 +257,8 @@ public class GUI extends JFrame {
              addText("All roles are taken");
            }else if(this.currlocation.isComplete()){
              addText("This scene has wrapped");
+           }else if(choseToTake==true){
+             choseToTake=false;
            }else{
              System.out.println("Take is selected");
              choseToTake = true;
@@ -235,25 +266,31 @@ public class GUI extends JFrame {
          }
          else if (e.getSource()== bAct && currentPlayer.checkInRole()&& newJob==0){
             System.out.println("Acting is Selected\n");
-            game.actingChoices(currentPlayer);
-
+            game.act(currentPlayer, currentPlayer.getRole());
+            game.changePlayer();
+            game.dailyRoutine();
          }
          else if (e.getSource()== bRehearse && currentPlayer.checkInRole()&& newJob==0){
             System.out.println("Rehearse is Selected\n");
             int budget = currlocation.getScene().getBudget();
             if(currentPlayer.getChips() == budget-1){
-              addText("\nYou cannot rehearse anymore. Please act");
+              addText("\nYou cannot rehearse anymore.\n Please act");
             }else{
               addText("\nYou chose to rehearse");
               currentPlayer.addChip();
+              addText("\n Total chips: " + currentPlayer.getChips());
               game.changePlayer();
               game.dailyRoutine();
             }
          }
          else if (e.getSource()== bMove && !currentPlayer.checkInRole() && currentPlayer.canMove()){
             System.out.println("Move is Selected\n");
-            choseToMove = true;
-            addText("\nWhere would you like \nto move to?");
+            if(choseToMove ==true){
+              choseToMove = false;
+            }else{
+              choseToMove = true;
+              addText("\nWhere would you like to move to?");
+            }
          }
          else if(e.getSource()== bMove && !currentPlayer.canMove()){
            addText("You already moved this turn");
@@ -263,6 +300,8 @@ public class GUI extends JFrame {
            if(newJob==1){
              newJob =0;
            }
+           choseToMove = false;
+           choseToTake = false;
            game.changePlayer();
            game.dailyRoutine();
          }
@@ -285,36 +324,36 @@ public class GUI extends JFrame {
              addText("\nYou are already max rank");
            }
          }
-         else if(choseToMove == true){
-           if(!neighbors.isEmpty()){
-             neighbors.clear();
-           }
-           neighbors.add(currentPlayer.getLocation());
-           neighbors.addAll(currentPlayer.getLocation().getNeighbors());
-
-           for(int i=0;i<neighbors.size();i++){
-             System.out.println("In for loop");
-             Set curr = neighbors.get(i);
-             JButton currbutton = curr.getButton();
-             if(e.getSource()==currbutton){
-               System.out.println(curr.getName() +" was hit");
-               addText("\nYou moved to: "+ curr.getName());
-               game.move(currentPlayer,curr);
-               this.currlocation = curr;
-               choseToMove=false;
-               int x = Integer.parseInt(curr.getCoords().get(0));
-               int y = Integer.parseInt(curr.getCoords().get(1))+30;
-               int h = Integer.parseInt(curr.getCoords().get(2));
-               int w = Integer.parseInt(curr.getCoords().get(3));
-               changeLocation(id,x,y,h,w);
-               if(!this.currlocation.isDiscovered() && !currlocation.getName().equals("office")&& !currlocation.getName().equals("trailer")){
-                 this.currlocation.discover();
-                 flipCard(this.currlocation);
-               }
-             }
-           }
-         }
-         else if(choseToTake == true){
+         // else if(choseToMove == true){
+         //   if(!neighbors.isEmpty()){
+         //     neighbors.clear();
+         //   }
+         //   neighbors.add(currentPlayer.getLocation());
+         //   neighbors.addAll(currentPlayer.getLocation().getNeighbors());
+         //
+         //   for(int i=0;i<neighbors.size();i++){
+         //     System.out.println("In for loop");
+         //     Set curr = neighbors.get(i);
+         //     JButton currbutton = curr.getButton();
+         //     if(e.getSource()==currbutton){
+         //       System.out.println(curr.getName() +" was hit");
+         //       addText("\nYou moved to: "+ curr.getName());
+         //       game.move(currentPlayer,curr);
+         //       this.currlocation = curr;
+         //       choseToMove=false;
+         //       int x = Integer.parseInt(curr.getCoords().get(0));
+         //       int y = Integer.parseInt(curr.getCoords().get(1))+30;
+         //       int h = Integer.parseInt(curr.getCoords().get(2));
+         //       int w = Integer.parseInt(curr.getCoords().get(3));
+         //       changeLocation(id,x,y,h,w);
+         //       if(!this.currlocation.isDiscovered() && !currlocation.getName().equals("office")&& !currlocation.getName().equals("trailer")){
+         //         this.currlocation.discover();
+         //         flipCard(this.currlocation);
+         //       }
+         //     }
+         //   }
+         // }
+         else if(choseToTake == true && choseToMove == false){
            addText("What job would you like to take?");
            Scene currScene = currlocation.getScene();
 
@@ -326,6 +365,7 @@ public class GUI extends JFrame {
            int sceneX = Integer.parseInt(currlocation.getCoords().get(0));
            int sceneY = Integer.parseInt(currlocation.getCoords().get(1));
            //Scene currScene = currlocation.getScene();
+
            for(int i=0;i<allOptions.size();i++){
              System.out.println("in take loop");
              Role currRole = allOptions.get(i);
@@ -344,7 +384,8 @@ public class GUI extends JFrame {
                currentPlayer.setRole(currRole);
                currRole.fillRole();
                choseToTake = false;
-               newJob++;
+               game.changePlayer();
+               game.dailyRoutine();
              }
            }
          }
@@ -406,7 +447,7 @@ public void run(){
     // Take input from the user about number of players
     while(true){
       playerCount = JOptionPane.showInputDialog(instance, "How many players? (2-8)");
-      if(playerCount.length()!=0&&isNumber(playerCount)){
+      if(playerCount != null&&playerCount.length()!=0&&isNumber(playerCount)){
         int in = Integer.parseInt(playerCount);
         if(in>=2&&in<=8){
           numPlayers=in;
@@ -574,7 +615,7 @@ public void run(){
     JLabel currlabel = boardTiles.get(index);
     //Set currSet = board.grabSet(index);
     //Scene currScene = currSet.getScene();
-    String image = "Deadwood Needed Image Files/ardBack-small.jpg";
+    String image = "Deadwood Needed Image Files/CardBack-small.jpg";
     ImageIcon tIcon = new ImageIcon(image);
     currlabel.setIcon(tIcon);
     currlabel.setVisible(true);
