@@ -34,7 +34,6 @@ public class GUI extends JFrame {
   //PlayerLabels
   LinkedList<JLabel> playerIcons = new LinkedList<JLabel>();
   LinkedList<JLabel> boardTiles = new LinkedList<JLabel>();
-  //LinkedList<JLabel> shotTiles = new LinkedList<JLabel>();
 
   //JButtons
   JButton bAct;
