@@ -3,7 +3,7 @@
  * - Hold player status (model)
  */
 
-public class Player extends Model{
+public class Player{
     private int rank = 1;
     private int credits;
     private int money;
@@ -15,18 +15,6 @@ public class Player extends Model{
     private Set location;
     private Role currentRole;
 
-    // Getter lambda functions
-    public Getter<Integer> getRank = () -> rank;
-    public Getter<Integer> getCredits = () -> credits;
-    public Getter<Integer> getMoney = () -> money;
-    public Getter<Integer> getScore = () -> score;
-    public Getter<Integer> getId = () -> id;
-    public Getter<String> getName = () -> name;
-    public Getter<Boolean> getMoved = () -> hasMoved;
-    public Getter<Integer> getChips = () -> rehearseChips;
-    public Getter<Set> getLocation = () -> location;
-    public Getter<Role> getRole = () -> currentRole;
-
     public Player(String name,int id) {
         this.credits = 0;
         this.money = 0;
@@ -36,7 +24,6 @@ public class Player extends Model{
 
     public int calculateScore() {
         score = this.money + this.credits + (this.rank * 5);
-        notify(getScore);
         return score;
     }
 
@@ -50,12 +37,10 @@ public class Player extends Model{
 
     public void addMoney(int m) {
         this.money += m;
-        notify(getMoney);
     }
 
     public void subMoney(int m) {
         this.money -= m;
-        notify(getMoney);
     }
 
     public int getMoney() {
@@ -64,12 +49,10 @@ public class Player extends Model{
 
     public void addCredits(int c) {
         this.credits += c;
-        notify(getCredits);
     }
 
     public void subCredits(int c) {
         this.credits -= c;
-        notify(getCredits);
     }
 
     public int getCredits() {
@@ -82,12 +65,10 @@ public class Player extends Model{
 
     public void addChip() {
         this.rehearseChips++;
-        notify(getChips);
     }
 
     public void resetChips() {
         this.rehearseChips = 0;
-        notify(getChips);
     }
 
     public int getRank() {
@@ -96,27 +77,22 @@ public class Player extends Model{
 
     public void setRank(int r) {
         this.rank = r;
-        notify(getRank);
     }
 
     public void increaseRank() {
         this.rank++;
-        notify(getRank);
     }
 
     public void setLocation(Set loc) {
         this.location = loc;
-        notify(getLocation);
     }
 
     public void moved() {
         this.hasMoved = true;
-        notify(getMoved);
     }
 
     public void allowMove() {
         this.hasMoved = false;
-        notify(getMoved);
     }
 
     public boolean canMove() {
@@ -133,7 +109,6 @@ public class Player extends Model{
 
     public void setRole(Role r) {
         this.currentRole = r;
-        notify(getRole);
     }
 
     public Role getRole() {

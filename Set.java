@@ -24,10 +24,10 @@ public class Set {
     private boolean discovered = false;
     private Scene scene;
     private LinkedList<String> coords;
-    private LinkedList<String[]> takecoords;
+    private LinkedList<String[]> takecoords; // not initialized with office and trailer
     private LinkedList<String[]> creditLegend;// Only initiated w/ office
     private LinkedList<String[]> moneyLegend;// Only initiated w/ office
-    private LinkedList<JLabel> shotLabels;
+    private LinkedList<JLabel> shotLabels; // not initialized with office and trailer
     private int tileID;
     private JButton setButton;
 
