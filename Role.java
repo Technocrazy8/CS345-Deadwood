@@ -13,7 +13,6 @@ public class Role {
     private int minRank;
     private LinkedList<String> coordinates;
     private JButton button;
-    // private int rehearseBonus = -1; // may be trivial
     private int actor = -1; // player id
 
     public void setTitle(String t) {

@@ -63,17 +63,17 @@ public class Deadwood{
             System.out.println("Day " + i);
             board.distributeScenes(retrieveDailyCards(cards),frame); // Assigns a scene to each set (10 a day)
             board.resetTiles(); // prepare the tiles
-            frame.initSceneButtons(board.getSets());
-            frame.resetPlayerIcons();
+            frame.initSceneButtons(board.getSets()); // creates the buttons for the non extra roles
+            frame.resetPlayerIcons(); // move player icons back to the trailer
             currplayerindex = 0;
             for (int j = 0; j < numPlayers; j++) { // assert players start in trailer at beginning of each day
                 Player temp = board.getPlayer(j);
-                temp.setLocation(board.getTrailer()); // change back to trailer after testing upgrade
-                temp.allowMove();
+                temp.setLocation(board.getTrailer()); // set all players back to trailer
+                temp.allowMove(); //assure players can move
             }
             dailyRoutine(); // run main game loop for the player
-            loopStop();
-            frame.resetTakeMarkers(board.getSets());
+            loopStop(); // waits until the day is ended
+            frame.resetTakeMarkers(board.getSets()); // make all take markers visible again
         }
         scanner.close();
         wrapUp(); // modified quit game that doesnt prompt for input
@@ -112,10 +112,10 @@ public class Deadwood{
         board.addSets(sets); // add all the sets to the board
         board.setTrailer(sets.get(sets.size() - 2)); // add the trailer tile to the board
         board.setOffice(sets.get(sets.size() - 1)); // add the office tile to the board
-        frame.initBoardTiles(sets);
-        frame.initBoardButtons(sets);
-        frame.initSetButtons(board.getSetRoles());
-        frame.initTakeMarkers(sets);
+        frame.initBoardTiles(sets); // init the tile labels
+        frame.initBoardButtons(sets); // init the tile buttons for moving
+        frame.initSetButtons(board.getSetRoles()); // init the extra role buttons
+        frame.initTakeMarkers(sets); // init the take markers
         Collections.shuffle(cards); // shuffle so cards arent in order
 
         // Populate players and change their attributes depending on player count
@@ -123,7 +123,7 @@ public class Deadwood{
             Player player = new Player(PLAYER_NAMES[i],i);
             // player.addCredits(76);
             // player.addMoney(101); // DELETE THIS AFTER TESTING
-            if (numPlayers == 5) {
+            if (numPlayers == 5) { // change rules according to player count
                 player.addCredits(2);
             } else if (numPlayers == 6) {
                 player.addCredits(4);
@@ -166,15 +166,15 @@ public class Deadwood{
           frame.addText(turnline);
           if ((shotsRemaining == 0 && currentPlayer.checkInRole())) { // check if the players current acting gig is
                                                                       // completed
-              System.out.println("1Congrats! Your scene was completed!");
+              System.out.println("Congrats! Your scene was completed!");
               String congrats = "Congrats! Your scene was completed!";
               frame.addText(congrats);
               currentPlayer.setRole(null); // reset the players current role
               currentPlayer.resetChips(); // reset their chip count
               playerLocation.complete(frame,board.getSetIndex(playerLocation.getName())); // say location is complete
-          }else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is
+          }else if ((playerLocation.isComplete() && currentPlayer.checkInRole())) { // check if players role is completed -- may be redundant
               String congrats = "Congrats! Your scene was completed!";
-              frame.addText(congrats);                                                                     // completed -- may be redundant
+              frame.addText(congrats);
               System.out.println(congrats);
               currentPlayer.setRole(null);
               currentPlayer.resetChips();
@@ -191,7 +191,7 @@ public class Deadwood{
           }
     }
 
-    public void quitGame() { // exit method that prompts user if they want to quit
+    public void quitGame() { // exit that prompts user if they want to quit
         while (true) {
             String answer = JOptionPane.showInputDialog("Are You Sure? (Y) or (N)");
             if(answer==null){
@@ -209,7 +209,7 @@ public class Deadwood{
                     endgame.append(" " + board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore()+"\n");
                 }
                 System.out.println();
-                JOptionPane.showMessageDialog(null,endgame.toString());
+                JOptionPane.showMessageDialog(null,endgame.toString()); // show the final scores
                 System.exit(0);
             } else if (answer.equals("N")) { // return back to game loop
                 return;
@@ -218,24 +218,22 @@ public class Deadwood{
             }
         }
     }
-
+    // method to stop the day loop. Is waiting for the end of the day
     public void loopStop(){
-      Scanner scanner = new Scanner(System.in);
       while(true){
-        String answer=null;//= scanner.nextLine();
-        //answer=answer.toUpperCase();
-        if("QUIT".equals(answer)){
+        String answer=null;
+        if("QUIT".equals(answer)){ // used for testing -- add scanner to use
           quitGame();
         }else if("DAY".equals(answer)){
           board.completeAll(frame);
         }
-        if(board.dayEnd()){
+        if(board.dayEnd()){ // day is over, allow for day change
           break;
         }
       }
     }
 
-    public void wrapUp() { // end game method that doesnt take input
+    public void wrapUp() { // end game that doesnt take input -- used when game is done by day count
         System.out.println("\nGAME OVER\n");
         System.out.println("Final scores:");
         StringBuilder endgame = new StringBuilder();
@@ -245,18 +243,18 @@ public class Deadwood{
             endgame.append(" "+board.getPlayer(i).getName() + "'s score: " + board.getPlayer(i).calculateScore()+"\n");
         }
         System.out.println();
-        JOptionPane.showMessageDialog(null,endgame.toString());
+        JOptionPane.showMessageDialog(null,endgame.toString()); // present the endgame scores
         System.exit(0);
     }
 
-    public void move(Player player,Set location) { // show the locations a player can move to. prompt them to pick one
-        Scanner scanner = new Scanner(System.in);
+    // moves the player to specific location
+    public void move(Player player,Set location) {
         System.out.println("\nWhere would you like to move to?");
         player.setLocation(location);
         player.moved();
         player.resetChips();
     }
-
+    // changes the player, assures player loop doesnt break
     public void changePlayer(){
       currplayerindex++;
       if (currplayerindex == numPlayers) { // loop back around to starting player
@@ -270,59 +268,7 @@ public class Deadwood{
           }
       }
     }
-
-    public int takeRole(Player player) { // return 1 for successful role fill, 0 for no roles offered or back
-        Scanner pinput = new Scanner(System.in);
-        LinkedList<Role> totalRoles = new LinkedList<Role>();
-        Set playerLocation = player.getLocation();
-        Scene scene = playerLocation.getScene();
-        if (playerLocation.getName().equals("trailer") || playerLocation.getName().equals("office")) {
-            System.out.println("\nNo roles are offered at: " + playerLocation.getName());
-            return 0;
-        }
-        LinkedList<Role> sceneRoles = playerLocation.getAvailableRoles(); // grab the nontaken scene roles
-        LinkedList<Role> setRoles = scene.getAvailableRoles(); // grab the nontaken set roles
-        totalRoles.addAll(sceneRoles);
-        totalRoles.addAll(setRoles);// combine them to one list
-        int size = totalRoles.size();
-        if (size == 0 || playerLocation.isComplete()) {// if no roles are offered or tile is complete
-            System.out.println("No available roles");
-            return 0;
-        } else {
-            String choice;
-            while (true) {
-                System.out.println("\nPick a role: ");
-                for (int i = 0; i < size; i++) {// display the role choices to the player and ask to pick one
-                    Role currRole = totalRoles.get(i);
-                    System.out.println(
-                            " " + i + " - Role: " + currRole.getTitle() + " Minimum rank: " + currRole.getRank()
-                                    + " Is an extra: " + currRole.isExtra());
-                }
-                System.out.println(" " + size + " - GO BACK");
-                choice = pinput.nextLine();
-                if (isNumeric(choice)) {// prompt user for choice
-                    int pick = Integer.parseInt(choice);
-                    if (pick < 0 || pick > size) { // if pick out of scope
-                        System.out.println("Please pick a valid number\n");
-                    } else if (pick == size) {// player picked go back option
-                        return 0;
-                    } else if (player.getRank() < totalRoles.get(pick).getRank()) { // player chose a role without the means
-                        System.out.println("Not high enough rank, please choose a valid role\n");
-                    } else {
-                        Role chosen = totalRoles.get(pick); // give player the chosen role
-                        System.out.println("Role: '" + chosen.getTitle() + "' taken");
-                        System.out.println(" Line: " + chosen.getDescription());
-                        player.setRole(chosen);
-                        chosen.fillRole();
-                        return 1; // end the turn
-                    }
-                } else {
-                    System.out.println("Please pick a valid number\n");
-                }
-            }
-        }
-    }
-
+    // used to upgrade player-- determines what they can spend and if they can
     public int upgrade(Player player) {
         int rank = player.getRank();
         Scanner scanner = new Scanner(System.in);
@@ -421,18 +367,18 @@ public class Deadwood{
                 player.addMoney(1);
             } else {
                 System.out.println(" Sucks to not be an extra. You get nothing");
-                frame.addText(" Sucks to not be an extra. You get nothing");
+                frame.addText(" Sucks to not be an extra.\n You get nothing");
             }
             return;
         }
     }
 
-    public void payout(Set currsSet) { // method that determines if a bonus should be rewared
+    public void payout(Set currsSet) { // determines if a bonus should be rewared
         LinkedList<Role> leads = currsSet.getScene().getParts();
         LinkedList<Role> extras = currsSet.getRoles();
-        int count = countLeads(leads);
+        int count = countLeads(leads); // check if lead actors were present
         int budget = currsSet.getScene().getBudget();
-        if (count != 0) {
+        if (count != 0) { // lead roles present, pay out
             payExtras(extras);
             payLeads(leads, budget);
         } else {
@@ -468,7 +414,7 @@ public class Deadwood{
         return playersInRole;
     }
 
-    // method that pays the players who are in the extra spots of a scene
+    // pays the players who are in the extra spots of a scene
     public void payExtras(LinkedList<Role> roleList) {
         for (int i = 0; i < numPlayers; i++) {
             Player currPlayer = board.getPlayer(i);
@@ -481,7 +427,7 @@ public class Deadwood{
         }
     }
 
-    // method that pays players who are in lead rolls
+    // pays players who are in lead rolls, rolls amount of dice equivalent to budget, pays out accordingly
     public void payLeads(LinkedList<Role> roleList, int budget) {
         ArrayList<Integer> diceRolls = new ArrayList<Integer>();
         ArrayList<Player> playersInRole = new ArrayList<Player>();
@@ -509,20 +455,6 @@ public class Deadwood{
                 index = 0;
             }
         }
-    }
-
-    public boolean determineCompletion(Set set) { // method that determines if a scene is wrapped
-        LinkedList<Role> occupiedRoles = set.getTakenRoles();
-        occupiedRoles.addAll(set.getScene().getTakenRoles());
-        int size = occupiedRoles.size();
-        for (int i = 0; i < size; i++) {
-            Role currRole = occupiedRoles.get(i);
-            if (!currRole.isExtra()) {
-                set.complete(frame,-1);
-                return true;
-            }
-        }
-        return false;
     }
 
     public Board getBoard(){
@@ -598,13 +530,3 @@ public class Deadwood{
         }
     }
 }
-/**
- * Questions:
- * - How should we keep track of each player's position?
- * Possible Solutions:
- * - Board keeps track of where each player is
- * - Role keeps track of player and then each step in the hierarchy goes fetch
- * that
- * - Sets and scenes keep track of it
- * - Any kind of combinations of this.
- */

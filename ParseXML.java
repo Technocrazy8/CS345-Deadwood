@@ -1,5 +1,6 @@
 // Example Code for parsing XML file
 // Dr. Moushumi Sharmin
+// Modified by: Evan Johnson and Clement Faisandier
 // CSCI 345
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -65,7 +66,7 @@ public class ParseXML {
             if ("takes".equals(sub.getNodeName())) {
                NodeList takers = sub.getChildNodes();
                for (int k = 0; k < takers.getLength(); k++) {
-                  if ("take".equals(takers.item(k).getNodeName())) {
+                  if ("take".equals(takers.item(k).getNodeName())) { // gets max take count and coord for shot counter
                      LinkedList<String> takecoords = new LinkedList<String>();
                      String number = takers.item(k).getAttributes().item(0).getNodeValue();
                      NodeList tcord = takers.item(k).getChildNodes();
@@ -82,7 +83,7 @@ public class ParseXML {
                   }
                }
 
-            }else if("area".equals(sub.getNodeName())){
+            }else if("area".equals(sub.getNodeName())){ // gets coords for cards
               int x= Integer.parseInt(sub.getAttributes().getNamedItem("x").getTextContent());
               int y= Integer.parseInt(sub.getAttributes().getNamedItem("y").getTextContent());
               int h= Integer.parseInt(sub.getAttributes().getNamedItem("h").getTextContent());
@@ -103,7 +104,7 @@ public class ParseXML {
                      NodeList subs = part.getChildNodes();
                      for(int p=0;p<subs.getLength();p++){
                        Node temp = subs.item(p);
-                       if("area".equals(temp.getNodeName())){
+                       if("area".equals(temp.getNodeName())){ // gets coords for roles
                          cords.add(temp.getAttributes().getNamedItem("x").getTextContent());
                          cords.add(temp.getAttributes().getNamedItem("y").getTextContent());
                          cords.add(temp.getAttributes().getNamedItem("h").getTextContent());

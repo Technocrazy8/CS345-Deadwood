@@ -1,4 +1,3 @@
-
 /**
  * Essentially the tiles of the game
  *
@@ -126,7 +125,7 @@ public class Set {
         return this.roles.size();
     }
 
-    public LinkedList<Role> getAvailableRoles() {
+    public LinkedList<Role> getAvailableRoles() { // gets roles that people arent in
         LinkedList<Role> available = new LinkedList<Role>();
         for (int i = 0; i < this.roles.size(); i++) {
             if (this.roles.get(i).isAvailable()) {
@@ -136,7 +135,7 @@ public class Set {
         return available;
     }
 
-    public LinkedList<Role> getTakenRoles() {
+    public LinkedList<Role> getTakenRoles() { // gets roles that people are in
         LinkedList<Role> taken = new LinkedList<Role>();
         for (int i = 0; i < this.roles.size(); i++) {
             if (!this.roles.get(i).isAvailable()) {

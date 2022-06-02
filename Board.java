@@ -18,30 +18,26 @@ public class Board {
         this.sets = new LinkedList<Set>();
     }
 
+    // lazy instance for the game board. Assure one is made
     public static Board getBoard() {
-
         if (board == null) {
             board = new Board();
         }
-
         return board;
     }
-
     public void addPlayer(Player player) {
         this.players.add(player);
     }
 
-    public void addPlayers(LinkedList<Player> players) {
-        // TODO
-    }
-
+    // method that gets all the available roles (from scene and set) of a players location
+    // controller uses this method when allowing players to take role
+    // created because gui has access to board. Cuts down some length in controller
     public LinkedList<Role> getAvailableRoles(Player player){
       LinkedList<Role> totalRoles = new LinkedList<Role>();
       Set playerLocation = player.getLocation();
       Scene scene = playerLocation.getScene();
       if (playerLocation.getName().equals("trailer") || playerLocation.getName().equals("office")) {
           System.out.println("\nNo roles are offered at: " + playerLocation.getName());
-          //Deadwood.frame.addText("No roles are offered at: " + playerLocation.getName());
           return null;
       }
       LinkedList<Role> sceneRoles = playerLocation.getAvailableRoles(); // grab the nontaken scene roles
@@ -51,6 +47,7 @@ public class Board {
       return totalRoles;
     }
 
+    // get player by name
     public Player getPlayer(String name) {
         int size = players.size();
         for (int i = 0; i < size; i++) {
@@ -61,30 +58,24 @@ public class Board {
         }
         return null;
     }
-
+    // get player by specific index
     public Player getPlayer(int index) {
         if (index >= players.size()) {
             return null;
         }
         return players.get(index);
     }
-
-    public Set locationOfPlayer(Player p) {
-        return p.getLocation();
-    }
-
+    // returns player count
     public int playerCount() {
         return this.players.size();
     }
 
-    public void addSet(Set set) {
-        this.sets.add(set);
-    }
-
+    // add sets to the board
     public void addSets(LinkedList<Set> sets) {
         this.sets = sets;
     }
 
+    // get set by name
     public Set grabSet(String name) {
         for (int i = 0; i < sets.size(); i++) {
             Set currSet = sets.get(i);
@@ -94,11 +85,12 @@ public class Board {
         }
         return null;
     }
-
+    // get A set by id
     public Set grabSet(int Id) {
         return sets.get(Id);
     }
 
+    // get a sets ID
     public int getSetIndex(String name) {
         for (int i = 0; i < sets.size(); i++) {
             Set currSet = sets.get(i);
@@ -154,6 +146,7 @@ public class Board {
         }
     }
 
+    // resets the shot count and booleans for all sets
     public void resetTiles() {
         for (int i = 0; i < 10; i++) {
             Set currSet = board.sets.get(i);
@@ -164,6 +157,7 @@ public class Board {
         }
     }
 
+    // gets all the extra roles from every tile
     public LinkedList<Role> getSetRoles(){
         LinkedList<Role> allRoles = new LinkedList<Role>();
         for(int i=0;i<10;i++){
@@ -172,6 +166,7 @@ public class Board {
         return allRoles;
     }
 
+    // gets all the lead roles from every tile
     public LinkedList<Role> getSceneRoles(){
       LinkedList<Role> allRoles = new LinkedList<Role>();
       for(int i=0;i<10;i++){
