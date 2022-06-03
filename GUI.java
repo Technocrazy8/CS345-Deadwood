@@ -176,9 +176,10 @@ public class GUI extends JFrame {
        rulebox.setLineWrap(true);
        rulebox.setBackground(Color.white);
        rulebox.setVisible(true);
-       rulebox.setBounds(icon.getIconWidth()+10,300,200,100);
+       rulebox.setBounds(icon.getIconWidth()+10,300,200,140);
        bPane.add(rulebox,2);
        rulebox.append("After clicking move, click the\nlocations name to move there");
+       rulebox.append("\n\nTo take a job, click 'Take Job' \nand the job icon you want");
        rulebox.append("\n\nIf you didn't mean to \nclick take or move, \nsimply click it again to undo");
   }
   // add text to the main text box
