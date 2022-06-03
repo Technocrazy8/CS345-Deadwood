@@ -256,7 +256,6 @@ public class Deadwood{
 
     // moves the player to specific location
     public void move(Player player,Set location) {
-        System.out.println("\nWhere would you like to move to?");
         player.setLocation(location);
         player.moved();
         player.resetChips();
@@ -292,44 +291,35 @@ public class Deadwood{
         String choice;
         if (playerMoney >= mCost && playerCredit >= cCost) { // if the player has enough of both credits and money to
                                                              // upgrade
-            System.out.println("\nYou have the choice of spending your money or credits");
             while (true) { // give player the choice of what they want to spend
-                System.out.println("\nYou have $" + playerMoney + " and " + playerCredit + " credits");
-                System.out.print(" What would you like to spend (M or C)? ");
                 String[] options = {"Money","Credits"};
                 choice = ""+JOptionPane.showOptionDialog(null, "You have the choice of spending money or credits","Pick method of payment",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
                 choice = choice.toUpperCase();
                 switch (choice) {
                     case "0": // spend their money and increase rank
-                        System.out.println("Rank increased");
                         player.subMoney(mCost);
                         player.increaseRank();
                         return 1;
                     case "1": // spend their credits and increase their rank
-                        System.out.println("Rank increased");
                         player.subCredits(cCost);
                         player.increaseRank();
                         return 1;
                     default: // enter valid option
-                        System.out.println("\nPlease enter a valid option (M or C)\n");
                         break;
                 }
             }
         } else if (playerMoney >= mCost) { // player only has enough money to upgrade rank
-            System.out.println("You spent money to increase \nyour rank");
             frame.addText("\nYou spent money to increase \nyour rank");
             player.subMoney(mCost);
             player.increaseRank();
             return 1;
         } else if (playerCredit >= cCost) { // player only has enough credits to upgrade rank
-            System.out.println("You spent credits to increase your rank");
             frame.addText("\nYou spent credits to increase \nyour rank");
             player.subCredits(cCost);
             player.increaseRank();
             return 1;
         } else { // player doesnt have the means to increase their rank
-            System.out.println("\nYou dont have the resources to increase your rank. Try again later.");
             frame.addText("\nYou dont have the resources to \nincrease your rank.\n Try again later.");
             return 0;
         }
@@ -339,10 +329,8 @@ public class Deadwood{
         int budget = player.getLocation().getScene().getBudget();
         Set currSet = player.getLocation();
         int roll = (int) (Math.random() * (6 - 1 + 1) + 1); // role the dice
-        System.out.println("You rolled a: " + roll);
         int total = roll + player.getChips(); // get their total roll
         if (total >= budget) { // if the roll is successful
-            System.out.println("\nAct success! Your total was: " + total);
             frame.addText("\nAct success!\n Your total was: " + total);
             frame.hideTakeMarker(currSet,currSet.getCurrShot());
             currSet.completeShot(); // increase amount of shots completed
@@ -355,12 +343,10 @@ public class Deadwood{
                 currSet.complete(frame,board.getSetIndex(currSet.getName())); // say location is complete
             }
             if (currRole.isExtra()) { // pay the player the amount determined by role
-                System.out.println("Payout: 1 dollar and 1 credit");
                 frame.addText(" Payout: 1 dollar and 1 credit");
                 player.addCredits(1);
                 player.addMoney(1);
             } else {
-                System.out.println(" Payout: 2 credits");
                 frame.addText(" Payout: 2 credits");
                 player.addCredits(2);
             }
@@ -389,7 +375,7 @@ public class Deadwood{
             payExtras(extras);
             payLeads(leads, budget);
         } else {
-            System.out.println("No lead actors were present.\n No bonuses will be awarded");
+            frame.addText("No lead actors were present.\n No bonuses will be awarded");
         }
     }
 

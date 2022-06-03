@@ -222,18 +222,15 @@ public class GUI extends JFrame {
            }else if(choseToTake==true){ // player changed their mind and doesnt want to take
              choseToTake=false;
            }else{ // player wants to take a role
-             System.out.println("Take is selected");
              choseToTake = true;
            }
          }
          else if (e.getSource()== bAct && currentPlayer.checkInRole()&& newJob==0){ // if a player wants to act and didnt just take the job
-            System.out.println("Acting is Selected\n");
             game.act(currentPlayer, currentPlayer.getRole()); //act
             game.changePlayer();//change player
             game.dailyRoutine();//give new player their turn
          }
          else if (e.getSource()== bRehearse && currentPlayer.checkInRole()&& newJob==0){
-            System.out.println("Rehearse is Selected\n");
             int budget = currlocation.getScene().getBudget(); // get budget of location
             if(currentPlayer.getChips() == budget-1){ // if the person has guaranteed success
               addText("\nYou cannot rehearse anymore.\n Please act");
@@ -246,7 +243,6 @@ public class GUI extends JFrame {
             }
          }
          else if (e.getSource()== bMove && !currentPlayer.checkInRole() && currentPlayer.canMove()){ // player wants to move
-            System.out.println("Move is Selected\n");
             if(choseToMove ==true){ // player changed their mind on moving
               choseToMove = false;
             }else{
@@ -258,7 +254,6 @@ public class GUI extends JFrame {
            addText("You already moved this turn");
          }
          else if(e.getSource()==bTurn){ // player clicked end turn
-           System.out.println("Turn is Selected\n");
            //reset variables and change player and give them their turn
            if(newJob==1){
              newJob =0;
@@ -269,11 +264,9 @@ public class GUI extends JFrame {
            game.dailyRoutine();
          }
          else if(e.getSource() == bQuit){ // end game was selected
-           System.out.println("Quit is Selected\n");
            game.quitGame(); // send them to the game end method
          }
          else if(e.getSource()== bUpgrade && currlocation.getName().equals("office")){ // player clicked upgrade and is at the office
-           System.out.println("Upgrade selected");
            int rank = currentPlayer.getRank();
            if(rank!=6){ // if player isnt max rank
              int ret = game.upgrade(currentPlayer); // upgrade their rank
@@ -294,11 +287,9 @@ public class GUI extends JFrame {
            neighbors.addAll(currentPlayer.getLocation().getNeighbors());
            // wait for a neighbor to be clicked on
            for(int i=0;i<neighbors.size();i++){
-             System.out.println("In for loop");
              Set curr = neighbors.get(i);
              JButton currbutton = curr.getButton();
              if(e.getSource()==currbutton){ // when a location button was clicked, update player location
-               System.out.println(curr.getName() +" was hit");
                addText("\nYou moved to: "+ curr.getName());
                game.move(currentPlayer,curr);
                this.currlocation = curr;
@@ -329,12 +320,10 @@ public class GUI extends JFrame {
            int sceneX = Integer.parseInt(currlocation.getCoords().get(0));
            int sceneY = Integer.parseInt(currlocation.getCoords().get(1));
            for(int i=0;i<allOptions.size();i++){ // wait until a role is selected
-             System.out.println("in take loop");
              Role currRole = allOptions.get(i);
              JButton currbutton = currRole.getButton();
              // if player is high enough rank to take the role
              if(e.getSource() == currbutton && currRole.isAvailable()&&currentPlayer.getRank()>=currRole.getRank()){
-               System.out.println(currRole.getTitle() + " was hit");
                int x = Integer.parseInt(currRole.getCoords().get(0));
                int y = Integer.parseInt(currRole.getCoords().get(1));
                if(!currRole.isExtra()){ // if the role is not an extra, so on the card
@@ -390,7 +379,6 @@ public class GUI extends JFrame {
    }
 // accessed by the main class
 public void run(){
-    System.out.println("main");
     String playerCount;
     // Take input from the user about number of players
     while(true){
