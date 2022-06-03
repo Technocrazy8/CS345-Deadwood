@@ -43,8 +43,15 @@ public class Deadwood{
     private static LinkedList<Scene> cards;
     private static int dayCount=4;
     private static int currplayerindex =0;
+    private static Deadwood instance;
 
-    public Deadwood(GUI frame, int playerCount){
+    public static Deadwood init(GUI frame, int playerCount){
+      if(instance ==null){
+        instance = new Deadwood(frame,playerCount);
+      }return instance;
+    }
+
+    private Deadwood(GUI frame, int playerCount){
       this.frame = frame;
       this.listener = frame.mouseListener;
       this.numPlayers = playerCount;
@@ -323,7 +330,7 @@ public class Deadwood{
             return 1;
         } else { // player doesnt have the means to increase their rank
             System.out.println("\nYou dont have the resources to increase your rank. Try again later.");
-            frame.addText("\nYou dont have the resources to increase your rank.\n Try again later.");
+            frame.addText("\nYou dont have the resources to \nincrease your rank.\n Try again later.");
             return 0;
         }
     }

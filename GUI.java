@@ -64,9 +64,16 @@ public class GUI extends JFrame {
   static Deadwood game;
   Board board;
 
+  public static GUI getter(){
+    if(instance == null){
+      instance = new GUI();
+    }
+    return instance;
+  }
+
   // Constructor
 
-  public GUI() {
+  private GUI() {
 
       super("Deadwood");
 
@@ -396,7 +403,7 @@ public void run(){
       }
     }
     // initialize the game
-    Deadwood game = new Deadwood(this,numPlayers);
+    Deadwood game = Deadwood.init(this,numPlayers);
     // fetch game and board
     this.game = game;
     this.board = game.getBoard();
