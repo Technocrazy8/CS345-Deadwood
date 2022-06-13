@@ -8,7 +8,7 @@
  * We (Evan and Clement) attest that this implementation
  * of Deadwood is a work of our own
  *
- * Our game controller
+ * Game controller
  *
  * Responsiblities:
  * - Loop through game routine
